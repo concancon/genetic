@@ -10,7 +10,23 @@
 #include <stdlib.h>
 #include <vector>
 #include <cstdlib>
+
 using namespace std;
+class Population{
+public:
+    vector<int> targetParams;
+    Population(){
+        
+        this->targetParams= {1, 2, 3};
+    }
+  
+    
+    
+};
+
+
+
+
 class DNA{
     
 public:
@@ -79,7 +95,6 @@ public:
 private:
     
     std::vector<int> genes;
-    
     float fitness= 0;
     int numberOfGenes;
     
@@ -93,8 +108,8 @@ public:
     
   genetic(const atoms& args = {}) {
       cout << "constructor called!" << c74::min::endl;
-     
-  
+      Population population;
+    
   }
 
     
@@ -114,9 +129,9 @@ public:
 		setter { MIN_FUNCTION {
 			//vector<c74::min::atom> values = args;
             //add this to the population class
-            targetParams.clear();
+            population.targetParams.clear();
             for(auto it: args){
-                targetParams.push_back((int)it);
+                population.targetParams.push_back((int)it);
             }
             return {args};
         }}};
@@ -128,7 +143,7 @@ public:
 
         //test.displayGenes();
         cout << "target is :" << c74::min::endl;
-        for(auto it: targetParams){
+        for(auto it: population.targetParams){
 
             cout << it << c74::min::endl;
         }
@@ -137,9 +152,8 @@ public:
     }};
 
 
-private:
-      std::vector<int> targetParams;
-        //DNA test;
+    private:
+        Population population;
 
 
 };
