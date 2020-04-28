@@ -2,7 +2,7 @@
 ///	@ingroup 	minexamples
 ///	@copyright	Copyright 2018 The Min-DevKit Authors. All rights reserved.
 ///	@license	Use of this source code is governed by the MIT License found in the License.md file.
-
+// code based on Dan Schiffman's GA Tutorial from NOC: https://natureofcode.com/book/chapter-9-the-evolution-of-code/
 
 #include "c74_min.h"
 #include <stdio.h>
@@ -90,12 +90,6 @@ public:
             cout<< it << endl;
         }
     }
-
-
-    
-    
-   
-    
 };
 
 
@@ -117,14 +111,13 @@ public:
     //instead of using a constructor with 3 params
     //we call the default constructor and then
     //assign the attributes
-    //target paramters, mutation rate, and max population number
+    //target parameters, mutation rate, and max population number
     Population(){
         cout << "default constructor called" <<endl;
         targetParams= {12, 127, 38}; // find a better way to init these
         mutationRate= 0;
         maxPopulation= 1000;
         finished = false;
-        //DNA population[maxPopulation];
         
         for(int i = 0; i< maxPopulation; i++){
             DNA dna;
@@ -135,16 +128,37 @@ public:
             calcFitness();
     }
     
+    void setMutationRate(double mr){
+        this->mutationRate= mr;
+    }
+    double getMutationRate(){
+        return this->mutationRate;
+    }
+    void setMaxPopulation(int mp){
+        if(mp)this->maxPopulation= mp;
+        population.clear();
+        for(int i = 0; i< this->maxPopulation; i++){
+                 DNA dna;
+                 population.push_back(dna);
+             }
+        calcFitness();
+    }
+    
+    int getMaxPopulation(){
+        
+        return this->maxPopulation;
+    }
+    
     void calcFitness(){
     
           
         for (int i = 0; i < population.size(); i++) {
        
             population[i].fitnessFunction(targetParams);
-           
-            
+        
        }
     }
+
     // Compute average fitness for the population
      double getAverageFitness() {
        double total = 0;
@@ -252,16 +266,38 @@ public:
     attribute<vector<double>> target {this, "target", {1.0, 1.0 ,1.0},
 		setter { MIN_FUNCTION {
 			
-            population = Population(); //reinitialize population to account for changing target
+            //population = Population(); //reinitialize population to account for changing target
             
             population.targetParams.clear();
             for(auto it: args){
                         population.targetParams.push_back((int)it);
                            }
+            population.calcFitness();
         
            
             return {args};
         }}};
+    
+    attribute<double> mutationRate {this, "mutationRate", 0.01,
+        setter { MIN_FUNCTION {
+            
+            population.setMutationRate(double(args[0]));
+
+            return {args};
+        }}};
+            
+            
+    attribute<int> maxPopulation {this, "maxPopulation", 1000,
+            setter { MIN_FUNCTION {
+
+            cout << "args[0] " << int(args[0]) << c74::min::endl;
+                population.setMaxPopulation(int(args[0]));
+
+                cout << "maxPopulation is now " << population.getMaxPopulation() <<c74::min::endl;
+
+                return {args};
+            }}};
+
 
     message<> bang {
     this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
@@ -300,14 +336,6 @@ public:
         //cast current best to atoms
         
         output.send(result);
-        //        cout << "population itself" <<c74::min::endl;
-//
-//        for(int i = 0; i < population.population.size(); i++){
-//            for(auto it : population.population[i].genes){
-//        cout << it  << " " ;
-//            }
-//        cout <<c74::min::endl;
-//        }
        
         return {};
     }};
