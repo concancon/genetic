@@ -25,7 +25,7 @@ SCENARIO("object produces correct output") {
 
 	GIVEN("An instance of our object") {
 
-		test_wrapper<beat_random> an_instance;
+		test_wrapper<min.genetic> an_instance;
 		beat_random&              my_object = an_instance;
 
 		// check that default attr values are correct

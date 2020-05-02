@@ -5,6 +5,7 @@
 // code based on Dan Schiffman's GA Tutorial from NOC: https://natureofcode.com/book/chapter-9-the-evolution-of-code/
 
 #include "c74_min.h"
+
 #include <stdio.h>
 #include <iostream>
 #include <stdlib.h>
@@ -29,12 +30,13 @@ public:
     std::vector<int> genes;
     int numberOfGenes;
     //constructor for DNA class
-    DNA(){
+ 
+    DNA(int paramSize){
        
-        this->numberOfGenes= 3; // TODO: change this to target.size()
+        this->numberOfGenes= paramSize; // TODO: change this to target.size()
         int randomGene= 0;
         for(int i = 0; i< numberOfGenes; i++){
-            randomGene= rand() % 128;
+            randomGene= rand() % 256;
             genes.push_back(randomGene);
         }
         
@@ -60,7 +62,7 @@ public:
     
     DNA crossover(DNA partner){
         
-        DNA child;
+        DNA child(this->numberOfGenes);
         int midpoint = rand() % this->numberOfGenes;
         for(int i = 0; i< this->numberOfGenes; i++){
             if(i > midpoint){
@@ -79,7 +81,7 @@ public:
         for(int i= 0; i< this->numberOfGenes; i++){
             double r = ((double) rand() / (RAND_MAX));
             if(r < mutationRate){
-                this->genes[i] = rand() % 128;
+                this->genes[i] = rand() % 256;
             }
         }
         
@@ -106,26 +108,43 @@ public:
     int generations;              // Number of generations
     int finished;
     int perfectScore;
-    
     //population can also serve as an interface
     //instead of using a constructor with 3 params
     //we call the default constructor and then
     //assign the attributes
     //target parameters, mutation rate, and max population number
     Population(){
-        cout << "default constructor called" <<endl;
-        targetParams= {12, 127, 38}; // find a better way to init these
+       
+        //cout << "default constructor called" <<endl;
+        targetParams= {12, 12, 38}; // find a better way to init these
         mutationRate= 0;
         maxPopulation= 1000;
         finished = false;
         
         for(int i = 0; i< maxPopulation; i++){
-            DNA dna;
+           
+            DNA dna(this->targetParams.size());
             population.push_back(dna);
             
         }
-        cout << "population size at the end of constructor" << population.size()<<endl;
+    
             calcFitness();
+    }
+     Population(vector<int> tp){
+        this->targetParams= tp;
+        this->mutationRate= 0;
+        this->maxPopulation= 1000;
+        this->finished = false;
+        this->population.clear();
+        for(int i = 0; i< maxPopulation; i++){
+               
+                DNA dna(this->targetParams.size());
+                this->population.push_back(dna);
+                
+            }
+       
+            this->calcFitness();
+        
     }
     
     void setMutationRate(double mr){
@@ -138,7 +157,7 @@ public:
         if(mp)this->maxPopulation= mp;
         population.clear();
         for(int i = 0; i< this->maxPopulation; i++){
-                 DNA dna;
+                 DNA dna(this->targetParams.size());
                  population.push_back(dna);
              }
         calcFitness();
@@ -165,7 +184,7 @@ public:
        for (int i = 0; i < population.size(); i++) {
            total += population[i].fitness;
        }
-         cout << "total is " << total<<endl;
+         //cout << "total is " << total<<endl;
        return total / (population.size());
      }
     
@@ -241,40 +260,38 @@ public:
 };
 
 
-
-
-
 using namespace c74::min;
 
 
 class genetic : public object<genetic> {
+
+private:
+    Population population;
+    vector<int> currentBest;
+    atoms result;
 public:
     
 	MIN_DESCRIPTION {"apply genetic algorithm to n params"};
 	MIN_TAGS {"time"};
 	MIN_AUTHOR {"Cycling 74"};
-	MIN_RELATED {"min.beat.pattern, link.beat, metro, tempo, drunk"};
+	MIN_RELATED {""};
 
    
   
 	inlet<>  input {this, "(toggle) on/off"};
 	outlet<> output {this, "(list) result of evolution"};
 	
-    Population population;
     
-    
-    attribute<vector<double>> target {this, "target", {1.0, 1.0 ,1.0},
+   
+    attribute<vector<double>> target {this, "target", {1, 1 ,1, 1},
 		setter { MIN_FUNCTION {
-			
-            //population = Population(); //reinitialize population to account for changing target
-            
+            vector<int> sVec;
             population.targetParams.clear();
             for(auto it: args){
-                        population.targetParams.push_back((int)it);
+                       sVec.push_back((int)it);
                            }
-            population.calcFitness();
+            population= Population(sVec);
         
-           
             return {args};
         }}};
     
@@ -290,27 +307,18 @@ public:
     attribute<int> maxPopulation {this, "maxPopulation", 1000,
             setter { MIN_FUNCTION {
 
-            cout << "args[0] " << int(args[0]) << c74::min::endl;
+            //cout << "args[0] " << int(args[0]) << c74::min::endl;
                 population.setMaxPopulation(int(args[0]));
-
-                cout << "maxPopulation is now " << population.getMaxPopulation() <<c74::min::endl;
-
                 return {args};
             }}};
 
 
     message<> bang {
     this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
-        
-        vector<int> currentBest;
-        cout << "target params"<<c74::min::endl;
-
-        for(auto it : population.targetParams){
-               cout << it <<" " ;
-               
-           }
-        cout <<c74::min::endl;
-        
+    
+        //cout <<c74::min::endl;
+        currentBest.clear();
+        result.clear();
        
         if(!population.terminate()){
         // Generate mating pool
@@ -322,16 +330,13 @@ public:
         currentBest= population.getBest();
        
         }
-        cout << "current best: "<<c74::min::endl;
         
-        atoms result;
+        
         for(auto it : currentBest){
-            cout << it <<" " ;
             result.push_back(it);
             
         }
-        cout <<c74::min::endl;
-        cout << "average: " <<population.getAverageFitness()<< c74::min::endl;
+  
 
         //cast current best to atoms
         
