@@ -49,14 +49,13 @@ public:
         // elem 2: vca loudness
         int score = 0;
         for(int i = 0; i< genes.size(); i++){
-            
             if(genes[i] == target[i]){
                 score++;
             }
-            // exponential fitting of score to fitness function to accentuate difference between a slightly better
-            //result and its inferior
-            fitness = pow(2, score);
         }
+        // exponential fitting of score to fitness function to accentuate difference between a slightly better
+                 //result and its inferior
+                 fitness = pow(2, score);
         
     }
     
@@ -104,6 +103,7 @@ public:
     vector<int> targetParams;
     double mutationRate;
     int maxPopulation;
+    bool calledOnce= false;
     
     int generations;              // Number of generations
     int finished;
@@ -190,10 +190,13 @@ public:
     
     // Generate a mating pool
     void naturalSelection() {
+     
+        
       // Clear the vector
         matingPool.clear();
 
         double maxFitness = 0;
+        //what is the maximum fitness in our current population?
         for (int i = 0; i < population.size(); i++) {
         if (population[i].fitness > maxFitness) {
           maxFitness = population[i].fitness;
@@ -205,20 +208,22 @@ public:
       // a lower fitness = fewer entries to mating pool = less likely to be picked as a parent
       for (int i = 0; i < population.size(); i++) {
         
-        float fitness = map(population[i].fitness,0, maxFitness,0,1);
+        float fitness = map(population[i].fitness, 0, maxFitness,0,1);
         int n = int(fitness * 100);  // Arbitrary multiplier, we can also use monte carlo method
         for (int j = 0; j < n; j++) {              // and pick two random numbers
           matingPool.push_back(population[i]);
         }
       }
-    }
+         
+        }
+        
+    
     
      // Compute the current "most fit" member of the population
         vector<int> getBest(){
       
          float maxFitness = 0.0;
          int index= 0;
-         vector<int> best;
          for (int i = 0; i < population.size(); i++) {
          
              if (population[i].fitness > maxFitness) {
@@ -330,8 +335,6 @@ public:
         currentBest= population.getBest();
        
         }
-        
-        
         for(auto it : currentBest){
             result.push_back(it);
             
