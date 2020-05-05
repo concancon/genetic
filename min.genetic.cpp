@@ -14,13 +14,13 @@
 
 using namespace std;
 
-static double map(double value, int start1, double stop1,
-                 int start2, int stop2) {
-    double outgoing =
-    start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
-    
-    return outgoing;
-}
+//static double map(double value, int start1, double stop1,
+//                 int start2, int stop2) {
+//    double outgoing =
+//    start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+//
+//    return outgoing;
+//}
 
 class DNA{
     
@@ -41,23 +41,27 @@ public:
         }
         
     }
-    
+//
     void fitnessFunction(vector<int> target){
         //our target will contain 3 elems to represent:
         // elem 0: osc pitch
         // elem 1: filter cutoff
         // elem 2: vca loudness
         int score = 0;
+        
         for(int i = 0; i< genes.size(); i++){
+       
             if(genes[i] == target[i]){
                 score++;
             }
         }
+       
         // exponential fitting of score to fitness function to accentuate difference between a slightly better
                  //result and its inferior
-                 fitness = pow(2, score);
-        
+        fitness = pow(12, score);
+
     }
+  
     
     DNA crossover(DNA partner){
         
@@ -66,7 +70,6 @@ public:
         for(int i = 0; i< this->numberOfGenes; i++){
             if(i > midpoint){
                 child.genes[i] = this->genes[i];
-                
             }
             else{
               child.genes[i]= partner.genes[i];
@@ -108,6 +111,7 @@ public:
     int generations;              // Number of generations
     int finished;
     int perfectScore;
+    vector<DNA> newPopulation;
     //population can also serve as an interface
     //instead of using a constructor with 3 params
     //we call the default constructor and then
@@ -116,10 +120,10 @@ public:
     Population(){
        
         //cout << "default constructor called" <<endl;
-        targetParams= {12, 12, 38}; // find a better way to init these
+        targetParams= {2, 2, 3}; // find a better way to init these
         mutationRate= 0;
-        maxPopulation= 1000;
         finished = false;
+
         
         for(int i = 0; i< maxPopulation; i++){
            
@@ -133,9 +137,10 @@ public:
      Population(vector<int> tp){
         this->targetParams= tp;
         this->mutationRate= 0;
-        this->maxPopulation= 1000;
+        this->maxPopulation= 100;
         this->finished = false;
         this->population.clear();
+        this->perfectScore= pow(12, targetParams.size());
         for(int i = 0; i< maxPopulation; i++){
                
                 DNA dna(this->targetParams.size());
@@ -188,37 +193,6 @@ public:
        return total / (population.size());
      }
     
-    // Generate a mating pool
-    void naturalSelection() {
-     
-        
-      // Clear the vector
-        matingPool.clear();
-
-        double maxFitness = 0;
-        //what is the maximum fitness in our current population?
-        for (int i = 0; i < population.size(); i++) {
-        if (population[i].fitness > maxFitness) {
-          maxFitness = population[i].fitness;
-        }
-      }
-    
-    // Based on fitness, each member will get added to the mating pool a certain number of times
-      // a higher fitness = more entries to mating pool = more likely to be picked as a parent
-      // a lower fitness = fewer entries to mating pool = less likely to be picked as a parent
-      for (int i = 0; i < population.size(); i++) {
-        
-        float fitness = map(population[i].fitness, 0, maxFitness,0,1);
-        int n = int(fitness * 100);  // Arbitrary multiplier, we can also use monte carlo method
-        for (int j = 0; j < n; j++) {              // and pick two random numbers
-          matingPool.push_back(population[i]);
-        }
-      }
-         
-        }
-        
-    
-    
      // Compute the current "most fit" member of the population
         vector<int> getBest(){
       
@@ -227,8 +201,8 @@ public:
          for (int i = 0; i < population.size(); i++) {
          
              if (population[i].fitness > maxFitness) {
-           maxFitness = population[i].fitness;
-           index = i;
+                 maxFitness = population[i].fitness;
+                 index = i;
            }
            
          }
@@ -240,19 +214,54 @@ public:
     }
     // Create a new generation
     void generate() {
-      // Refill the population with children from the mating pool
-      for (int i = 0; i < population.size(); i++) {
-        int a = int(rand() % matingPool.size());
-        int b = int(rand() % matingPool.size());
-        DNA partnerA = matingPool[a];
-        DNA partnerB = matingPool[b];
-        DNA child = partnerA.crossover(partnerB);
-        child.mutate(mutationRate);
-        population[i] = child;
-      }
-      generations++;
-    }
+        if(!this->finished){
+            // Refill the population with children from the mating pool
+            newPopulation.clear();
+            vector<double> scores(population.size());
+            double sum = 0.0;
+            for (int i = 0; i < population.size(); i++) {
+                sum += population[i].fitness;
+            }
+            // cout<< "population fitness sum is: " << sum<<endl<<endl;
+            for (int i = 0; i < population.size(); i++) {
+                
+                scores[i]= population[i].fitness/ sum;
+                
+            }
+            
+            for (int i = 0; i < population.size(); i++) {
+                
+                DNA partnerA = select(scores);
+                DNA partnerB = select(scores);
+                DNA child = partnerA.crossover(partnerB);
+                child.mutate(mutationRate);
+                newPopulation.push_back(child);
+            }
+            this->population= newPopulation;
+            generations++;
         
+            //cout<< "average fitness: " << getAverageFitness() << c74::min::endl;
+        }
+        else{
+            cout << "ALREADY FINISHED!" <<endl;
+        }
+    }
+
+  
+    DNA select(vector<double> scores){
+        int index= 1;
+        double random = (rand() % 10) / 10.0;
+        cout << "random: " << random <<endl;
+        while(random > 0.0){
+            random = random - scores[index];
+            index++;
+        }
+        index--;
+    
+        cout << "selected index was: " <<index<<endl;
+        
+        return population[index];
+    }
     
     bool terminate() {
        return finished;
@@ -309,7 +318,7 @@ public:
         }}};
             
             
-    attribute<int> maxPopulation {this, "maxPopulation", 1000,
+    attribute<int> maxPopulation {this, "maxPopulation", 100,
             setter { MIN_FUNCTION {
 
             //cout << "args[0] " << int(args[0]) << c74::min::endl;
@@ -326,12 +335,15 @@ public:
         result.clear();
        
         if(!population.terminate()){
+        
         // Generate mating pool
-        population.naturalSelection();
+        //population.naturalSelection();
+   
         //Create next generation
         population.generate();
         // Calculate fitness
         population.calcFitness();
+
         currentBest= population.getBest();
        
         }
