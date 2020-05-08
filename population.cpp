@@ -5,12 +5,14 @@
 using namespace std;
 
 Population::Population(vector<double> tp){
+    
+    
     this->targetParams= tp;
     this->finished = false;
     this->population.clear();
-    this->mutationRate= 0.07;
+    //this->mutationRate= 0.07;
     this->perfectScore= pow(2, targetParams.size());
-    
+    this->maxPopulation= 1000;
     for(int i = 0; i< maxPopulation; i++){
         
         DNA dna(this->targetParams.size());
@@ -19,12 +21,13 @@ Population::Population(vector<double> tp){
     }
     
     calcFitness();
-    
 }
+   
+
 
 
 void Population::setMaxPopulation(int mp){
-    if(mp)this->maxPopulation= mp;
+    this->maxPopulation= mp;
     population.clear();
     for(int i = 0; i< this->maxPopulation; i++){
         DNA dna(this->targetParams.size());
@@ -94,7 +97,7 @@ void Population::generate() {
         DNA partnerA = select(scores);
         DNA partnerB = select(scores);
         DNA child = partnerA.crossover(partnerB);
-        child.mutate(mutationRate, targetParams);
+        child.mutate(this->mutationRate, targetParams);
         newPopulation.push_back(child);
     }
     this->population= newPopulation;

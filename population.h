@@ -4,31 +4,34 @@
 #include <random>
 #include <iostream>
 
+
+
 class Population{
 public:
     
     std::vector<DNA> population;
     std::vector<DNA> matingPool;
     std::vector<double> targetParams;
-    double mutationRate;
-    int maxPopulation = 1000;
+   
+    int maxPopulation;
     bool calledOnce= false;
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen{rd()}; //Standard mersenne_twister_engine seeded with rd()
     std::uniform_real_distribution<> equalRandom{0.0, 1.0};
-    long double generations= 0;              // Number of generations
+    double mutationRate;
     bool finished;
+    long double generations= 0;              // Number of generations
     long double perfectScore;
     long double maxFitness=0;
-    
+  
     std::vector<DNA> newPopulation;
     Population(std::vector<double> tp);
     
     void setMutationRate(double mr){
-        this->mutationRate= mr;
+       mutationRate= mr;
     }
     double getMutationRate(){
-        return this->mutationRate;
+        return mutationRate;
     }
     void setMaxPopulation(int mp);
     int getMaxPopulation(){

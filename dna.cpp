@@ -58,7 +58,7 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
         return child;
     }
     
-    void DNA::mutate(float mutationRate, vector<double> target){
+    void DNA::mutate(double mutationRate, vector<double> target){
         for(int i= 0; i< this->numberOfGenes; i++){
             double r = ((double) rand() / (RAND_MAX));
             

@@ -19,7 +19,7 @@ public:
     //result and its inferior
     DNA crossover(DNA partner);
     
-    void mutate(float mutationRate, std::vector<double> target);
+    void mutate(double mutationRate, std::vector<double> target);
     
     void displayGenes();
 };

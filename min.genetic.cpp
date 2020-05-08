@@ -82,12 +82,11 @@ public:
             return args;
         }}};
     
-    attribute<double> mutationRate {this, "mutationRate", 0.01,
+    attribute<double> mutationRate {this, "mutationRate", 0.06,
         setter { MIN_FUNCTION {
             
             if(this->initialized){
-            population->setMutationRate(double(args[0]));
-                
+            population->mutationRate= double(args[0]);
            
             }
            
