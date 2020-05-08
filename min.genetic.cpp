@@ -10,17 +10,18 @@
 using namespace c74::min;
 
 
+
+
 class genetic : public object<genetic> {
 
 private:
+  
     //Population population;
     vector<int> currentBest;
     atoms result;
-    vector<int> sVec;
-    int populationSize= 0;
-    // initialized first!
-    // CRITICAL because other member initialization below relies on this value!
+    vector<double> sVec;
     bool initialized { false };
+    bool alreadyPrinted {false};
     
 public:
     
@@ -29,41 +30,56 @@ public:
     MIN_AUTHOR {"Cycling 74"};
     MIN_RELATED {""};
 
-   
-  
     inlet<>  input {this, "(toggle) on/off"};
     outlet<> output {this, "(list) result of evolution"};
     
-    // constructor will be called AFTER *all* of the members
-    // (most of which are located below in this class definition).
-    genetic(const atoms& args = {}) {
+    void initializeObject(const atoms& args= {}){
+        cout <<"args size: " << args.size();
+   
+        vector<double> t;
+   
+        for(int i = 0; i< args.size(); i++){
+            
+            t.push_back((double) args[i]);
+   
+            }
+
+        population = std::make_unique<Population>(t);
       
-        // processing our arguments makes an assignment to the
-        // tempo attribute --
-        // okay because it will have already been initialized with the members
-        if (args.size() > 0)
-         populationSize = args[0];
+        this->initialized= true;
         
-          // create an instance of "beat_generator" which is a class defined
-        // in a library or in another piece of code we authored elsewhere.
-        population = std::make_unique<Population>(sVec);
-      
-          // now that m_beat_generator is valid and our object is properly
-        // initialized, we can switch our flag used to prevent unsafe access
-        // in the attribute setters (below)
-        initialized = true;
     }
     
-   
-    attribute<vector<double>> target {this, "target", {1, 1 ,1, 1},
-        setter { MIN_FUNCTION {
-          
-            for(auto it: args){
-                       sVec.push_back((int)it);
-                           }
+    // constructor will be called AFTER *all* of the members
+    // (most of which are located below in this class definition).
+    genetic(const atoms& args= {}) {
+      
+      //NOTHING OF INTEREST HERE
             
+        }
+    
+    
+   
+    attribute<vector<double>> target {this, "target", {},
+        setter { MIN_FUNCTION {
+            vector<double> params;
+            if(this->initialized){
+                population->targetParams.clear();
+                population->generations= 0;
+                for(auto it: args){
+                    params.push_back((double)it);
+                }
+
+                initializeObject(args);
+                alreadyPrinted= false;
+            }
+            else if(args.size()>0){
+              
+                initializeObject(args);
+                cout << "Object initialized" <<c74::min::endl;
+            }
         
-            return {args};
+            return args;
         }}};
     
     attribute<double> mutationRate {this, "mutationRate", 0.01,
@@ -71,12 +87,16 @@ public:
             
             if(this->initialized){
             population->setMutationRate(double(args[0]));
+                
+           
             }
+           
             return {args};
+           
         }}};
             
             
-    attribute<int> maxPopulation {this, "maxPopulation", 100,
+    attribute<int> maxPopulation {this, "maxPopulation", 1000,
             setter { MIN_FUNCTION {
 
             //cout << "args[0] " << int(args[0]) << c74::min::endl;
@@ -89,14 +109,12 @@ public:
 
     message<> bang {
     this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
-    
-        if(this->initialized){
+    if(this->initialized){
+       
+        if(!(this->population->finished)){
         //cout <<c74::min::endl;
         currentBest.clear();
         result.clear();
-       
-        if(!population->terminate()){
-        
         //Create next generation
         population->generate();
         // Calculate fitness
@@ -104,7 +122,7 @@ public:
 
         currentBest= population->getBest();
        
-        }
+        
         for(auto it : currentBest){
             result.push_back(it);
             
@@ -114,6 +132,14 @@ public:
         
         output.send(result);
         }
+        else if (!alreadyPrinted){
+            
+            cout << "already finished! " <<c74::min::endl;
+            cout << "generations: " << population->generations << c74::min::endl;
+            alreadyPrinted = true;
+                }
+        }
+            
         return {};
     }};
         

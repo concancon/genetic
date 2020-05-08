@@ -1,7 +1,12 @@
 #include "dna.h"
 #include <math.h>
-
+#include <iostream>
 using namespace std;
+
+std::random_device rd;  //Will be used to obtain a seed for the random number engine
+std::mt19937 gen{rd()}; //Standard mersenne_twister_engine seeded with rd()
+std::uniform_int_distribution<int> equalRandom{0, 255};
+
 
  //constructor for DNA class
  DNA::DNA(int paramSize){
@@ -10,17 +15,14 @@ using namespace std;
      this->numberOfGenes= paramSize;
      int randomGene= 0;
      for(int i = 0; i< numberOfGenes; i++){
-         randomGene= rand() % 256;
+         randomGene= equalRandom(gen);
          genes.push_back(randomGene);
          
          
      }
  }
-    void DNA::fitnessFunction(vector<int> target){
-        //our target will contain 3 elems to represent:
-        // elem 0: osc pitch
-        // elem 1: filter cutoff
-        // elem 2: vca loudness
+    void DNA::fitnessFunction(vector<double> target){
+        
         int score = 0;
         
         for(int i = 0; i< genes.size(); i++){
@@ -29,10 +31,13 @@ using namespace std;
                 score++;
             }
         }
+        
+        
        
         // exponential fitting of score to fitness function to accentuate difference between a slightly better
                  //result and its inferior
-        fitness = pow(12, score);
+        this->fitness = pow(2, score);
+     
 
     }
   
@@ -53,18 +58,20 @@ using namespace std;
         return child;
     }
     
-    void DNA::mutate(float mutationRate){
+    void DNA::mutate(float mutationRate, vector<double> target){
         for(int i= 0; i< this->numberOfGenes; i++){
             double r = ((double) rand() / (RAND_MAX));
-            if(r < mutationRate){
-                this->genes[i] = rand() % 256;
+            
+            if(r < mutationRate && this->genes[i] != target[i]){
+                this->genes[i] = equalRandom(gen);
             }
         }
         
     }
     
-//    void DNA::displayGenes(){
-//        for(auto it: genes){
-//            std::cout<< it << std::endl;
-//        }
-//    }
+    void DNA::displayGenes(){
+        for(auto it: genes){
+            std::cout<< it << " ";
+        }
+        cout << endl;
+    }
