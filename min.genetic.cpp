@@ -13,14 +13,20 @@ using namespace c74::min;
 
 
 class genetic : public object<genetic> {
-
+    
 private:
-  
+    
+    // As is common practice, we provide private memebers at the
+    // end of the class definition.
+    // Initializing values here still serves a purpose because this will occur
+    // prior to the constructor being called.
+    //not necessaray
+    std::unique_ptr<Population> population { nullptr };
+    
     //Population population;
     vector<int> currentBest;
     atoms result;
     vector<double> sVec;
-    bool initialized { false };
     bool alreadyPrinted {false};
     
 public:
@@ -29,129 +35,149 @@ public:
     MIN_TAGS {"time"};
     MIN_AUTHOR {"Cycling 74"};
     MIN_RELATED {""};
-
+    
     inlet<>  input {this, "(toggle) on/off"};
     outlet<> output {this, "(list) result of evolution"};
     
     void initializeObject(const atoms& args= {}){
         cout <<"args size: " << args.size();
-   
+        
         vector<double> t;
-   
+        
         for(int i = 0; i< args.size(); i++){
             
             t.push_back((double) args[i]);
-   
-            }
-
+            
+        }
+        double oldMutationRate;
+        double oldMaxPopulation;
+        bool reInit= false;
+        if(population.get()){
+            //save mutation rate
+            oldMutationRate = population->mutationRate;
+            oldMaxPopulation = population->maxPopulation;
+            reInit= true;
+        }
         population = std::make_unique<Population>(t);
-      
-        this->initialized= true;
-        
+        //notify max that these
+        if(reInit){
+            atoms a;
+            a.push_back(oldMaxPopulation);
+            
+            maxPopulation.set(a);
+            a.clear();
+            a.push_back(oldMutationRate);
+            mutationRate.set(a);
+        }
     }
     
     // constructor will be called AFTER *all* of the members
     // (most of which are located below in this class definition).
     genetic(const atoms& args= {}) {
-      
-      //NOTHING OF INTEREST HERE
-            
-        }
+        
+        //NOTHING OF INTEREST HERE
+        
+    }
     
     
-   
+    
     attribute<vector<double>> target {this, "target", {},
         setter { MIN_FUNCTION {
-            vector<double> params;
-            if(this->initialized){
+            
+            if(population.get()){
                 population->targetParams.clear();
                 population->generations= 0;
-                for(auto it: args){
-                    params.push_back((double)it);
-                }
-
+                
                 initializeObject(args);
                 alreadyPrinted= false;
             }
             else if(args.size()>0){
-              
+                
                 initializeObject(args);
                 cout << "Object initialized" <<c74::min::endl;
-            }
-        
-            return args;
-        }}};
-    
-    attribute<double> mutationRate {this, "mutationRate", 0.06,
-        setter { MIN_FUNCTION {
-            
-            if(this->initialized){
-            population->mutationRate= double(args[0]);
-           
-            }
-           
-            return {args};
-           
-        }}};
-            
-            
-    attribute<int> maxPopulation {this, "maxPopulation", 1000,
-            setter { MIN_FUNCTION {
-
-            //cout << "args[0] " << int(args[0]) << c74::min::endl;
-                if(this->initialized){
+                }
+                
+                return args;
+                }}};
+                
+                attribute<double> mutationRate {this, "mutationRate", 0.06,
+                setter { MIN_FUNCTION {
+                
+                if(population.get()){
+                
+                population->mutationRate= double(args[0]);
+                return {args[0]};
+                }
+                
+                return {0};
+                
+                }},
+                getter { MIN_GETTER_FUNCTION {
+                if(population.get()){
+                
+                return {population->mutationRate};
+                
+                }
+                else return {0};
+                }}};
+                
+                
+                
+                
+                attribute<int> maxPopulation {this, "maxPopulation", 1000,
+                setter { MIN_FUNCTION {
+                
+                //cout << "args[0] " << int(args[0]) << c74::min::endl;
+                if(population.get()){
                 population->setMaxPopulation(int(args[0]));
                 }
                 return {args};
-            }}};
-
-
-    message<> bang {
-    this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
-    if(this->initialized){
-       
-        if(!(this->population->finished)){
-        //cout <<c74::min::endl;
-        currentBest.clear();
-        result.clear();
-        //Create next generation
-        population->generate();
-        // Calculate fitness
-        population->calcFitness();
-
-        currentBest= population->getBest();
-       
-        
-        for(auto it : currentBest){
-            result.push_back(it);
-            
-        }
-  
-        //cast current best to atoms
-        
-        output.send(result);
-        }
-        else if (!alreadyPrinted){
-            
-            cout << "already finished! " <<c74::min::endl;
-            cout << "generations: " << population->generations << c74::min::endl;
-            alreadyPrinted = true;
+                }}};
+                
+                
+                message<> bang {
+                this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
+                if(population.get()){
+                
+                if(!(this->population->finished)){
+                //cout <<c74::min::endl;
+                currentBest.clear();
+                result.clear();
+                //Create next generation
+                population->generate();
+                // Calculate fitness
+                population->calcFitness();
+                
+                currentBest= population->getBest();
+                
+                
+                for(auto it : currentBest){
+                result.push_back(it);
+                
                 }
-        }
-            
-        return {};
-    }};
-        
-private:
-    // As is common practice, we provide private memebers at the
-    // end of the class definition.
-    // Initializing values here still serves a purpose because this will occur
-    // prior to the constructor being called.
-    std::unique_ptr<Population> population { nullptr };
-    
-
-
-};
-
-
-MIN_EXTERNAL(genetic);
+                
+                //cast current best to atoms
+                
+                output.send(result);
+                }
+                else if (!alreadyPrinted){
+                
+                cout << "already finished! " <<c74::min::endl;
+                cout << "generations: " << population->generations << c74::min::endl;
+                alreadyPrinted = true;
+                }
+                }
+                
+                return {};
+                }};
+                
+                
+                
+                
+                
+                };
+                
+                
+                MIN_EXTERNAL(genetic);
+                
+                

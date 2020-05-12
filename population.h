@@ -11,6 +11,7 @@ public:
     
     std::vector<DNA> population;
     std::vector<DNA> matingPool;
+    std::vector<double> scores;
     std::vector<double> targetParams;
    
     int maxPopulation;

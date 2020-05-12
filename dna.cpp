@@ -1,6 +1,8 @@
-#include "dna.h"
 #include <math.h>
 #include <iostream>
+#include "dna.h"
+#include "util.h"
+
 using namespace std;
 
 std::random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -23,7 +25,7 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
  }
     void DNA::fitnessFunction(vector<double> target){
         
-        int score = 0;
+        double score = 0;
         
         for(int i = 0; i< genes.size(); i++){
        
@@ -33,10 +35,10 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
         }
         
         
-       
+        score = utilities::map(score, 0, genes.size(), 0.0, 100.0);
         // exponential fitting of score to fitness function to accentuate difference between a slightly better
                  //result and its inferior
-        this->fitness = pow(2, score);
+        this->fitness = pow(4, score); //probier score * score
      
 
     }
