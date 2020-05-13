@@ -4,7 +4,7 @@
 #include <random>
 using namespace std;
 
-Population::Population(vector<double> tp){
+Population::Population(const vector<double>& tp){
     
     
     this->targetParams= tp;
@@ -109,7 +109,7 @@ void Population::generate() {
 }
 
 
-DNA Population::select(vector<double> scores){
+DNA Population::select(const vector<double>& scores){
     int index= 0;
     
     double random = this->equalRandom(gen);

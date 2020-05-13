@@ -12,14 +12,14 @@ public:
     std::vector<int> genes;
     int numberOfGenes;
     int count = 0;
-    void fitnessFunction(std::vector<double> target);
+    void fitnessFunction(const std::vector<double>& target);
    
     
     // exponential fitting of score to fitness function to accentuate difference between a slightly better
     //result and its inferior
     DNA crossover(DNA partner);
     
-    void mutate(double mutationRate, std::vector<double> target);
+    void mutate(double mutationRate, const std::vector<double>& target);
     
     void displayGenes();
 };

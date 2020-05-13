@@ -26,7 +26,7 @@ public:
     long double maxFitness=0;
   
     std::vector<DNA> newPopulation;
-    Population(std::vector<double> tp);
+    Population(const std::vector<double>& tp);
     
     void setMutationRate(double mr){
        mutationRate= mr;
@@ -51,7 +51,7 @@ public:
     // Create a new generation
     void generate();
 
-    DNA select(std::vector<double> scores);
+    DNA select(const std::vector<double>& scores);
     
     bool terminate() {
        return finished;

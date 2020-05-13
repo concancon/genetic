@@ -23,7 +23,7 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
          
      }
  }
-    void DNA::fitnessFunction(vector<double> target){
+    void DNA::fitnessFunction(const vector<double>& target){
         
         double score = 0;
         
@@ -60,7 +60,7 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
         return child;
     }
     
-    void DNA::mutate(double mutationRate, vector<double> target){
+    void DNA::mutate(double mutationRate, const vector<double>& target){
         for(int i= 0; i< this->numberOfGenes; i++){
             double r = ((double) rand() / (RAND_MAX));
             
