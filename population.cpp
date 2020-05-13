@@ -11,7 +11,7 @@ Population::Population(const vector<double>& tp){
     this->finished = false;
     this->population.clear();
     this->mutationRate= 0.07;
-    this->perfectScore= pow(4, 100.0);
+    this->perfectScore= pow(2, targetParams.size());
     this->maxPopulation= 1000;
     for(int i = 0; i< maxPopulation; i++){
         
@@ -80,7 +80,7 @@ void Population::generate() {
     
     // Refill the population with children from the mating pool
     newPopulation.clear();
-    
+    vector<double> scores(population.size());
     
     double sum = 0.0;
     for (int i = 0; i < population.size(); i++) {
@@ -89,7 +89,7 @@ void Population::generate() {
     
     for (int i = 0; i < population.size(); i++) {
         
-        scores.push_back(population[i].fitness/ sum);
+       scores[i]= population[i].fitness/ sum;
         
     }
     
