@@ -22,7 +22,7 @@ Population::Population(const vector<double>& tp){
     this->maxPopulation= 200;
     for(int i = 0; i< maxPopulation; i++){
         
-        DNA dna(this->targetParams.size());
+        DNA dna(this->targetParams.size(), true);
         this->population.push_back(dna);
         
     }
@@ -37,7 +37,7 @@ void Population::setMaxPopulation(int mp){
     this->maxPopulation= mp;
     population.clear();
     for(int i = 0; i< this->maxPopulation; i++){
-        DNA dna(this->targetParams.size());
+        DNA dna(this->targetParams.size(), true);
         population.push_back(dna);
     }
     calcFitness();
