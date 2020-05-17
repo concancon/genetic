@@ -138,7 +138,7 @@ public:
                 //Create next generation
                 population->generate();
                 // Calculate fitness
-                population->calcFitness();
+                //population->calcFitness();
                 
                 currentBest= population->getBest();
                 
