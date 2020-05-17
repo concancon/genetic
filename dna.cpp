@@ -35,10 +35,10 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
         }
         
         
-        //score = utilities::map(score, 0, genes.size(), 0.0, 100.0);
+        score = utilities::map(score, 0, genes.size(), 0.0, 100.0);
         // exponential fitting of score to fitness function to accentuate difference between a slightly better
                  //result and its inferior
-        this->fitness = pow(2, score); //probier score * score
+        this->fitness = pow(4, score); //probier score * score
      
 
     }

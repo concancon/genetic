@@ -11,7 +11,7 @@ Population::Population(const vector<double>& tp){
     this->finished = false;
     this->population.clear();
     this->mutationRate= 0.07;
-    this->perfectScore= pow(2, targetParams.size());
+    this->perfectScore= pow(4, 100.0);
     this->maxPopulation= 1000;
     for(int i = 0; i< maxPopulation; i++){
         
