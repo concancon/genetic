@@ -71,15 +71,7 @@ public:
         }
     }
     
-    // constructor will be called AFTER *all* of the members
-    // (most of which are located below in this class definition).
-    genetic(const atoms& args= {}) {
-        
-        //NOTHING OF INTEREST HERE
-        
-    }
-    
-    
+  
     
     attribute<vector<double>> target {this, "target", {},
         setter { MIN_FUNCTION {
@@ -124,7 +116,7 @@ public:
                 
                 
                 
-                attribute<int> maxPopulation {this, "maxPopulation", 1000,
+                attribute<int> maxPopulation {this, "maxPopulation", 200,
                 setter { MIN_FUNCTION {
                 
                 //cout << "args[0] " << int(args[0]) << c74::min::endl;

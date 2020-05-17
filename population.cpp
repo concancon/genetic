@@ -2,8 +2,15 @@
 #include <math.h>
 #include <iostream>
 #include <random>
+#include <numeric>
 using namespace std;
 
+
+struct LightIterator : public std::vector<DNA>::iterator
+{
+    LightIterator(std::vector<DNA>::iterator it) : std::vector<DNA>::iterator(it) {}
+    long double& operator*() { return std::vector<DNA>::iterator::operator*().fitness; }
+};
 Population::Population(const vector<double>& tp){
     
     
@@ -12,7 +19,7 @@ Population::Population(const vector<double>& tp){
     this->population.clear();
     this->mutationRate= 0.07;
     this->perfectScore= pow(4, 100.0);
-    this->maxPopulation= 1000;
+    this->maxPopulation= 200;
     for(int i = 0; i< maxPopulation; i++){
         
         DNA dna(this->targetParams.size());
@@ -48,10 +55,7 @@ void Population::calcFitness(){
 // Compute average fitness for the population
 double Population::getAverageFitness() {
     double total = 0.0;
-    
-    for (int i = 0; i < population.size(); i++) {
-        total += population[i].fitness;
-    }
+     total = std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (long double) 0.0);
     return (total / double(population.size()));
 }
 
@@ -83,10 +87,8 @@ void Population::generate() {
     vector<double> scores(population.size());
     
     double sum = 0.0;
-    for (int i = 0; i < population.size(); i++) {
-        sum += population[i].fitness;
-    }
-    
+
+    sum = std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (long double) 0.0);
     for (int i = 0; i < population.size(); i++) {
         
        scores[i]= population[i].fitness/ sum;
