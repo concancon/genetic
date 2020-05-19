@@ -16,9 +16,13 @@ include_directories(
 	"${C74_INCLUDES}"
 )
 
+file(GLOB GENETIC_SOURCE
+    "*.h"
+    "*.cpp"
+)
 
 set( SOURCE_FILES
-	${PROJECT_NAME}.cpp
+	${GENETIC_SOURCE}
 )
 
 

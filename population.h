@@ -3,13 +3,20 @@
 #include "dna.h"
 #include <random>
 #include <iostream>
+#include <thread>
+#include "workerthread.h"
 
-
+#define USE_THREADS 1
 
 class Population{
 public:
-    
-    std::vector<DNA> population;
+
+#if USE_THREADS
+	const int numThreads = 4;
+	std::unique_ptr<WorkerThread> workers[4];
+#endif
+
+	std::vector<DNA> population;
     std::vector<DNA> matingPool;
     std::vector<double> scores;
     std::vector<double> targetParams;
@@ -24,7 +31,7 @@ public:
     long double generations= 0;              // Number of generations
     long double perfectScore;
     long double maxFitness=0;
-  
+
     std::vector<DNA> newPopulation;
     Population(const std::vector<double>& tp);
     

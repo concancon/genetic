@@ -3,8 +3,10 @@
 #include <iostream>
 #include <random>
 #include <numeric>
-using namespace std;
+#include <chrono>
 
+using namespace std;
+using namespace std::chrono;
 
 struct LightIterator : public std::vector<DNA>::iterator
 {
@@ -30,12 +32,15 @@ Population::Population(const vector<double>& tp){
         this->population.push_back(dna);
         
     }
-    
+
+#if USE_THREADS
+	for (int i = 0; i < numThreads; i++) {
+		workers[i] = std::make_unique<WorkerThread>();
+	}
+#endif
     calcFitness();
 }
    
-
-
 //setter for the population size
 void Population::setMaxPopulation(int mp){
     this->maxPopulation= mp;
@@ -46,14 +51,44 @@ void Population::setMaxPopulation(int mp){
     }
     calcFitness();
 }
+
+// uncomment to time the function, it's definitely faster
+// #define BENCHMARK
+
 //Iterate through the population to calculate the fitness of each individual therein
 void Population::calcFitness(){
-    
-    for (int i = 0; i < population.size(); i++) {
-        
-        population[i].fitnessFunction(targetParams);
-        
-    }
+
+#ifdef BENCHMARK
+	auto start = high_resolution_clock::now();
+#endif
+
+#if USE_THREADS
+	int div = population.size() / numThreads;
+
+	for (int i = 0; i < numThreads; i++) {
+		workers[i]->doAsync([this, div, i] {
+			auto it1 = population.begin() + (i * div);
+			auto it2 = (i == numThreads - 1) ? population.end() : (it1 + div);
+			for ( ; it1 < it2; it1++) {
+				it1->fitnessFunction(targetParams);
+			}
+		});
+	}
+	for (int i = 0; i < numThreads; i++) {
+		workers[i]->wait();
+	}
+#else
+	for (auto it = population.begin(); it < population.end(); it++) {
+		it->fitnessFunction(targetParams);
+	}
+#endif
+
+#ifdef BENCHMARK
+	auto stop = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(stop - start);
+	std::cout << "calcFitness: " << duration.count() << std::endl;
+#endif
+
 }
 
 // Compute average fitness for the population
