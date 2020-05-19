@@ -11,6 +11,10 @@ struct LightIterator : public std::vector<DNA>::iterator
     LightIterator(std::vector<DNA>::iterator it) : std::vector<DNA>::iterator(it) {}
     long double& operator*() { return std::vector<DNA>::iterator::operator*().fitness; }
 };
+
+//create a population with default values for mutation rate and population size.
+//calculate the value of the perfect
+//PARAMS: target params: input from max. For example a set of pixels
 Population::Population(const vector<double>& tp){
     
     
@@ -32,7 +36,7 @@ Population::Population(const vector<double>& tp){
    
 
 
-
+//setter for the population size
 void Population::setMaxPopulation(int mp){
     this->maxPopulation= mp;
     population.clear();
@@ -42,7 +46,7 @@ void Population::setMaxPopulation(int mp){
     }
     calcFitness();
 }
-
+//Iterate through the population to calculate the fitness of each individual therein
 void Population::calcFitness(){
     
     for (int i = 0; i < population.size(); i++) {
@@ -59,6 +63,8 @@ double Population::getAverageFitness() {
     return (total / double(population.size()));
 }
 
+//get the fittest member in the population.
+//we use this to output the best member to Max
 vector<int> Population::getBest(){
     
     
@@ -80,6 +86,11 @@ vector<int> Population::getBest(){
     
 }
 
+//This method replaces what used to be the natural selection method.
+//it is based on the idea of setting each fitness value to a percentage in
+//relation to the sum of all individuals.
+//This percentage is then used when selecting a score, whereby a member with a higher score has a greater
+//probability of being chosen.
 void Population::generate() {
     
     // Refill the population with children from the mating pool
@@ -113,7 +124,7 @@ void Population::generate() {
     
 }
 
-
+//choose a single member of the population based on its score
 DNA& Population::select(const vector<double>& scores){
     int index= 0;
 

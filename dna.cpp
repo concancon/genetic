@@ -23,6 +23,7 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
          }
      }
  }
+//qualify each indivudal based on the amount of genes that match our target
     void DNA::fitnessFunction(const vector<double>& target){
         
         double score = 0;
@@ -41,7 +42,7 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
 
     }
   
-    
+    //combine two DNA's to generate a third. This is done stochastically
     DNA DNA::crossover(const DNA& partner){
         
         DNA child(this->numberOfGenes, false);
@@ -59,7 +60,7 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
         }
         return child;
     }
-    
+    //apply a random values to random genes that DONT match the target value
     void DNA::mutate(double mutationRate, const vector<double>& target){
         for(int i= 0; i< this->numberOfGenes; i++){
             double r = ((double) rand() / (RAND_MAX));
