@@ -131,10 +131,25 @@ public:
                 this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
                 if(population.get()){
                 
+//                long double max = std::numeric_limits<long double>::max();
+//
+//                cout<<"life is lonly"<<endl;
+//
+//                cout << max <<c74::min::endl;
+//
+//                long double  veryLarge = log(max)/log(8);
+//                cout << "maximum value for x given log base 8: " << veryLarge <<c74::min::endl;
+//
+//
+//                max= pow((long double)8, (long double)5461.33);
+//                cout << "a perfect score would be: " <<max << c74::min::endl;
+                
                 if(!(this->population->finished)){
                 //cout <<c74::min::endl;
                 currentBest.clear();
+             
                 result.clear();
+                
                 //Create next generation
                 population->generate();
                 // Calculate fitness
@@ -153,7 +168,7 @@ public:
                 output.send(result);
                 }
                 else if (!alreadyPrinted){
-                
+               
                 cout << "already finished! " <<c74::min::endl;
                 cout << "generations: " << population->generations << c74::min::endl;
                 alreadyPrinted = true;

@@ -13,8 +13,7 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
  //constructor for DNA class
  DNA::DNA(int paramSize, bool randomize): genes(paramSize){
      
-     
-     this->numberOfGenes= paramSize;
+     if(paramSize)this->numberOfGenes= paramSize;
      int randomGene= 0;
      if(randomize){
          for(int i = 0; i< numberOfGenes; i++){
@@ -35,12 +34,10 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
             }
         }
         
-        
-        score = utilities::map(score, 0, genes.size(), 0.0, 100.0);
+        score = utilities::map(score, 0, genes.size(), 0.0, 5461);
         // exponential fitting of score to fitness function to accentuate difference between a slightly better
                  //result and its inferior
-        this->fitness = pow(4, score); //probier score * score
-     
+        this->fitness = pow((long double) 8, (long double) score);
 
     }
   
@@ -48,6 +45,7 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
     DNA DNA::crossover(const DNA& partner){
         
         DNA child(this->numberOfGenes, false);
+        if(this->numberOfGenes!= 0){
         int midpoint = rand() % this->numberOfGenes;
         for(int i = 0; i< this->numberOfGenes; i++){
             if(i > midpoint){
@@ -57,6 +55,7 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
               child.genes[i]= partner.genes[i];
             }
             
+            }
         }
         return child;
     }

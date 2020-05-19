@@ -18,7 +18,7 @@ Population::Population(const vector<double>& tp){
     this->finished = false;
     this->population.clear();
     this->mutationRate= 0.07;
-    this->perfectScore= pow(4, 100.0);
+    this->perfectScore= pow((long double) 8, (long double) 5461);
     this->maxPopulation= 200;
     for(int i = 0; i< maxPopulation; i++){
         
@@ -84,9 +84,10 @@ void Population::generate() {
     
     // Refill the population with children from the mating pool
     newPopulation.clear();
+    //newPopulation.shrink_to_fit();
     vector<double> scores(population.size());
     
-    double sum = 0.0;
+    long double sum = 0.0;
 
     sum = std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (long double) 0.0);
     for (int i = 0; i < population.size(); i++) {
@@ -103,7 +104,8 @@ void Population::generate() {
         child.mutate(this->mutationRate, targetParams);
         newPopulation.push_back(child);
     }
-    this->population= newPopulation;
+    this->population.swap(newPopulation);
+    //this->population= newPopulation;
     this->generations++;
     
     calcFitness();
@@ -113,16 +115,17 @@ void Population::generate() {
 
 DNA Population::select(const vector<double>& scores){
     int index= 0;
-    
+
     double random = this->equalRandom(gen);
-    
+
     while(random > 0.0){
         random = random - scores[index];
         index++;
     }
     index--;
-    
-    
+
+
     population[index].count++;
+    index= index % population.size();
     return population[index];
 }
