@@ -99,8 +99,8 @@ void Population::generate() {
     
     for (int i = 0; i < population.size(); i++) {
         
-        DNA partnerA = select(scores);
-        DNA partnerB = select(scores);
+        DNA& partnerA = select(scores);
+        DNA& partnerB = select(scores);
         DNA child = partnerA.crossover(partnerB);
         child.mutate(this->mutationRate, targetParams);
         newPopulation.push_back(child);
