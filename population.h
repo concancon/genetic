@@ -51,7 +51,7 @@ public:
     // Create a new generation
     void generate();
 
-    DNA select(const std::vector<double>& scores);
+    DNA& select(const std::vector<double>& scores);
     
     bool terminate() {
        return finished;

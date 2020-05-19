@@ -29,7 +29,7 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
         
         for(int i = 0; i< numberOfGenes; i++){
        
-            if(genes[i] == target[i]){
+            if(genes[i] == (int) target[i]){
                 score++;         // <------ how can we avoid this loop?
             }
         }

@@ -90,9 +90,10 @@ void Population::generate() {
     long double sum = 0.0;
 
     sum = std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (long double) 0.0);
+    long double inverseSum = 1.0/ sum;
     for (int i = 0; i < population.size(); i++) {
         
-       scores[i]= population[i].fitness/ sum;
+       scores[i]= population[i].fitness* inverseSum;
         
     }
     
@@ -113,7 +114,7 @@ void Population::generate() {
 }
 
 
-DNA Population::select(const vector<double>& scores){
+DNA& Population::select(const vector<double>& scores){
     int index= 0;
 
     double random = this->equalRandom(gen);
