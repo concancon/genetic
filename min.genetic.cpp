@@ -87,37 +87,40 @@ public:
                 
                 initializeObject(args);
                 cout << "Object initialized" <<c74::min::endl;
-                }
+            }
                 
                 return args;
-                }}};
+            }}};
                 
-                attribute<double> mutationRate {this, "mutationRate", 0.06,
-                setter { MIN_FUNCTION {
+  attribute<double> mutationRate {this, "mutationRate", 0.06,
+        setter { MIN_FUNCTION {
                 
-                if(population.get()){
+            if(population.get()){
                 
                 population->mutationRate= double(args[0]);
                 return {args[0]};
-                }
+            }
                 
-                return {0};
+            return {0};
                 
-                }},
-                getter { MIN_GETTER_FUNCTION {
-                if(population.get()){
+            }},
+            getter { MIN_GETTER_FUNCTION {
+            
+            if(population.get()){
                 
                 return {population->mutationRate};
                 
-                }
-                else return {0};
-                }}};
+            }
+                
+            else return {0};
+    
+    }}};
                 
                 
                 
                 
-                attribute<int> maxPopulation {this, "maxPopulation", 200,
-                setter { MIN_FUNCTION {
+    attribute<int> maxPopulation {this, "maxPopulation", 200,
+            setter { MIN_FUNCTION {
                 
                 //cout << "args[0] " << int(args[0]) << c74::min::endl;
                 if(population.get()){
@@ -127,8 +130,8 @@ public:
                 }}};
                 
                 
-                message<> bang {
-                this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
+   message<> bang {this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
+            
                 if(population.get()){
                 
                 
@@ -162,12 +165,12 @@ public:
                         }
                     }
                     
-                    return {};
-                    }};
+                return {};
+            }};
                 
-                };
+        };
                 
                 
-                MIN_EXTERNAL(genetic);
+    MIN_EXTERNAL(genetic);
                 
                 
