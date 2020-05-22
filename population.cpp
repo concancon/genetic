@@ -104,7 +104,7 @@ void Population::generate() {
     long double inverseSum = 1.0/ sum;
     for (int i = 0; i < population.size(); i++) {
         
-       scores[i]= population[i].fitness* inverseSum;
+       scores[i]= population[i].fitness * inverseSum;
         
     }
     

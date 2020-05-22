@@ -40,8 +40,7 @@ public:
     outlet<> output {this, "(list) result of evolution"};
     
     void initializeObject(const atoms& args= {}){
-        cout <<"args size: " << args.size();
-        
+    
         vector<double> t;
         
         for(int i = 0; i< args.size(); i++){
@@ -59,7 +58,7 @@ public:
             reInit= true;
         }
         population = std::make_unique<Population>(t);
-        //notify max that these
+        //notify max that these have changed
         if(reInit){
             atoms a;
             a.push_back(oldMaxPopulation);
@@ -80,7 +79,7 @@ public:
                 population->targetParams.clear();
                 population->generations= 0;
                 
-                initializeObject(args);
+                initializeObject(args);  // more of a reinit
                 alreadyPrinted= false;
             }
             else if(args.size()>0){
@@ -144,9 +143,7 @@ public:
                 //Create next generation
                 population->generate();
                 
-                
                 currentBest= population->getBest();
-                
                 
                 for(auto it : currentBest){
                 result.push_back(it);
