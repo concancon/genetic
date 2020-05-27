@@ -5,7 +5,6 @@
 #include <iostream>
 #include <thread>
 #include "workerthread.h"
-
 #define USE_THREADS 1
 
 class Population{
@@ -20,6 +19,7 @@ public:
     std::vector<DNA> matingPool;
     std::vector<double> scores;
     std::vector<double> targetParams;
+    std::vector<double> counter;
    
     int maxPopulation;
     bool calledOnce= false;
@@ -67,5 +67,7 @@ public:
      int getGenerations() {
        return generations;
      }
+    
+    std::vector<double>& displayPopulation();
     
 };

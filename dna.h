@@ -17,7 +17,7 @@ public:
     
     // exponential fitting of score to fitness function to accentuate difference between a slightly better
     //result and its inferior
-    DNA crossover(const DNA& partner);
+    void crossover(const DNA& partner, DNA& child);
     
     void mutate(double mutationRate, const std::vector<double>& target);
     

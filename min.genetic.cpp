@@ -26,6 +26,7 @@ private:
     //Population population;
     vector<int> currentBest;
     atoms result;
+    atoms counter;
     vector<double> sVec;
     bool alreadyPrinted {false};
     
@@ -38,6 +39,7 @@ public:
     
     inlet<>  input {this, "(toggle) on/off"};
     outlet<> output {this, "(list) result of evolution"};
+    outlet<> output2 {this, "(list) frequency of values"};
     
     void initializeObject(const atoms& args= {}){
         cout <<"args size: " << args.size();
@@ -76,7 +78,7 @@ public:
     attribute<vector<double>> target {this, "target", {},
         setter { MIN_FUNCTION {
             
-            if(population.get()){
+           if(population.get()){
                 population->targetParams.clear();
                 population->generations= 0;
                 
@@ -89,55 +91,54 @@ public:
                 cout << "Object initialized" <<c74::min::endl;
                 }
                 
-                return args;
-                }}};
+        return args;
+    }}};
                 
-                attribute<double> mutationRate {this, "mutationRate", 0.06,
-                setter { MIN_FUNCTION {
+  attribute<double> mutationRate {this, "mutationRate", 0.06,
+        setter { MIN_FUNCTION {
                 
-                if(population.get()){
+        if(population.get()){
                 
-                population->mutationRate= double(args[0]);
+            population->mutationRate= double(args[0]);
                 return {args[0]};
-                }
+            }
                 
-                return {0};
+            return {0};
                 
-                }},
-                getter { MIN_GETTER_FUNCTION {
-                if(population.get()){
+            }},
+           getter { MIN_GETTER_FUNCTION {
+            if(population.get()){
+          
+              return {population->mutationRate};
                 
-                return {population->mutationRate};
-                
-                }
-                else return {0};
-                }}};
-                
-                
+            }
+            else return {0};
+    }}};
                 
                 
-                attribute<int> maxPopulation {this, "maxPopulation", 200,
-                setter { MIN_FUNCTION {
+                
+                
+   attribute<int> maxPopulation {this, "maxPopulation", 200,
+            setter { MIN_FUNCTION {
                 
                 //cout << "args[0] " << int(args[0]) << c74::min::endl;
-                if(population.get()){
-                population->setMaxPopulation(int(args[0]));
-                }
-                return {args};
-                }}};
+            if(population.get()){
+            population->setMaxPopulation(int(args[0]));
+            }
+            return {args};
+    }}};
                 
                 
-                message<> bang {
-                this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
-                if(population.get()){
+    message<> bang {
+        this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
+            if(population.get()){
                 
                 
-                if(!(this->population->finished)){
+            if(!(this->population->finished)){
                 //cout <<c74::min::endl;
                 currentBest.clear();
                 
                 result.clear();
-                
                 //Create next generation
                 population->generate();
                 
@@ -150,24 +151,30 @@ public:
                 
                 }
                 
-                //cast current best to atoms
+                vector<double> occurences= population->displayPopulation();
+                counter.clear();
+                for(auto it: occurences){
+            
+                    counter.push_back(it);
+                    
+                }
+                output2.send(counter);
                 
                 output.send(result);
-                }
-                else if (!alreadyPrinted){
+            }
+            else if (!alreadyPrinted){
                 
                 cout << "already finished! " <<c74::min::endl;
-                    cout << "generations: " << population->generations << c74::min::endl;
+                cout << "generations: " << population->generations << c74::min::endl;
                 alreadyPrinted = true;
                         }
                     }
                     
-                    return {};
-                    }};
+                return {};
+                }};
+        };
                 
-                };
                 
-                
-                MIN_EXTERNAL(genetic);
+        MIN_EXTERNAL(genetic);
                 
                 

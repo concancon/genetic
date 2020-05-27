@@ -7,7 +7,7 @@ using namespace std;
 
 std::random_device rd;  //Will be used to obtain a seed for the random number engine
 std::mt19937 gen{rd()}; //Standard mersenne_twister_engine seeded with rd()
-std::uniform_int_distribution<int> equalRandom{0, 255};
+std::uniform_real_distribution<double> equalRandom{0.0, 1.0};
 
 
  //constructor for DNA class
@@ -17,7 +17,7 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
      int randomGene= 0;
      if(randomize){
          for(int i = 0; i< numberOfGenes; i++){
-             randomGene= equalRandom(gen);
+             randomGene= (int)(equalRandom(gen) * 255) ;
              genes[i]= (randomGene);
 
          }
@@ -43,11 +43,11 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
     }
   
     //combine two DNA's to generate a third. This is done stochastically
-    DNA DNA::crossover(const DNA& partner){
+    void DNA::crossover(const DNA& partner, DNA& child ){
         
-        DNA child(this->numberOfGenes, false);
+        
         if(this->numberOfGenes!= 0){
-        int midpoint = rand() % this->numberOfGenes;
+        int midpoint =  (int)(equalRandom(gen) * (double)this->numberOfGenes);
         for(int i = 0; i< this->numberOfGenes; i++){
             if(i > midpoint){
                child.genes[i] = this->genes[i];
@@ -58,15 +58,16 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
             
             }
         }
-        return child;
+      
     }
-    //apply a random values to random genes that DONT match the target value
+    //apply a random values to genes that DONT match the target value
     void DNA::mutate(double mutationRate, const vector<double>& target){
         for(int i= 0; i< this->numberOfGenes; i++){
+            
             double r = ((double) rand() / (RAND_MAX));
             
             if(r < mutationRate && this->genes[i] != target[i]){
-                this->genes[i] = equalRandom(gen);
+                this->genes[i] = (int)(equalRandom(gen) * 255);
             }
         }
         

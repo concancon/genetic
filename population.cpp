@@ -17,7 +17,7 @@ struct LightIterator : public std::vector<DNA>::iterator
 //create a population with default values for mutation rate and population size.
 //calculate the value of the perfect
 //PARAMS: target params: input from max. For example a set of pixels
-Population::Population(const vector<double>& tp){
+Population::Population(const vector<double>& tp): counter(256){
     
     
     this->targetParams= tp;
@@ -66,16 +66,16 @@ void Population::calcFitness(){
 	int div = population.size() / numThreads;
 
 	for (int i = 0; i < numThreads; i++) {
-		workers[i]->doAsync([this, div, i] {
+		workers[i]->doAsync([this, div, i] {  // add new tasks
 			auto it1 = population.begin() + (i * div);
-			auto it2 = (i == numThreads - 1) ? population.end() : (it1 + div);
-			for ( ; it1 < it2; it1++) {
+			auto it2 = (i == numThreads - 1) ? population.end() : (it1 + div); //if we are in the last thread then the end has to be rounded to end of the population.
+			for ( ; it1 < it2; it1++) { //two iterators to address sub arrays of the population
 				it1->fitnessFunction(targetParams);
 			}
 		});
 	}
 	for (int i = 0; i < numThreads; i++) {
-		workers[i]->wait();
+		workers[i]->wait();  // wait for all threads to be finished. for synchronisation. pattern is called barrier.
 	}
 #else
 	for (auto it = population.begin(); it < population.end(); it++) {
@@ -146,10 +146,12 @@ void Population::generate() {
     for (int i = 0; i < population.size(); i++) {
         
         DNA& partnerA = select(scores);
+        DNA p = partnerA;
         DNA& partnerB = select(scores);
-        DNA child = partnerA.crossover(partnerB);
-        child.mutate(this->mutationRate, targetParams);
-        newPopulation.push_back(child);
+        DNA child(partnerB.genes.size(), false);
+        //partnerA.crossover(partnerB, child);
+        p.mutate(this->mutationRate, targetParams);
+        newPopulation.push_back(p);
     }
     this->population.swap(newPopulation);
     //this->population= newPopulation;
@@ -165,14 +167,34 @@ DNA& Population::select(const vector<double>& scores){
 
     double random = this->equalRandom(gen);
 
-    while(random > 0.0){
+    while(random > 0.0 && index < scores.size()){
         random = random - scores[index];
         index++;
     }
+    if(random >  0.0){
+        cout<< "random is greater than 0!" <<endl;
+    }
     index--;
 
-
+    
+    //index= index % population.size();
     population[index].count++;
-    index= index % population.size();
     return population[index];
+}
+
+vector<double>& Population::displayPopulation(){
+   
+   
+    
+    for(int i = 0; i< population.size(); i++) {
+        
+        for(int j = 0; j < population[i].genes.size(); j++){
+            //count the occurence of each gene
+            
+            this->counter[population[i].genes[j]]++;
+            
+        }
+        
+    }
+    return this->counter;
 }
