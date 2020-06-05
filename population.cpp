@@ -20,17 +20,15 @@ struct LightIterator : public std::vector<DNA>::iterator
 Population::Population(const vector<double>& tp): counter(256){
     
     
-    this->targetParams= tp;
-    this->finished = false;
-    this->population.clear();
-    this->mutationRate= 0.07;
-    this->perfectScore= pow((long double) 8, (long double) 5461);
-    this->maxPopulation= 200;
-    for(int i = 0; i< maxPopulation; i++){
-        
-        DNA dna(this->targetParams.size(), true);
-        this->population.push_back(dna);
-        
+    targetParams= tp;
+    finished = false;
+    population.clear();
+    mutationRate= 0.07;
+    perfectScore= pow((long double) 8, (long double) 5461);
+    maxPopulation= 200;
+    for(int i = 0; i< maxPopulation; i++) {
+        DNA dna(targetParams.size(), true);
+        population.push_back(std::move(dna));
     }
 
 #if USE_THREADS
@@ -43,11 +41,11 @@ Population::Population(const vector<double>& tp): counter(256){
    
 //setter for the population size
 void Population::setMaxPopulation(int mp){
-    this->maxPopulation= mp;
+    maxPopulation= mp;
     population.clear();
-    for(int i = 0; i< this->maxPopulation; i++){
-        DNA dna(this->targetParams.size(), true);
-        population.push_back(dna);
+    for(int i = 0; i< maxPopulation; i++){
+        DNA dna(targetParams.size(), true);
+        population.push_back(std::move(dna));
     }
     calcFitness();
 }
@@ -106,15 +104,15 @@ vector<int> Population::getBest(){
     int index= 0;
     for (int i = 0; i < population.size(); i++) {
         
-        if (population[i].fitness > this->maxFitness) {
-            this->maxFitness = population[i].fitness;
+        if (population[i].fitness > maxFitness) {
+            maxFitness = population[i].fitness;
             index = i;
         }
         
     }
     //cout << "Perfect score: " << perfectScore<< endl;
-    //cout << "Max Fitness: " << this->maxFitness<<endl;
-    if(this->maxFitness == perfectScore){
+    //cout << "Max Fitness: " << maxFitness<<endl;
+    if(maxFitness == perfectScore){
         finished = true;
     }
     return population[index].genes;
@@ -146,16 +144,15 @@ void Population::generate() {
     for (int i = 0; i < population.size(); i++) {
         
         DNA& partnerA = select(scores);
-        DNA p = partnerA;
+        //DNA p = partnerA;
         DNA& partnerB = select(scores);
-        DNA child(partnerB.genes.size(), false);
-        //partnerA.crossover(partnerB, child);
-        p.mutate(this->mutationRate, targetParams);
-        newPopulation.push_back(p);
+		DNA child = partnerA.crossover(partnerB); // this should be moved or elided, thus ok
+        child.mutate(mutationRate, targetParams);
+		newPopulation.push_back(child); //std::move(child));
     }
-    this->population.swap(newPopulation);
-    //this->population= newPopulation;
-    this->generations++;
+    population.swap(newPopulation);
+    //population= newPopulation;
+    generations++;
     
     calcFitness();
     
@@ -165,7 +162,7 @@ void Population::generate() {
 DNA& Population::select(const vector<double>& scores){
     int index= 0;
 
-    double random = this->equalRandom(gen);
+    double random = equalRandom(gen);
 
     while(random > 0.0 && index < scores.size()){
         random = random - scores[index];
@@ -182,19 +179,12 @@ DNA& Population::select(const vector<double>& scores){
     return population[index];
 }
 
-vector<double>& Population::displayPopulation(){
-   
-   
-    
-    for(int i = 0; i< population.size(); i++) {
-        
-        for(int j = 0; j < population[i].genes.size(); j++){
+vector<double>& Population::displayPopulation() {
+	for(int i = 0; i < population.size(); i++) {
+        for (int j = 0; j < population[i].genes.size(); j++) {
             //count the occurence of each gene
-            
-            this->counter[population[i].genes[j]]++;
-            
+            counter[population[i].genes[j]]++;
         }
-        
     }
-    return this->counter;
+    return counter;
 }
