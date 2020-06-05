@@ -144,11 +144,15 @@ void Population::generate() {
     for (int i = 0; i < population.size(); i++) {
         
         DNA& partnerA = select(scores);
+        //cout<< "partner a ref: " << &partnerA << "i: " <<  i << endl;
         //DNA p = partnerA;
         DNA& partnerB = select(scores);
-		DNA child = partnerA.crossover(partnerB); // this should be moved or elided, thus ok
-        child.mutate(mutationRate, targetParams);
-		newPopulation.push_back(child); //std::move(child));
+		
+        partnerA.crossover(partnerB);
+        //DNA child = partnerA.crossover(partnerB); // this should be moved or elided, thus ok
+        partnerA.mutate(mutationRate, targetParams);
+		newPopulation.push_back(partnerA); //std::move(child));
+        
     }
     population.swap(newPopulation);
     //population= newPopulation;

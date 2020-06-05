@@ -40,27 +40,27 @@ void DNA::fitnessFunction(const vector<double>& target){
 }
 
     //combine two DNA's to generate a third. This is done stochastically
-DNA DNA::crossover(const DNA& partner) {
-	DNA child(numberOfGenes, false);
+DNA& DNA::crossover(const DNA& partner) {
+	//DNA child(numberOfGenes, false);
 	if (numberOfGenes != 0) {
 		int midpoint =  (int)(equalRandom(gen) * (double)numberOfGenes);
 		for (int i = 0; i < numberOfGenes; i++) {
 			if (i > midpoint) {
-				child.genes[i] = genes[i];
+                ;
 			}
 			else {
-				child.genes[i] = partner.genes[i];
+				genes[i] = partner.genes[i];
 			}
 		}
 	}
-	return child;
+	return *this;
 }
 
 //apply a random values to genes that DONT match the target value
 void DNA::mutate(double mutationRate, const vector<double>& target) {
 	for (int i = 0; i < numberOfGenes; i++) {
 		double r = equalRandom(gen);
-		if (r < mutationRate && genes[i] != target[i]) {
+		if (r < mutationRate ) {
 			genes[i] = (int)(equalRandom(gen) * 255);
 		}
 	}
