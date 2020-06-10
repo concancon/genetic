@@ -28,9 +28,9 @@ public:
     std::uniform_real_distribution<> equalRandom{0.0, 1.0};
     double mutationRate;
     bool finished;
-    long double generations= 0;              // Number of generations
-    long double perfectScore;
-    long double maxFitness=0;
+    double generations= 0;              // Number of generations
+    double perfectScore = 100;
+    double maxFitness=0;
 
     std::vector<DNA> newPopulation;
     Population(const std::vector<double>& tp);
@@ -53,12 +53,12 @@ public:
     double getAverageFitness();
     
      // Compute the current "most fit" member of the population
-    std::vector<int> getBest();
+    std::vector<int>& getBest(int& index);
     
     // Create a new generation
     void generate();
 
-    DNA& select(const std::vector<double>& scores);
+    DNA& select(const std::vector<double>& scores, double sum);
     
     bool terminate() {
        return finished;

@@ -11,7 +11,7 @@ using namespace std::chrono;
 struct LightIterator : public std::vector<DNA>::iterator
 {
     LightIterator(std::vector<DNA>::iterator it) : std::vector<DNA>::iterator(it) {}
-    long double& operator*() { return std::vector<DNA>::iterator::operator*().fitness; }
+    double& operator*() { return std::vector<DNA>::iterator::operator*().fitness; }
 };
 
 //create a population with default values for mutation rate and population size.
@@ -23,9 +23,9 @@ Population::Population(const vector<double>& tp): counter(256){
     targetParams= tp;
     finished = false;
     population.clear();
-    mutationRate= 0.07;
-    perfectScore= pow((long double) 8, (long double) 5461);
-    maxPopulation= 200;
+    mutationRate = 0.01;
+	perfectScore = 100.;
+    maxPopulation = 200;
     for(int i = 0; i< maxPopulation; i++) {
         DNA dna(targetParams.size(), true);
         population.push_back(std::move(dna));
@@ -41,9 +41,9 @@ Population::Population(const vector<double>& tp): counter(256){
    
 //setter for the population size
 void Population::setMaxPopulation(int mp){
-    maxPopulation= mp;
+    maxPopulation = mp;
     population.clear();
-    for(int i = 0; i< maxPopulation; i++){
+    for (int i = 0; i < maxPopulation; i++) {
         DNA dna(targetParams.size(), true);
         population.push_back(std::move(dna));
     }
@@ -92,31 +92,33 @@ void Population::calcFitness(){
 // Compute average fitness for the population
 double Population::getAverageFitness() {
     double total = 0.0;
-     total = std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (long double) 0.0);
+	total = std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (double) 0.0);
     return (total / double(population.size()));
 }
 
 //get the fittest member in the population.
 //we use this to output the best member to Max
-vector<int> Population::getBest(){
-    
-    
-    int index= 0;
+vector<int>& Population::getBest(int& index) {
+
+	static vector<int> defaultGenes;
+
+	maxFitness = 0.;
+	index= -1;
     for (int i = 0; i < population.size(); i++) {
-        
         if (population[i].fitness > maxFitness) {
             maxFitness = population[i].fitness;
             index = i;
         }
-        
     }
     //cout << "Perfect score: " << perfectScore<< endl;
     //cout << "Max Fitness: " << maxFitness<<endl;
-    if(maxFitness == perfectScore){
+    if (maxFitness == perfectScore) {
         finished = true;
     }
-    return population[index].genes;
-    
+	if (index >= 0) {
+		return population[index].genes;
+	}
+	return defaultGenes;
 }
 
 //This method replaces what used to be the natural selection method.
@@ -131,60 +133,53 @@ void Population::generate() {
     //newPopulation.shrink_to_fit();
     vector<double> scores(population.size());
     
-    long double sum = 0.0;
-
-    sum = std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (long double) 0.0);
-    long double inverseSum = 1.0/ sum;
+	double sum = 0;//std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (double) 0.0);
+    //double inverseSum = 1.0 / sum;
     for (int i = 0; i < population.size(); i++) {
-        
-       scores[i]= population[i].fitness* inverseSum;
-        
+		double fit = population[i].fitness;
+		sum += fit;
+		scores[i] = fit;// * inverseSum;
     }
-    
-    for (int i = 0; i < population.size(); i++) {
-        
-        DNA& partnerA = select(scores);
-        //cout<< "partner a ref: " << &partnerA << "i: " <<  i << endl;
-        //DNA p = partnerA;
-        DNA& partnerB = select(scores);
-		
-        partnerA.crossover(partnerB);
+	std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
+	int elitelen = population.size() * 0.1;
+	for (int i = 0; i < elitelen; i++) {
+		newPopulation.push_back(population[i]);
+	}
+
+    for (int i = 0; i < population.size() - elitelen; i++) {
+        DNA partnerA = select(scores, sum);
+        //DNA& partnerB = select(scores, sum);
+        //partnerA.crossover(partnerB);
         //DNA child = partnerA.crossover(partnerB); // this should be moved or elided, thus ok
         partnerA.mutate(mutationRate, targetParams);
-		newPopulation.push_back(partnerA); //std::move(child));
-        
+		newPopulation.push_back(std::move(partnerA)); //std::move(child));
     }
     population.swap(newPopulation);
     //population= newPopulation;
     generations++;
     
     calcFitness();
-    
 }
 
 //choose a single member of the population based on its score
-DNA& Population::select(const vector<double>& scores){
-    int index= 0;
+DNA& Population::select(const vector<double>& scores, double sum) {
+	double random = equalRandom(gen) * sum;
 
-    double random = equalRandom(gen);
-
-    while(random > 0.0 && index < scores.size()){
-        random = random - scores[index];
-        index++;
-    }
-    if(random >  0.0){
-        cout<< "random is greater than 0!" <<endl;
+    int index = 0;
+	for ( ; random > 0. && index < scores.size(); index++) {
+		random -= scores[index];
+	}
+    if (random > 0.0) {
+        cout << "random is greater than 0!" << endl;
     }
     index--;
 
-    
-    //index= index % population.size();
-    population[index].count++;
+	population[index].count++;
     return population[index];
 }
 
 vector<double>& Population::displayPopulation() {
-	for(int i = 0; i < population.size(); i++) {
+	for (int i = 0; i < population.size(); i++) {
         for (int j = 0; j < population[i].genes.size(); j++) {
             //count the occurence of each gene
             counter[population[i].genes[j]]++;

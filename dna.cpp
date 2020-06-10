@@ -28,15 +28,14 @@ void DNA::fitnessFunction(const vector<double>& target){
 
 	double score = 0;
 
-	for (int i = 0; i < numberOfGenes; i++) {
-		if (genes[i] == (int)target[i]){
+	for (int i = 0; i < genes.size(); i++) {
+		if (genes[i] == (int)target[i]) {
 			score++;         // <------ how can we avoid this loop?
 		}
 	}
-	score = utilities::map(score, 0, genes.size(), 0.0, 5461);
-	// exponential fitting of score to fitness function to accentuate difference between a slightly better
-			 //result and its inferior
-	fitness = pow((long double) 8, (long double) score);
+	score = utilities::map(score, 0, genes.size(), 0.0, 10.0);
+	score *= score;
+	fitness = score;
 }
 
     //combine two DNA's to generate a third. This is done stochastically
@@ -60,7 +59,7 @@ DNA& DNA::crossover(const DNA& partner) {
 void DNA::mutate(double mutationRate, const vector<double>& target) {
 	for (int i = 0; i < numberOfGenes; i++) {
 		double r = equalRandom(gen);
-		if (r < mutationRate ) {
+		if (r < mutationRate) {
 			genes[i] = (int)(equalRandom(gen) * 255);
 		}
 	}

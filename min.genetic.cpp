@@ -24,7 +24,6 @@ private:
     std::unique_ptr<Population> population { nullptr };
     
     //Population population;
-    vector<int> currentBest;
     atoms result;
     atoms counter;
     vector<double> sVec;
@@ -94,7 +93,7 @@ public:
         return args;
     }}};
                 
-  attribute<double> mutationRate {this, "mutationRate", 0.06,
+  attribute<double> mutationRate {this, "mutationRate", 0.01,
         setter { MIN_FUNCTION {
                 
         if(population.get()){
@@ -136,27 +135,20 @@ public:
                 
             if(!(this->population->finished)){
                 //cout <<c74::min::endl;
-                currentBest.clear();
-                
                 result.clear();
                 //Create next generation
                 population->generate();
                 
-                
-                currentBest= population->getBest();
-                
-                
-                for(auto it : currentBest){
-                result.push_back(it);
-                
+				int index;
+                std::vector<int>& currentBest = population->getBest(index);
+                for (auto it : currentBest) {
+					result.push_back(it);
                 }
-                
+
                 vector<double> occurences= population->displayPopulation();
                 counter.clear();
-                for(auto it: occurences){
-            
+                for (auto it: occurences) {
                     counter.push_back(it);
-                    
                 }
                 output2.send(counter);
                 
