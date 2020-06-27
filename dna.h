@@ -8,7 +8,7 @@ class DNA{
 public:
     
     DNA(int paramSize, bool randomize);
-    double fitness;
+    long double fitness;
     std::vector<int> genes;
     int numberOfGenes;
     int count = 0;

@@ -11,7 +11,7 @@ using namespace std::chrono;
 struct LightIterator : public std::vector<DNA>::iterator
 {
     LightIterator(std::vector<DNA>::iterator it) : std::vector<DNA>::iterator(it) {}
-    double& operator*() { return std::vector<DNA>::iterator::operator*().fitness; }
+    long double& operator*() { return std::vector<DNA>::iterator::operator*().fitness; }
 };
 
 //create a population with default values for mutation rate and population size.
@@ -24,7 +24,7 @@ Population::Population(const vector<double>& tp): counter(256){
     finished = false;
     population.clear();
     mutationRate = 0.01;
-	perfectScore = 100.;
+	perfectScore = pow((long double) 8.0, (long double) 5461.0);
     maxPopulation = 200;
     for(int i = 0; i< maxPopulation; i++) {
         DNA dna(targetParams.size(), true);
@@ -91,11 +91,11 @@ void Population::calcFitness(){
 
 // Compute average fitness for the population
 double Population::getAverageFitness() {
-    double total = 0.0;
-	total = std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (double) 0.0);
-    return (total / double(population.size()));
+    long double total = 0.0;
+    total = std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (long double) 0.0);
+        
+    return (total / (long double)population.size());
 }
-
 //get the fittest member in the population.
 //we use this to output the best member to Max
 vector<int>& Population::getBest(int& index) {
@@ -133,18 +133,18 @@ void Population::generate() {
     //newPopulation.shrink_to_fit();
     vector<double> scores(population.size());
     
-	double sum = 0;//std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (double) 0.0);
+    double sum = 0;//std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (double) 0.0);
     //double inverseSum = 1.0 / sum;
     for (int i = 0; i < population.size(); i++) {
-		double fit = population[i].fitness;
-		sum += fit;
-		scores[i] = fit;// * inverseSum;
+        double fit = population[i].fitness;
+        sum += fit;
+        scores[i] = fit;// * inverseSum;
     }
-	std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
-	int elitelen = population.size() * 0.1;
-	for (int i = 0; i < elitelen; i++) {
-		newPopulation.push_back(population[i]);
-	}
+    std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
+    int elitelen = population.size() * 0.1;
+    for (int i = 0; i < elitelen; i++) {
+        newPopulation.push_back(population[i]);
+    }
 
     for (int i = 0; i < population.size() - elitelen; i++) {
         DNA partnerA = select(scores, sum);
@@ -152,7 +152,7 @@ void Population::generate() {
         //partnerA.crossover(partnerB);
         //DNA child = partnerA.crossover(partnerB); // this should be moved or elided, thus ok
         partnerA.mutate(mutationRate, targetParams);
-		newPopulation.push_back(std::move(partnerA)); //std::move(child));
+        newPopulation.push_back(std::move(partnerA)); //std::move(child));
     }
     population.swap(newPopulation);
     //population= newPopulation;
@@ -162,22 +162,21 @@ void Population::generate() {
 }
 
 //choose a single member of the population based on its score
-DNA& Population::select(const vector<double>& scores, double sum) {
-	double random = equalRandom(gen) * sum;
+DNA& Population::select(const vector<double>& scores, long double sum) {
+    double random = equalRandom(gen) * sum;
 
     int index = 0;
-	for ( ; random > 0. && index < scores.size(); index++) {
-		random -= scores[index];
-	}
+    for ( ; random > 0. && index < scores.size(); index++) {
+        random -= scores[index];
+    }
     if (random > 0.0) {
         cout << "random is greater than 0!" << endl;
     }
     index--;
 
-	population[index].count++;
+    population[index].count++;
     return population[index];
 }
-
 vector<double>& Population::displayPopulation() {
 	for (int i = 0; i < population.size(); i++) {
         for (int j = 0; j < population[i].genes.size(); j++) {
