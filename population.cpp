@@ -23,7 +23,7 @@ Population::Population(const vector<double>& tp): counter(256){
     targetParams= tp;
     finished = false;
     population.clear();
-    mutationRate = 0.01;
+    mutationRate = 0.001;
 	perfectScore = pow((long double) 8.0, (long double) 5461.0);
     maxPopulation = 200;
     for(int i = 0; i< maxPopulation; i++) {
