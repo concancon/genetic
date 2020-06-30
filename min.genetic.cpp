@@ -25,7 +25,7 @@ private:
     
     //Population population;
     atoms result;
-    atoms counter;
+    atom value;
     vector<double> sVec;
     bool alreadyPrinted {false};
     
@@ -93,7 +93,7 @@ public:
         return args;
     }}};
                 
-  attribute<double> mutationRate {this, "mutationRate", 0.01,
+  attribute<double> mutationRate {this, "mutationRate", 0.001,
         setter { MIN_FUNCTION {
                 
         if(population.get()){
@@ -127,6 +127,17 @@ public:
             return {args};
     }}};
                 
+    message<> mutate{
+    
+                this, "mutate", "test the functionality of polynomial mutation.", MIN_FUNCTION {
+                
+                value= (atom)DNA::polynomialMutate(10, 2);
+            
+                output2.send(value);
+                return {};
+    }};
+                
+   
                 
     message<> bang {
         this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
@@ -146,11 +157,7 @@ public:
                 }
 
                 vector<double> occurences= population->displayPopulation();
-                counter.clear();
-                for (auto it: occurences) {
-                    counter.push_back(it);
-                }
-                output2.send(counter);
+
                 
                 output.send(result);
             }

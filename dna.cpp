@@ -72,7 +72,8 @@ void DNA::mutate(double mutationRate){
     }
     
 }
-    
+
+
 void DNA::displayGenes() {
 	for (auto it: genes) {
 		std::cout << it << " ";
