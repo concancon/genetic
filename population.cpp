@@ -148,11 +148,10 @@ void Population::generate() {
 
     for (int i = 0; i < population.size() - elitelen; i++) {
         DNA partnerA = select(scores, sum);
-        //DNA& partnerB = select(scores, sum);
-        //partnerA.crossover(partnerB);
-        //DNA child = partnerA.crossover(partnerB); // this should be moved or elided, thus ok
-        partnerA.mutate(mutationRate, targetParams);
-        newPopulation.push_back(std::move(partnerA)); //std::move(child));
+        DNA partnerB = select(scores, sum);
+        DNA child = partnerA.crossover(partnerB); // this should be moved or elided, thus ok
+        child.mutate(mutationRate);
+        newPopulation.push_back(std::move(child)); //std::move(child));
     }
     population.swap(newPopulation);
     //population= newPopulation;

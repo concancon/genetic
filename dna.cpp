@@ -62,10 +62,10 @@ DNA& DNA::crossover(const DNA& partner) {
 }
 
 //apply a random values to random genes that DONT match the target value
-void DNA::mutate(double mutationRate, const vector<double>& target){
+void DNA::mutate(double mutationRate){
     for(int i= 0; i< this->numberOfGenes; i++){
         double r = ((double) rand() / (RAND_MAX));
-       // && this->genes[i] != target[i]
+      
         if(r < mutationRate ){
             this->genes[i] = equalRandom(gen);
         }
