@@ -30,7 +30,7 @@ public:
     bool finished;
     double generations= 0;              // Number of generations
     long double perfectScore;
-    double maxFitness=0;
+    long double maxFitness=0;
 
     std::vector<DNA> newPopulation;
     Population(const std::vector<double>& tp);

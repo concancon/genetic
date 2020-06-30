@@ -110,8 +110,8 @@ vector<int>& Population::getBest(int& index) {
             index = i;
         }
     }
-    //cout << "Perfect score: " << perfectScore<< endl;
-    //cout << "Max Fitness: " << maxFitness<<endl;
+    cout << "Perfect score: " << perfectScore<< endl;
+    cout << "Max Fitness: " << maxFitness<< endl;
     if (maxFitness == perfectScore) {
         finished = true;
     }
