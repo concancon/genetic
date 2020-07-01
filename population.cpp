@@ -126,7 +126,7 @@ vector<int>& Population::getBest(int& index) {
 //relation to the sum of all individuals.
 //This percentage is then used when selecting a score, whereby a member with a higher score has a greater
 //probability of being chosen.
-void Population::generate() {
+void Population::generate(double mutationIndex) {
     
     // Refill the population with children from the mating pool
     newPopulation.clear();
@@ -150,7 +150,7 @@ void Population::generate() {
         DNA partnerA = select(scores, sum);
         DNA partnerB = select(scores, sum);
         DNA child = partnerA.crossover(partnerB); // this should be moved or elided, thus ok
-        child.mutate(mutationRate);
+        child.mutate(mutationRate, mutationIndex);
         newPopulation.push_back(std::move(child)); //std::move(child));
     }
     population.swap(newPopulation);

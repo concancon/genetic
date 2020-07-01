@@ -20,6 +20,8 @@ public:
     std::vector<double> scores;
     std::vector<double> targetParams;
     std::vector<double> counter;
+    
+    double mutationIndex= 0.;
    
     int maxPopulation;
     bool calledOnce= false;
@@ -37,6 +39,11 @@ public:
     
     void setMutationRate(double mr){
        mutationRate= mr;
+    }
+    
+    void setMutationIndex(double mi){
+        mutationIndex= mi;
+    
     }
     double getMutationRate(){
         return mutationRate;
@@ -56,7 +63,7 @@ public:
     std::vector<int>& getBest(int& index);
     
     // Create a new generation
-    void generate();
+    void generate(double eta);
 
     DNA& select(const std::vector<double>& scores, long double sum);
     

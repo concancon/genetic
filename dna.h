@@ -24,7 +24,7 @@ public:
     //result and its inferior
     DNA& crossover(const DNA& partner);
     
-    void mutate(double mutationRate);
+    void mutate(double mutationRate, double eta);
     
     int static polynomialMutate(int originalValue, double index){
        

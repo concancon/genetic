@@ -125,7 +125,17 @@ public:
             }
             return {args};
     }}};
-                
+           
+  attribute<double> mutationIndex {this, "mutationIndex", 20.,
+          setter { MIN_FUNCTION {
+                              
+       if(population.get()){
+            population->setMutationIndex(int(args[0]));
+      }
+     
+     return {args};
+   }}};
+   
     attribute<int> mutate{
     
                 this, "mutate", 200 , setter{ MIN_FUNCTION {
@@ -134,7 +144,7 @@ public:
             
                 output2.send(value);
                 return {args};
-                }}};
+    }}};
                 
    
                 
@@ -147,7 +157,7 @@ public:
                 //cout <<c74::min::endl;
                 result.clear();
                 //Create next generation
-                population->generate();
+                population->generate(population->mutationIndex);
                 
 				int index;
                 std::vector<int>& currentBest = population->getBest(index);
