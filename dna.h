@@ -41,7 +41,7 @@ public:
             
             double sublExponent= 1./(1.+ index);
             double dsubl= (pow((2.*u), sublExponent)) - 1.;
-            newValue = originalValue + dsubl * (originalValue - 1.); //1 is assumed to be the lower bound a.k.a x sub i ° l
+            newValue = originalValue + dsubl * (originalValue - 1.); //20 is assumed to be the lower bound a.k.a x sub i ° l
             newValue = floor(newValue);
         }
         
@@ -50,7 +50,7 @@ public:
 
         double subrExponent = 1./(1. + index);
         double dsubr= 1. - pow((2.*(1.-u)), subrExponent);
-        newValue = originalValue + dsubr*(20. - originalValue); //8 is assumed to be the upper bound a.k.a x sub i ^ u
+        newValue = originalValue + dsubr*(255. - originalValue); //100 is assumed to be the upper bound a.k.a x sub i ^ u
         newValue = floor(newValue);
         }
         

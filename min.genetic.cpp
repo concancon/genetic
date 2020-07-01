@@ -25,7 +25,6 @@ private:
     
     //Population population;
     atoms result;
-    atom value;
     vector<double> sVec;
     bool alreadyPrinted {false};
     
@@ -127,15 +126,15 @@ public:
             return {args};
     }}};
                 
-    message<> mutate{
+    attribute<int> mutate{
     
-                this, "mutate", "test the functionality of polynomial mutation.", MIN_FUNCTION {
+                this, "mutate", 200 , setter{ MIN_FUNCTION {
                 
-                value= (atom)DNA::polynomialMutate(10, 2);
+                atom value= (atom)DNA::polynomialMutate(args[0], args[1]);
             
                 output2.send(value);
-                return {};
-    }};
+                return {args};
+                }}};
                 
    
                 

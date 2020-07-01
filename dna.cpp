@@ -67,7 +67,8 @@ void DNA::mutate(double mutationRate){
         double r = ((double) rand() / (RAND_MAX));
       
         if(r < mutationRate ){
-            this->genes[i] = equalRandom(gen);
+            //this->genes[i] = equalRandom(gen);
+            this->genes[i] = polynomialMutate(this->genes[i], 30);
         }
     }
     
