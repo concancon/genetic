@@ -37,7 +37,8 @@ public:
     
     inlet<>  input {this, "(toggle) on/off"};
     outlet<> output {this, "(list) result of evolution"};
-    outlet<> output2 {this, "(list) frequency of values"};
+    outlet<> output2 {this, "(list) frequency of values to examine mutation"};
+    outlet<> output3{this, "(float) current max fitness"};
     
     void initializeObject(const atoms& args= {}){
         cout <<"args size: " << args.size();
@@ -114,7 +115,7 @@ public:
     }}};
                 
                 
-                
+   
                 
    attribute<int> maxPopulation {this, "maxPopulation", 200,
             setter { MIN_FUNCTION {
@@ -146,6 +147,18 @@ public:
                 return {args};
     }}};
                 
+   message<> getMaxFitness {
+   this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {
+       if(population.get()){
+           
+          long double currentMax= (population->getMaxFitness()/population->perfectScore) * 100.;
+           
+         cout<< currentMax << c74::min::endl;
+          //output3.send((atom)currentMax); //TODO: DISPLAY CURRENT MAX
+       }
+      
+           return {};
+    }};
    
                 
     message<> bang {

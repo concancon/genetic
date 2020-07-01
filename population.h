@@ -22,7 +22,6 @@ public:
     std::vector<double> counter;
     
     double mutationIndex= 0.;
-   
     int maxPopulation;
     bool calledOnce= false;
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -32,7 +31,7 @@ public:
     bool finished;
     double generations= 0;              // Number of generations
     long double perfectScore;
-    long double maxFitness=0;
+    long double maxFitness=0.;
 
     std::vector<DNA> newPopulation;
     Population(const std::vector<double>& tp);
@@ -54,6 +53,9 @@ public:
         return this->maxPopulation;
     }
     
+    long double getMaxFitness(){
+        return this->maxFitness;
+    }
     void calcFitness();
 
     // Compute average fitness for the population
