@@ -67,7 +67,7 @@ public:
     // Create a new generation
     void generate(double eta);
 
-    DNA& select(const std::vector<double>& scores, long double sum);
+    DNA& select(const std::vector<long double>& scores, long double sum);
     
     bool terminate() {
        return finished;

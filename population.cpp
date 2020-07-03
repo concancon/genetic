@@ -130,12 +130,12 @@ void Population::generate(double mutationIndex) {
     // Refill the population with children from the mating pool
     newPopulation.clear();
     //newPopulation.shrink_to_fit();
-    vector<double> scores(population.size());
+    vector<long double> scores(population.size());
     
-    double sum = 0;//std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (double) 0.0);
+    long double sum = 0;//std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (double) 0.0);
     //double inverseSum = 1.0 / sum;
     for (int i = 0; i < population.size(); i++) {
-        double fit = population[i].fitness;
+        long double fit = population[i].fitness;
         sum += fit;
         scores[i] = fit;// * inverseSum;
     }
@@ -160,8 +160,8 @@ void Population::generate(double mutationIndex) {
 }
 
 //choose a single member of the population based on its score
-DNA& Population::select(const vector<double>& scores, long double sum) {
-    double random = equalRandom(gen) * sum;
+DNA& Population::select(const vector<long double>& scores, long double sum) {
+    long double random = (long double)equalRandom(gen) * sum;
 
     int index = 0;
     for ( ; random > 0. && index < scores.size(); index++) {

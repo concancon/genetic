@@ -388,7 +388,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 886.0, 20.0, 75.0, 22.0 ],
-					"text" : "dim 100 100"
+					"text" : "dim 40 40"
 				}
 
 			}
@@ -918,8 +918,8 @@
 					"id" : "obj-1",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 166.0, 546.0, 70.0, 22.0 ],
 					"text" : "min.genetic"
 				}
@@ -1009,7 +1009,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-33", 0 ],
-					"midpoints" : [ 226.5, 614.0, 452.5, 614.0 ],
+					"midpoints" : [ 201.0, 614.0, 452.5, 614.0 ],
 					"source" : [ "obj-1", 1 ]
 				}
 
