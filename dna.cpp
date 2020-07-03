@@ -26,6 +26,7 @@ DNA::DNA(int paramSize, bool randomize)
 
 void DNA::fitnessFunction(const vector<double>& target){
      
+    static long double maxScore = pow((long double)8., (long double)5461.);
      double score = 0;
      
      for(int i = 0; i< numberOfGenes; i++){
@@ -38,11 +39,12 @@ void DNA::fitnessFunction(const vector<double>& target){
          
      }
          
-     score = utilities::map(score, 0, genes.size(), 0.0, 5461);
+    score = utilities::map(score, 0, genes.size(), 0.0, 5461.);
+    long double temp = pow((long double)8., score);
      // exponential fitting of score to fitness function to accentuate difference between a slightly better
               //result and its inferior
-     this->fitness = pow((long double) 8.0, (long double) score);
-
+     long double caster = temp / maxScore;
+     this->fitness = (caster);
  }
     //combine two DNA's to generate a third. This is done stochastically
 DNA& DNA::crossover(const DNA& partner) {

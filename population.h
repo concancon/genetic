@@ -30,8 +30,8 @@ public:
     double mutationRate;
     bool finished;
     double generations= 0;              // Number of generations
-    long double perfectScore;
-    long double maxFitness=0.;
+    double perfectScore;
+    double maxFitness=0.;
 
     std::vector<DNA> newPopulation;
     Population(const std::vector<double>& tp);
@@ -53,7 +53,7 @@ public:
         return this->maxPopulation;
     }
     
-    long double getMaxFitness(){
+    double getMaxFitness(){
         return this->maxFitness;
     }
     void calcFitness();
@@ -67,7 +67,7 @@ public:
     // Create a new generation
     void generate(double eta);
 
-    DNA& select(const std::vector<long double>& scores, long double sum);
+    DNA& select(const std::vector<double>& scores, double sum);
     
     bool terminate() {
        return finished;

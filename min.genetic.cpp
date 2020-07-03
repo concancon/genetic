@@ -163,8 +163,8 @@ public:
                 
     message<> bang {
         this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
+            
             if(population.get()){
-                
                 
             if(!(this->population->finished)){
                 //cout <<c74::min::endl;
