@@ -3,6 +3,8 @@
 #include <vector>
 #include <random>
 #include <iostream>
+//=============================================================================*/
+
 #include <stdbool.h>
 #include <stdint.h>
 #include "platform.h"
@@ -10,68 +12,55 @@
 #include "specialize.h"
 #include "softfloat.h"
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-#ifdef SOFTFLOAT_FAST_INT64
-
-float16_t f128M_to_f16( const float128_t *aPtr )
+float64_t f128_to_f64( float128_t a )
 {
-
-    return f128_to_f16( *aPtr );
-
-}
-
-#else
-
-float16_t f128M_to_f16( const float128_t *aPtr )
-{
-    const uint32_t *aWPtr;
-    uint32_t uiA96;
+    union ui128_f128 uA;
+    uint_fast64_t uiA64, uiA0;
     bool sign;
-    int32_t exp;
-    uint32_t frac32;
+    int_fast32_t exp;
+    uint_fast64_t frac64, frac0;
     struct commonNaN commonNaN;
-    uint16_t uiZ, frac16;
-    union ui16_f16 uZ;
+    uint_fast64_t uiZ;
+    struct uint128 frac128;
+    union ui64_f64 uZ;
 
     /*------------------------------------------------------------------------
     *------------------------------------------------------------------------*/
-    aWPtr = (const uint32_t *) aPtr;
-    /*------------------------------------------------------------------------
-    *------------------------------------------------------------------------*/
-    uiA96 = aWPtr[indexWordHi( 4 )];
-    sign = signF128UI96( uiA96 );
-    exp  = expF128UI96( uiA96 );
-    frac32 =
-        fracF128UI96( uiA96 )
-            | ((aWPtr[indexWord( 4, 2 )] | aWPtr[indexWord( 4, 1 )]
-                    | aWPtr[indexWord( 4, 0 )])
-                   != 0);
+    uA.f = a;
+    uiA64 = uA.ui.v64;
+    uiA0  = uA.ui.v0;
+    sign  = signF128UI64( uiA64 );
+    exp   = expF128UI64( uiA64 );
+    frac64 = fracF128UI64( uiA64 );
+    frac0  = uiA0;
     /*------------------------------------------------------------------------
     *------------------------------------------------------------------------*/
     if ( exp == 0x7FFF ) {
-        if ( frac32 ) {
-            softfloat_f128MToCommonNaN( aWPtr, &commonNaN );
-            uiZ = softfloat_commonNaNToF16UI( &commonNaN );
+        if ( frac64 | frac0 ) {
+            softfloat_f128UIToCommonNaN( uiA64, uiA0, &commonNaN );
+            uiZ = softfloat_commonNaNToF64UI( &commonNaN );
         } else {
-            uiZ = packToF16UI( sign, 0x1F, 0 );
+            uiZ = packToF64UI( sign, 0x7FF, 0 );
         }
         goto uiZ;
     }
     /*------------------------------------------------------------------------
     *------------------------------------------------------------------------*/
-    frac16 = frac32>>2 | (frac32 & 3);
-    if ( ! (exp | frac16) ) {
-        uiZ = packToF16UI( sign, 0, 0 );
+    frac128 = softfloat_shortShiftLeft128( frac64, frac0, 14 );
+    frac64 = frac128.v64 | (frac128.v0 != 0);
+    if ( ! (exp | frac64) ) {
+        uiZ = packToF64UI( sign, 0, 0 );
         goto uiZ;
     }
     /*------------------------------------------------------------------------
     *------------------------------------------------------------------------*/
-    exp -= 0x3FF1;
-    if ( sizeof (int_fast16_t) < sizeof (int32_t) ) {
-        if ( exp < -0x40 ) exp = -0x40;
+    exp -= 0x3C01;
+    if ( sizeof (int_fast16_t) < sizeof (int_fast32_t) ) {
+        if ( exp < -0x1000 ) exp = -0x1000;
     }
-    return softfloat_roundPackToF16( sign, exp, frac16 | 0x4000 );
+    return
+        softfloat_roundPackToF64(
+            sign, exp, frac64 | UINT64_C( 0x4000000000000000 ) );
     /*------------------------------------------------------------------------
     *------------------------------------------------------------------------*/
  uiZ:
@@ -79,10 +68,6 @@ float16_t f128M_to_f16( const float128_t *aPtr )
     return uZ.f;
 
 }
-
-#endif
-
-
 
 
 
