@@ -164,14 +164,18 @@ public:
     message<> bang {
         this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
             
-            if(population.get()){
+//                long double test= std::numeric_limits<long double>::max();
+//                double convert= (double) test/  test;
+//                cout << "convert is: " << convert<<endl;
                 
+            if(population.get()){
+
             if(!(this->population->finished)){
                 //cout <<c74::min::endl;
                 result.clear();
                 //Create next generation
                 population->generate(population->mutationIndex);
-                
+
 				int index;
                 std::vector<int>& currentBest = population->getBest(index);
                 for (auto it : currentBest) {
@@ -180,11 +184,11 @@ public:
 
                 vector<double> occurences= population->displayPopulation();
 
-                
+
                 output.send(result);
             }
             else if (!alreadyPrinted){
-                
+
                 cout << "already finished! " <<c74::min::endl;
                 cout << "generations: " << population->generations << c74::min::endl;
                 alreadyPrinted = true;

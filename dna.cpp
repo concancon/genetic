@@ -1,7 +1,7 @@
 #include <math.h>
 #include <iostream>
 #include "dna.h"
-#include "util.h"
+
 
 using namespace std;
 
@@ -26,25 +26,22 @@ DNA::DNA(int paramSize, bool randomize)
 
 void DNA::fitnessFunction(const vector<double>& target){
      
-    static long double maxScore = pow((long double)8., (long double)5461.);
-     double score = 0;
+     //long double maxScore = pow((long double)8., (long double)5461.);
+     long double score = 0.;
      
      for(int i = 0; i< numberOfGenes; i++){
     
         int difference= abs (target[i] - genes[i]);
-         //if difference > 50: threshold
-         
-         double distance = (double) (255.0 - difference) / 255.0;
-         score+= distance;
+       
+        double distance = (double) (255.0 - difference) / 255.0;
+        score+= distance;
          
      }
-         
-    score = utilities::map(score, 0, genes.size(), 0.0, 5461.);
-    long double temp = pow((long double)8., score);
-     // exponential fitting of score to fitness function to accentuate difference between a slightly better
-              //result and its inferior
-     long double caster = temp / maxScore;
-     this->fitness = (caster);
+    
+    //score = utilities::map(score, 0, genes.size(), 0.0, 5461.);
+    //long double temp = pow((long double)8., score);
+    
+    this->fitness = score; //TODO: GET RID OF SCORE VAR IF THIS APPROACH WORKS. Currently range is 0-1600 or 0-number of genes  
  }
     //combine two DNA's to generate a third. This is done stochastically
 DNA& DNA::crossover(const DNA& partner) {

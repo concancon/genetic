@@ -1,0 +1,5 @@
+/Users/camiloocampo/Documents/Max 8/Packages/min-devkit/source/projects/min.genetic/CMakeFiles/rebuild_cache.dir
+/Users/camiloocampo/Documents/Max 8/Packages/min-devkit/source/projects/min.genetic/CMakeFiles/edit_cache.dir
+/Users/camiloocampo/Documents/Max 8/Packages/min-devkit/source/projects/min.genetic/CMakeFiles/test.dir
+/Users/camiloocampo/Documents/Max 8/Packages/min-devkit/source/projects/min.genetic/CMakeFiles/min.genetic_test.dir
+/Users/camiloocampo/Documents/Max 8/Packages/min-devkit/source/projects/min.genetic/CMakeFiles/min.genetic.dir

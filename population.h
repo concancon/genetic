@@ -20,6 +20,7 @@ public:
     std::vector<double> scores;
     std::vector<double> targetParams;
     std::vector<double> counter;
+    std::vector<double> probabilityArray;
     
     double mutationIndex= 0.;
     int maxPopulation;
@@ -67,6 +68,10 @@ public:
     // Create a new generation
     void generate(double eta);
 
+    std::vector<double>& exponentialRankSelector(double c);
+    
+    DNA& select(double sum);
+    
     DNA& select(const std::vector<double>& scores, double sum);
     
     bool terminate() {
