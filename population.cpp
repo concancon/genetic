@@ -143,9 +143,14 @@ void Population::generate(double mutationIndex) {
         newPopulation.push_back(population[i]);
     }
 
+    exponentialRankSelector(0.975);
+    for (int i = 0; i<population.size(); i++){
+        sum+=probabilityArray[i];
+    }
+    
     for (int i = 0; i < population.size() - elitelen; i++) {
-        DNA partnerA = select(scores, 1.);
-        DNA partnerB = select(scores, 1.);
+        DNA partnerA = select(sum);
+        DNA partnerB = select(sum);
         DNA child = partnerA.crossover(partnerB); // this should be moved or elided, thus ok
         child.mutate(mutationRate, mutationIndex);
         newPopulation.push_back(std::move(child)); //std::move(child));
