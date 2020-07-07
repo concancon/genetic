@@ -26,8 +26,8 @@ DNA::DNA(int paramSize, bool randomize)
 
 void DNA::fitnessFunction(const vector<double>& target){
      
-     //long double maxScore = pow((long double)8., (long double)5461.);
-     long double score = 0.;
+     
+     double score = 0.;
      
      for(int i = 0; i< numberOfGenes; i++){
     
@@ -38,8 +38,7 @@ void DNA::fitnessFunction(const vector<double>& target){
          
      }
     
-    //score = utilities::map(score, 0, genes.size(), 0.0, 5461.);
-    //long double temp = pow((long double)8., score);
+
     
     this->fitness = score; //TODO: GET RID OF SCORE VAR IF THIS APPROACH WORKS. Currently range is 0-1600 or 0-number of genes  
  }

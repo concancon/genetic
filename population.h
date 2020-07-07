@@ -22,6 +22,7 @@ public:
     std::vector<double> counter;
     std::vector<double> probabilityArray;
     
+    double expFactor;
     double mutationIndex= 0.;
     int maxPopulation;
     bool calledOnce= false;
@@ -31,7 +32,7 @@ public:
     double mutationRate;
     bool finished;
     double generations= 0;              // Number of generations
-    double perfectScore;
+    double perfectScore;   //TODO: FIGURE OUT PERFECT SCORE
     double maxFitness=0.;
 
     std::vector<DNA> newPopulation;

@@ -19,7 +19,7 @@ struct LightIterator : public std::vector<DNA>::iterator
 //PARAMS: target params: input from max. For example a set of pixels
 Population::Population(const vector<double>& tp): counter(256){
     
-    
+    expFactor = 0.975;
     targetParams= tp;
     finished = false;
     population.clear();
@@ -127,16 +127,17 @@ vector<int>& Population::getBest(int& index) {
 //probability of being chosen.
 void Population::generate(double mutationIndex) {
     
+    double sum = 0.;
     // Refill the population with children from the mating pool
     newPopulation.clear();
     //newPopulation.shrink_to_fit();
     vector<double> scores(population.size());
     
-    double sum = std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (double) 0.0);
-    double inverseSum = 1.0 / sum;
-    for (int i = 0; i < population.size(); i++) {
-        scores[i] = population[i].fitness * inverseSum;
-    }
+//    double sum = std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (double) 0.0);
+//    double inverseSum = 1.0 / sum;
+//    for (int i = 0; i < population.size(); i++) {
+//        scores[i] = population[i].fitness * inverseSum;
+//    }
     std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
     int elitelen = population.size() * 0.1;
     for (int i = 0; i < elitelen; i++) {
@@ -164,6 +165,8 @@ void Population::generate(double mutationIndex) {
 
 
 std::vector<double>& Population::exponentialRankSelector(double c){
+    
+    probabilityArray.clear();
      //first we need to sort the array in descending order
          std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
 

@@ -115,7 +115,26 @@ public:
     }}};
                 
                 
-   
+   attribute<double>  expFactor {this, "expFactor", 0.975,
+       setter { MIN_FUNCTION {
+               
+       if(population.get()){
+               
+           population->expFactor = double(args[0]); //TODO: make a setter!
+               return {args[0]};
+           }
+               
+           return {0};
+               
+           }},
+          getter { MIN_GETTER_FUNCTION {
+           if(population.get()){
+         
+             return {population->expFactor};
+               
+           }
+           else return {0};
+   }}};
                 
    attribute<int> maxPopulation {this, "maxPopulation", 200,
             setter { MIN_FUNCTION {
@@ -151,7 +170,7 @@ public:
    this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {
        if(population.get()){
            
-          long double currentMax= (population->getMaxFitness()/population->perfectScore) * 100.;
+        double currentMax= (population->getMaxFitness()/population->perfectScore) * 100.;
            
          cout<< currentMax << c74::min::endl;
           //output3.send((atom)currentMax); //TODO: DISPLAY CURRENT MAX
@@ -163,10 +182,7 @@ public:
                 
     message<> bang {
         this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
-            
-//                long double test= std::numeric_limits<long double>::max();
-//                double convert= (double) test/  test;
-//                cout << "convert is: " << convert<<endl;
+
                 
             if(population.get()){
 

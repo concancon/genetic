@@ -40,13 +40,25 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-30",
+					"id" : "obj-42",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 719.0, 762.0, 150.0, 60.0 ],
+					"text" : "race conditions in attrui. debug and discuss with Tim\n"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-38",
 					"linecount" : 5,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 663.0, 662.0, 150.0, 74.0 ],
-					"text" : "limit of double: 2.22507e-308\n\ncurrent values: \n3.4175E-1659"
+					"patching_rect" : [ 717.0, 665.0, 150.0, 74.0 ],
+					"text" : "pixel shader : generate a new picture where the distance of desired values is represented. then we read this out on the cpu. "
 				}
 
 			}
@@ -399,8 +411,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 886.0, 20.0, 75.0, 22.0 ],
-					"text" : "dim 40 40"
+					"patching_rect" : [ 881.0, 20.0, 75.0, 22.0 ],
+					"text" : "dim 80 80"
 				}
 
 			}
@@ -939,7 +951,7 @@
 			}
 , 			{
 				"box" : 				{
-					"attr" : "mutationRate",
+					"attr" : "expFactor",
 					"id" : "obj-8",
 					"maxclass" : "attrui",
 					"numinlets" : 1,
@@ -997,6 +1009,18 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 573.0, 511.0, 150.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"attr" : "mutationRate",
+					"id" : "obj-19",
+					"maxclass" : "attrui",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 264.0, 557.0, 150.0, 22.0 ]
 				}
 
 			}
@@ -1068,7 +1092,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-44", 0 ],
-					"midpoints" : [ 895.5, 107.5, 482.5, 107.5 ],
+					"midpoints" : [ 890.5, 107.5, 482.5, 107.5 ],
 					"order" : 1,
 					"source" : [ "obj-16", 0 ]
 				}
@@ -1086,6 +1110,13 @@
 					"destination" : [ "obj-13", 0 ],
 					"midpoints" : [ 247.5, 317.5, 175.5, 317.5 ],
 					"source" : [ "obj-18", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-1", 0 ],
+					"source" : [ "obj-19", 0 ]
 				}
 
 			}
