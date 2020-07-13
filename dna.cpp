@@ -1,10 +1,10 @@
 #include <math.h>
 #include <iostream>
 #include "dna.h"
-#include "util.h"
+
 
 using namespace std;
-
+//using namespace c74::max;
 std::random_device rd;  //Will be used to obtain a seed for the random number engine
 std::mt19937 gen{rd()}; //Standard mersenne_twister_engine seeded with rd()
 std::uniform_int_distribution<int> equalRandom{0, 255};
@@ -24,25 +24,43 @@ DNA::DNA(int paramSize, bool randomize)
 	}
 }
 
+//c74::max::t_atomarray* DNA::toAtomArray(){
+//    
+//    long ac = numberOfGenes;
+//    t_atom* av = (t_atom*)sysmem_newptr(sizeof(t_atom)* ac);
+//    long idx = 0;
+//    
+//    for(auto gene : genes){
+// 
+//        atom_setlong(av+idx++, gene);
+//        
+//        
+//    }
+//    
+//    t_atomarray* aa = atomarray_new(ac, av);
+//    sysmem_freeptr(av);
+//    return aa;
+//    
+//}
+
+
 void DNA::fitnessFunction(const vector<double>& target){
      
-     double score = 0;
+     
+     double score = 0.;
      
      for(int i = 0; i< numberOfGenes; i++){
     
         int difference= abs (target[i] - genes[i]);
-         //if difference > 50: threshold
-         
-         double distance = (double) (255.0 - difference) / 255.0;
-         score+= distance;
+       
+        double distance = (double) (255.0 - difference) / 255.0;
+        score+= distance;
          
      }
-         
-     score = utilities::map(score, 0, genes.size(), 0.0, 5461);
-     // exponential fitting of score to fitness function to accentuate difference between a slightly better
-              //result and its inferior
-     this->fitness = pow((long double) 8.0, (long double) score);
+    
 
+    
+    this->fitness = score; //TODO: GET RID OF SCORE VAR IF THIS APPROACH WORKS. Currently range is 0-1600 or 0-number of genes  
  }
     //combine two DNA's to generate a third. This is done stochastically
 DNA& DNA::crossover(const DNA& partner) {
@@ -62,17 +80,19 @@ DNA& DNA::crossover(const DNA& partner) {
 }
 
 //apply a random values to random genes that DONT match the target value
-void DNA::mutate(double mutationRate){
+void DNA::mutate(double mutationRate, double eta){
     for(int i= 0; i< this->numberOfGenes; i++){
         double r = ((double) rand() / (RAND_MAX));
       
         if(r < mutationRate ){
-            this->genes[i] = equalRandom(gen);
+            //this->genes[i] = equalRandom(gen);
+            this->genes[i] = polynomialMutate(this->genes[i], eta);
         }
     }
     
 }
-    
+
+
 void DNA::displayGenes() {
 	for (auto it: genes) {
 		std::cout << it << " ";

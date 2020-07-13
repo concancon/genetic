@@ -25,7 +25,6 @@ private:
     
     //Population population;
     atoms result;
-    atoms counter;
     vector<double> sVec;
     bool alreadyPrinted {false};
     
@@ -38,7 +37,8 @@ public:
     
     inlet<>  input {this, "(toggle) on/off"};
     outlet<> output {this, "(list) result of evolution"};
-    outlet<> output2 {this, "(list) frequency of values"};
+    outlet<> output2 {this, "(list) frequency of values to examine mutation"};
+    outlet<> output3{this, "(float) current max fitness"};
     
     void initializeObject(const atoms& args= {}){
         cout <<"args size: " << args.size();
@@ -52,11 +52,13 @@ public:
         }
         double oldMutationRate;
         double oldMaxPopulation;
+        double oldExpFactor;
         bool reInit= false;
         if(population.get()){
             //save mutation rate
             oldMutationRate = population->mutationRate;
             oldMaxPopulation = population->maxPopulation;
+            oldExpFactor = population->expFactor;
             reInit= true;
         }
         population = std::make_unique<Population>(t);
@@ -69,6 +71,10 @@ public:
             a.clear();
             a.push_back(oldMutationRate);
             mutationRate.set(a);
+            a.clear();
+            a.push_back(oldExpFactor);
+            expFactor.set(a);
+            
         }
     }
     
@@ -93,7 +99,7 @@ public:
         return args;
     }}};
                 
-  attribute<double> mutationRate {this, "mutationRate", 0.01,
+  attribute<double> mutationRate {this, "mutationRate", 0.001,
         setter { MIN_FUNCTION {
                 
         if(population.get()){
@@ -115,7 +121,26 @@ public:
     }}};
                 
                 
-                
+   attribute<double>  expFactor {this, "expFactor", 0.975,
+       setter { MIN_FUNCTION {
+               
+       if(population.get()){
+               
+           population->expFactor = double(args[0]); //TODO: make a setter!
+               return {args[0]};
+           }
+               
+           return {0};
+               
+           }},
+          getter { MIN_GETTER_FUNCTION {
+           if(population.get()){
+         
+             return {population->expFactor};
+               
+           }
+           else return {0};
+   }}};
                 
    attribute<int> maxPopulation {this, "maxPopulation", 200,
             setter { MIN_FUNCTION {
@@ -126,19 +151,53 @@ public:
             }
             return {args};
     }}};
+           
+  attribute<double> mutationIndex {this, "mutationIndex", 20.,
+          setter { MIN_FUNCTION {
+                              
+       if(population.get()){
+            population->setMutationIndex(int(args[0]));
+      }
+     
+     return {args};
+   }}};
+   
+    attribute<int> mutate{
+    
+                this, "mutate", 200 , setter{ MIN_FUNCTION {
                 
+                atom value= (atom)DNA::polynomialMutate(args[0], args[1]);
+            
+                output2.send(value);
+                return {args};
+    }}};
+                
+   message<> getMaxFitness {
+   this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {
+       if(population.get()){
+           
+        double currentMax= (population->getMaxFitness()/population->targetParams.size()) * 100.;
+           
+         cout<< currentMax << c74::min::endl;
+          //output3.send((atom)currentMax); //TODO: DISPLAY CURRENT MAX
+       }
+      
+           return {};
+    }};
+   
                 
     message<> bang {
         this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
+
+                
             if(population.get()){
-                
-                
+
             if(!(this->population->finished)){
                 //cout <<c74::min::endl;
                 result.clear();
                 //Create next generation
-                population->generate();
-                
+                population->generate(population->mutationIndex);
+
 				int index;
                 std::vector<int>& currentBest = population->getBest(index);
                 for (auto it : currentBest) {
@@ -146,17 +205,13 @@ public:
                 }
 
                 vector<double> occurences= population->displayPopulation();
-                counter.clear();
-                for (auto it: occurences) {
-                    counter.push_back(it);
-                }
-                output2.send(counter);
-                
+
+
                 output.send(result);
             }
             else if (!alreadyPrinted){
-                
-                cout << "already finished! " <<c74::min::endl;
+
+                cout << "as close as youre going to get! " <<c74::min::endl;
                 cout << "generations: " << population->generations << c74::min::endl;
                 alreadyPrinted = true;
                         }

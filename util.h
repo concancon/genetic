@@ -8,11 +8,11 @@
 
 
 namespace utilities {
-static double map(double value, double start1, double stop1,
-                 double start2, double stop2) {
-    double outgoing =
-    start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
-
+static double map( double value, double start1, double stop1,
+                double start2, double stop2) {
+    double slope = ( double)1.0 * (stop2-start2)/ (stop1- start1);
+    double outgoing = start1 + slope * (value - start1);
+        
     return outgoing;
     }
 }
