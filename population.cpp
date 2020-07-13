@@ -18,16 +18,16 @@ struct LightIterator : public std::vector<DNA>::iterator
 //create a population with default values for mutation rate and population size.
 //calculate the value of the perfect
 //PARAMS: target params: input from max. For example a set of pixels
-Population::Population(const vector<double>& tp): counter(256){
+Population::Population(const vector<double>& tp): popDict(c74::min::symbol(true)), counter(256) {
     
+    maxDict = (t_object*)popDict; //produces a memory leak //TODO: CREATE DESTRUCTOR TO RELEASE THIS
     expFactor = 0.975;
-    c74::min::dict popDict;   //dictionary to represent a population and its respective fitness values
-    t_object *maxDict = (t_object*)popDict;
     targetParams= tp;
     finished = false;
     population.clear();
     mutationRate = 0.001;
     maxPopulation = 200;
+    
     for(int i = 0; i< maxPopulation; i++) {
         DNA dna(targetParams.size(), true);
         population.push_back(std::move(dna));
@@ -41,6 +41,26 @@ Population::Population(const vector<double>& tp): counter(256){
     calcFitness();
 }
    
+
+c74::max::t_atomarray* Population::toAtomArray(){
+    
+    long ac = maxPopulation;
+    t_atom* av = (t_atom*)sysmem_newptr(sizeof(t_atom)* ac);
+    long idx = 0;
+    
+    for(auto pop : population){
+ 
+        atom_setobj(av+idx++, (t_object*)pop.toAtomArray());
+        
+        
+    }
+    
+    t_atomarray* aa = atomarray_new(ac, av);
+    atomarray_flags(aa, 1); // this takes care of freeing dna objects memory once the memory for population is freed
+    sysmem_freeptr(av);
+    return aa;
+    
+}
 //setter for the population size
 void Population::setMaxPopulation(int mp){
     maxPopulation = mp;
@@ -58,6 +78,11 @@ void Population::setMaxPopulation(int mp){
 //Iterate through the population to calculate the fitness of each individual therein
 void Population::calcFitness(){
 
+   
+    t_atomarray* aa = toAtomArray();
+    dictionary_appendlong(maxDict, gensym("generation"), generations);
+    dictionary_appendatomarray(maxDict, gensym("population"), (t_object*) aa);
+    
 #ifdef BENCHMARK
 	auto start = high_resolution_clock::now();
 #endif

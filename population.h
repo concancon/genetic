@@ -14,7 +14,8 @@ public:
 	const int numThreads = 4;
 	std::unique_ptr<WorkerThread> workers[4];
 #endif
-
+    c74::min::dict popDict;
+    c74::max::t_object* maxDict;
 	std::vector<DNA> population;
     std::vector<DNA> matingPool;
     std::vector<double> scores;
@@ -38,6 +39,8 @@ public:
     std::vector<DNA> newPopulation;
     Population(const std::vector<double>& tp);
     
+    c74::max::t_atomarray* toAtomArray(); //TODO: MAKE PRIVATE
+     
     void setMutationRate(double mr){
        mutationRate= mr;
     }
