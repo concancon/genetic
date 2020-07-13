@@ -3,7 +3,7 @@
 #include <vector>
 #include <random>
 #include <iostream>
-#include "c74_min.h"
+//#include "c74_min.h"
 
 
 static std::random_device rad;  //Will be used to obtain a seed for the random number engine
@@ -25,7 +25,7 @@ public:
     // exponential fitting of score to fitness function to accentuate difference between a slightly better
     //result and its inferior
     DNA& crossover(const DNA& partner);
-    c74::max::t_atomarray* toAtomArray();
+   // c74::max::t_atomarray* toAtomArray();
     void mutate(double mutationRate, double eta);
     
   

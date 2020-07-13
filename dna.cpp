@@ -4,7 +4,7 @@
 
 
 using namespace std;
-using namespace c74::max;
+//using namespace c74::max;
 std::random_device rd;  //Will be used to obtain a seed for the random number engine
 std::mt19937 gen{rd()}; //Standard mersenne_twister_engine seeded with rd()
 std::uniform_int_distribution<int> equalRandom{0, 255};
@@ -24,24 +24,24 @@ DNA::DNA(int paramSize, bool randomize)
 	}
 }
 
-c74::max::t_atomarray* DNA::toAtomArray(){
-    
-    long ac = numberOfGenes;
-    t_atom* av = (t_atom*)sysmem_newptr(sizeof(t_atom)* ac);
-    long idx = 0;
-    
-    for(auto gene : genes){
- 
-        atom_setlong(av+idx++, gene);
-        
-        
-    }
-    
-    t_atomarray* aa = atomarray_new(ac, av);
-    sysmem_freeptr(av);
-    return aa;
-    
-}
+//c74::max::t_atomarray* DNA::toAtomArray(){
+//    
+//    long ac = numberOfGenes;
+//    t_atom* av = (t_atom*)sysmem_newptr(sizeof(t_atom)* ac);
+//    long idx = 0;
+//    
+//    for(auto gene : genes){
+// 
+//        atom_setlong(av+idx++, gene);
+//        
+//        
+//    }
+//    
+//    t_atomarray* aa = atomarray_new(ac, av);
+//    sysmem_freeptr(av);
+//    return aa;
+//    
+//}
 
 
 void DNA::fitnessFunction(const vector<double>& target){
