@@ -9,9 +9,6 @@
 
 using namespace c74::min;
 
-
-
-
 class genetic : public object<genetic> {
     
 private:

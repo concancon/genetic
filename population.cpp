@@ -1,14 +1,13 @@
-#include "population.h"
 #include <math.h>
 #include <iostream>
 #include <random>
 #include <numeric>
 #include <chrono>
-//#include "c74_min.h"
+#include "population.h"
 
 using namespace std;
 using namespace std::chrono;
-//using namespace c74::max;
+using namespace c74::max;
 struct LightIterator : public std::vector<DNA>::iterator
 {
     LightIterator(std::vector<DNA>::iterator it) : std::vector<DNA>::iterator(it) {}
@@ -20,7 +19,7 @@ struct LightIterator : public std::vector<DNA>::iterator
 //PARAMS: target params: input from max. For example a set of pixels
 Population::Population(const vector<double>& tp):  counter(256) {
     
-   // maxDict = (t_object*)popDict; //produces a memory leak //TODO: CREATE DESTRUCTOR TO RELEASE THIS
+    maxDict = (t_object*)popDict; //produces a memory leak //TODO: CREATE DESTRUCTOR TO RELEASE THIS
     expFactor = 0.975;
     targetParams= tp;
     finished = false;
@@ -42,25 +41,26 @@ Population::Population(const vector<double>& tp):  counter(256) {
 }
    
 
-//c74::max::t_atomarray* Population::toAtomArray(){
-//    
-//    long ac = maxPopulation;
-//    t_atom* av = (t_atom*)sysmem_newptr(sizeof(t_atom)* ac);
-//    long idx = 0;
-//    
-//    for(auto pop : population){
-// 
-//        atom_setobj(av+idx++, (t_object*)pop.toAtomArray());
-//        
-//        
-//    }
-//    
-//    t_atomarray* aa = atomarray_new(ac, av);
-//    atomarray_flags(aa, 1); // this takes care of freeing dna objects memory once the memory for population is freed
-//    sysmem_freeptr(av);
-//    return aa;
-//    
-//}
+c74::max::t_atomarray* Population::toAtomArray(){
+
+    long ac = maxPopulation;
+    t_atom* av = (t_atom*)sysmem_newptr(sizeof(t_atom)* ac);
+    long idx = 0;
+
+    for(auto pop : population){
+
+        atom_setobj(av+idx++, (t_object*)pop.toAtomArray());
+
+
+    }
+
+    t_atomarray* aa = atomarray_new(ac, av);
+    atomarray_flags(aa, 1); // this takes care of freeing dna objects memory once the memory for population is freed
+    sysmem_freeptr(av);
+    return aa;
+
+}
+
 //setter for the population size
 void Population::setMaxPopulation(int mp){
     maxPopulation = mp;
@@ -79,10 +79,10 @@ void Population::setMaxPopulation(int mp){
 void Population::calcFitness(){
 
    
-//    t_atomarray* aa = toAtomArray();
-//    dictionary_appendlong(maxDict, gensym("generation"), generations);
-//    dictionary_appendatomarray(maxDict, gensym("population"), (t_object*) aa);
-//
+    t_atomarray* aa = toAtomArray();
+    dictionary_appendlong(maxDict, gensym("generation"), generations);
+    dictionary_appendatomarray(maxDict, gensym("population"), (t_object*) aa);
+
 #ifdef BENCHMARK
 	auto start = high_resolution_clock::now();
 #endif
