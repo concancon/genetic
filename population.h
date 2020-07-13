@@ -5,7 +5,7 @@
 #include <iostream>
 #include <thread>
 #include "workerthread.h"
-#define USE_THREADS 1
+#define USE_THREADS 0
 
 class Population{
 public:

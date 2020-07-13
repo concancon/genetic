@@ -4,10 +4,11 @@
 #include <random>
 #include <numeric>
 #include <chrono>
+#include "c74_min.h"
 
 using namespace std;
 using namespace std::chrono;
-
+using namespace c74::max;
 struct LightIterator : public std::vector<DNA>::iterator
 {
     LightIterator(std::vector<DNA>::iterator it) : std::vector<DNA>::iterator(it) {}
@@ -20,11 +21,12 @@ struct LightIterator : public std::vector<DNA>::iterator
 Population::Population(const vector<double>& tp): counter(256){
     
     expFactor = 0.975;
+    c74::min::dict popDict;   //dictionary to represent a population and its respective fitness values
+    t_object *maxDict = (t_object*)popDict;
     targetParams= tp;
     finished = false;
     population.clear();
     mutationRate = 0.001;
-    perfectScore = 1.;
     maxPopulation = 200;
     for(int i = 0; i< maxPopulation; i++) {
         DNA dna(targetParams.size(), true);
@@ -111,7 +113,7 @@ vector<int>& Population::getBest(int& index) {
         }
     }
   
-    if (maxFitness == perfectScore) {
+    if (maxFitness >= targetParams.size() * 0.95) {
         finished = true;
     }
 	if (index >= 0) {
@@ -144,7 +146,7 @@ void Population::generate(double mutationIndex) {
         newPopulation.push_back(population[i]);
     }
 
-    exponentialRankSelector(0.975);
+    exponentialRankSelector(expFactor);
     for (int i = 0; i<population.size(); i++){
         sum+=probabilityArray[i];
     }

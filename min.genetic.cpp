@@ -52,11 +52,13 @@ public:
         }
         double oldMutationRate;
         double oldMaxPopulation;
+        double oldExpFactor;
         bool reInit= false;
         if(population.get()){
             //save mutation rate
             oldMutationRate = population->mutationRate;
             oldMaxPopulation = population->maxPopulation;
+            oldExpFactor = population->expFactor;
             reInit= true;
         }
         population = std::make_unique<Population>(t);
@@ -69,6 +71,10 @@ public:
             a.clear();
             a.push_back(oldMutationRate);
             mutationRate.set(a);
+            a.clear();
+            a.push_back(oldExpFactor);
+            expFactor.set(a);
+            
         }
     }
     
@@ -170,7 +176,7 @@ public:
    this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {
        if(population.get()){
            
-        double currentMax= (population->getMaxFitness()/population->perfectScore) * 100.;
+        double currentMax= (population->getMaxFitness()/population->targetParams.size()) * 100.;
            
          cout<< currentMax << c74::min::endl;
           //output3.send((atom)currentMax); //TODO: DISPLAY CURRENT MAX
@@ -205,7 +211,7 @@ public:
             }
             else if (!alreadyPrinted){
 
-                cout << "already finished! " <<c74::min::endl;
+                cout << "as close as youre going to get! " <<c74::min::endl;
                 cout << "generations: " << population->generations << c74::min::endl;
                 alreadyPrinted = true;
                         }
