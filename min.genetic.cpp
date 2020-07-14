@@ -61,16 +61,16 @@ public:
         dictionary_appendatomarray(population->maxDict, c74::max::gensym("population"), (c74::max::t_object*) aa);
         //notify max that these
         if(reInit){
-//            atoms a;
-//            a.push_back(oldMaxPopulation);
-//            
-//            maxPopulation.set(a);
-//            a.clear();
-//            a.push_back(oldMutationRate);
-//            mutationRate.set(a);
-//            a.clear();
-//            a.push_back(oldExpFactor);
-//            expFactor.set(a);
+            atoms a;
+            a.push_back(oldMaxPopulation);
+        
+            maxPopulation.set(a);
+            a.clear();
+            a.push_back(oldMutationRate);
+            mutationRate.set(a);
+            a.clear();
+            a.push_back(oldExpFactor);
+            expFactor.set(a);
             
         }
     }
