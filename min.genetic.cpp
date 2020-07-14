@@ -61,9 +61,9 @@ public:
         dictionary_appendatomarray(population->maxDict, c74::max::gensym("population"), (c74::max::t_object*) aa);
         //notify max that these
         if(reInit){
+            
             atoms a;
             a.push_back(oldMaxPopulation);
-        
             maxPopulation.set(a);
             a.clear();
             a.push_back(oldMutationRate);
@@ -91,8 +91,8 @@ public:
                 initializeObject(args);
                 cout << "Object initialized" <<c74::min::endl;
                 }
-        
-                //output.send("dictionary", population->maxDict);
+                population->popDict.touch();
+                output.send("dictionary", population->popDict.name());
         return args;
     }}};
     

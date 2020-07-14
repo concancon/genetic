@@ -53,7 +53,7 @@ Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), cou
         DNA dna(numberOfParams, true);
         population.push_back(std::move(dna));
     }
-    cout << "our new constructor has been called";
+    cout << "our new constructor has been called" <<endl;
 }
    
 //converts a population to an atomarray
