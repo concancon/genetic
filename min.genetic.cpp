@@ -8,6 +8,7 @@
 #include "population.h"
 
 using namespace c74::min;
+using namespace c74::max;
 
 class genetic : public object<genetic> {
     
@@ -55,11 +56,12 @@ public:
             reInit= true;
         }
         population = std::make_unique<Population>(t);
-        c74::max::t_atomarray* aa = population->toAtomArray();
-        
-        dictionary_appendlong(population->maxDict, c74::max::gensym("generation"), population->generations);
-        dictionary_appendatomarray(population->maxDict, c74::max::gensym("population"), (c74::max::t_object*) aa);
-        //notify max that these
+        t_dictionary *d = population->toDict();
+
+        dictionary_appendlong(population->maxDict, gensym("generation"), population->generations);
+        dictionary_appenddictionary(population->maxDict, gensym("population"), (t_object *)d);
+
+		//notify max that these
         if(reInit){
             
             atoms a;
@@ -75,26 +77,29 @@ public:
         }
     }
     
-    attribute<double> buildPopulation {this, "buildPopulation", {},
-        setter { MIN_FUNCTION {
+    message<> buildPopulation {this, "buildPopulation", "build an initial population", MIN_FUNCTION {
             
-           if(population.get()){
-                
-                //population->targetParams.clear();
-                //population->generations= 0;
-                
-                initializeObject(args);
-                alreadyPrinted= false;
-            }
-            else if(args.size()>0){
-                
-                initializeObject(args);
-                cout << "Object initialized" <<c74::min::endl;
-                }
-                population->popDict.touch();
-                output.send("dictionary", population->popDict.name());
+	   if(population.get()){
+
+			//population->targetParams.clear();
+			//population->generations= 0;
+
+			initializeObject(args);
+			alreadyPrinted= false;
+		}
+		else if(args.size()>0){
+			initializeObject(args);
+			cout << "Object initialized" <<c74::min::endl;
+		}
+		else {
+			cout << "Missing arguments (number of parameters)" <<c74::min::endl;
+			return args;
+		}
+
+		population->popDict.touch();
+		output.send("dictionary", population->popDict.name());
         return args;
-    }}};
+    }};
     
 //    attribute<vector<double>> target {this, "target", {},
 //        setter { MIN_FUNCTION {
@@ -192,7 +197,7 @@ public:
    this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {
        if(population.get()){
            
-        double currentMax= (population->getMaxFitness()/population->targetParams.size()) * 100.;
+        double currentMax= (population->getMaxFitness()/population->numParams) * 100.;
            
          cout<< currentMax << c74::min::endl;
           //output3.send((atom)currentMax); //TODO: DISPLAY CURRENT MAX

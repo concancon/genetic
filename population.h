@@ -37,12 +37,13 @@ public:
     double generations= 0;              // Number of generations
     double perfectScore;   //TODO: FIGURE OUT PERFECT SCORE
     double maxFitness=0.;
+	int numParams = 0;
 
     std::vector<DNA> newPopulation;
     Population(const std::vector<double>& tp);
     Population(int numberOfParams);
     
-    c74::max::t_atomarray* toAtomArray(); //TODO: MAKE PRIVATE
+    c74::max::t_dictionary *toDict(); //TODO: MAKE PRIVATE
      
     void setMutationRate(double mr){
        mutationRate= mr;

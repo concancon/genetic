@@ -26,9 +26,10 @@ Population::Population(const vector<double>& tp): popDict(c74::min::symbol(true)
     population.clear();
     mutationRate = 0.001;
     maxPopulation = 200;
+	numParams = targetParams.size();
     
     for(int i = 0; i< maxPopulation; i++) {
-        DNA dna(targetParams.size(), true);
+        DNA dna(numParams, true);
         population.push_back(std::move(dna));
     }
 
@@ -48,8 +49,9 @@ Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), cou
     population.clear();
     mutationRate = 0.001;
     maxPopulation = 200;
+	numParams = numberOfParams;
     
-    for(int i = 0; i< maxPopulation; i++) {
+    for(int i = 0; i < maxPopulation; i++) {
         DNA dna(numberOfParams, true);
         population.push_back(std::move(dna));
     }
@@ -57,24 +59,17 @@ Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), cou
 }
    
 //converts a population to an atomarray
-c74::max::t_atomarray* Population::toAtomArray(){
+c74::max::t_dictionary* Population::toDict(){
 
-    long ac = maxPopulation;
-    t_atom* av = (t_atom*)sysmem_newptr(sizeof(t_atom)* ac);
+	t_dictionary* d = dictionary_new();
     long idx = 0;
+	string basename = "pop_";
 
-    for(auto pop : population){
-
-        atom_setobj(av+idx++, (t_object*)pop.toAtomArray());
-
-
-    }
-
-    t_atomarray* aa = atomarray_new(ac, av);
-    atomarray_flags(aa, 1); // this takes care of freeing dna objects memory once the memory for population is freed
-    sysmem_freeptr(av);
-    return aa;
-
+    for(auto pop : population) {
+		string keyname = basename + to_string(idx++);
+		dictionary_appendatomarray(d, gensym(keyname.c_str()), (t_object*)pop.toAtomArray());
+	}
+	return d;
 }
 
 //setter for the population size
@@ -82,7 +77,7 @@ void Population::setMaxPopulation(int mp){
     maxPopulation = mp;
     population.clear();
     for (int i = 0; i < maxPopulation; i++) {
-        DNA dna(targetParams.size(), true);
+        DNA dna(numParams, true);
         population.push_back(std::move(dna));
     }
     calcFitness();
@@ -95,9 +90,9 @@ void Population::setMaxPopulation(int mp){
 void Population::calcFitness(){
 
    
-    t_atomarray* aa = toAtomArray();
+    t_dictionary* d = toDict();
     dictionary_appendlong(maxDict, gensym("generation"), generations);
-    dictionary_appendatomarray(maxDict, gensym("population"), (t_object*) aa);
+    dictionary_appenddictionary(maxDict, gensym("population"), (t_object*)d);
 
 #ifdef BENCHMARK
 	auto start = high_resolution_clock::now();
@@ -154,7 +149,7 @@ vector<int>& Population::getBest(int& index) {
         }
     }
   
-    if (maxFitness >= targetParams.size() * 0.95) {
+    if (maxFitness >= numParams * 0.95) {
         finished = true;
     }
 	if (index >= 0) {

@@ -32,16 +32,12 @@ c74::max::t_atomarray* DNA::toAtomArray(){
     long idx = 0;
 
     for(auto gene : genes){
-
         atom_setlong(av+idx++, gene);
-
-
-    }
+	}
 
     t_atomarray* aa = atomarray_new(ac, av);
     sysmem_freeptr(av);
     return aa;
-
 }
 
 void DNA::fitnessFunction(const vector<double>& target){
