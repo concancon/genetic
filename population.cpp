@@ -17,7 +17,7 @@ struct LightIterator : public std::vector<DNA>::iterator
 //create a population with default values for mutation rate and population size.
 //calculate the value of the perfect
 //PARAMS: target params: input from max. For example a set of pixels
-Population::Population(const vector<double>& tp):  counter(256) {
+Population::Population(const vector<double>& tp): popDict(c74::min::symbol(true)), counter(256) {
     
     maxDict = (t_object*)popDict; //produces a memory leak //TODO: CREATE DESTRUCTOR TO RELEASE THIS
     expFactor = 0.975;
@@ -39,8 +39,24 @@ Population::Population(const vector<double>& tp):  counter(256) {
 #endif
     calcFitness();
 }
-   
 
+Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), counter(256) {
+    
+    maxDict = (t_object*)popDict; //produces a memory leak //TODO: CREATE DESTRUCTOR TO RELEASE THIS
+    expFactor = 0.975;
+    finished = false;
+    population.clear();
+    mutationRate = 0.001;
+    maxPopulation = 200;
+    
+    for(int i = 0; i< maxPopulation; i++) {
+        DNA dna(numberOfParams, true);
+        population.push_back(std::move(dna));
+    }
+    cout << "our new constructor has been called";
+}
+   
+//converts a population to an atomarray
 c74::max::t_atomarray* Population::toAtomArray(){
 
     long ac = maxPopulation;

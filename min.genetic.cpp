@@ -33,20 +33,16 @@ public:
     MIN_RELATED {""};
     
     inlet<>  input {this, "(toggle) on/off"};
-    outlet<> output {this, "(list) result of evolution"};
+    outlet<> output {this, "(list) the dictionary of random values to be evaluated", "dictionary"};
     outlet<> output2 {this, "(list) frequency of values to examine mutation"};
     outlet<> output3{this, "(float) current max fitness"};
     
     void initializeObject(const atoms& args= {}){
-        cout <<"args size: " << args.size();
         
-        vector<double> t;
         
-        for(int i = 0; i< args.size(); i++){
-            
-            t.push_back((double) args[i]);
-            
-        }
+        int t = (int) args[0];
+        
+       
         double oldMutationRate;
         double oldMaxPopulation;
         double oldExpFactor;
@@ -59,30 +55,33 @@ public:
             reInit= true;
         }
         population = std::make_unique<Population>(t);
+        c74::max::t_atomarray* aa = population->toAtomArray();
+        
+        dictionary_appendlong(population->maxDict, c74::max::gensym("generation"), population->generations);
+        dictionary_appendatomarray(population->maxDict, c74::max::gensym("population"), (c74::max::t_object*) aa);
         //notify max that these
         if(reInit){
-            atoms a;
-            a.push_back(oldMaxPopulation);
-            
-            maxPopulation.set(a);
-            a.clear();
-            a.push_back(oldMutationRate);
-            mutationRate.set(a);
-            a.clear();
-            a.push_back(oldExpFactor);
-            expFactor.set(a);
+//            atoms a;
+//            a.push_back(oldMaxPopulation);
+//            
+//            maxPopulation.set(a);
+//            a.clear();
+//            a.push_back(oldMutationRate);
+//            mutationRate.set(a);
+//            a.clear();
+//            a.push_back(oldExpFactor);
+//            expFactor.set(a);
             
         }
     }
     
-    
-    
-    attribute<vector<double>> target {this, "target", {},
+    attribute<double> buildPopulation {this, "buildPopulation", {},
         setter { MIN_FUNCTION {
             
            if(population.get()){
-                population->targetParams.clear();
-                population->generations= 0;
+                
+                //population->targetParams.clear();
+                //population->generations= 0;
                 
                 initializeObject(args);
                 alreadyPrinted= false;
@@ -92,9 +91,29 @@ public:
                 initializeObject(args);
                 cout << "Object initialized" <<c74::min::endl;
                 }
-                
+        
+                //output.send("dictionary", population->maxDict);
         return args;
     }}};
+    
+//    attribute<vector<double>> target {this, "target", {},
+//        setter { MIN_FUNCTION {
+//            
+//           if(population.get()){
+//                population->targetParams.clear();
+//                population->generations= 0;
+//                
+//                initializeObject(args);
+//                alreadyPrinted= false;
+//            }
+//            else if(args.size()>0){
+//                
+//                initializeObject(args);
+//                cout << "Object initialized" <<c74::min::endl;
+//                }
+//                
+//        return args;
+//    }}};
                 
   attribute<double> mutationRate {this, "mutationRate", 0.001,
         setter { MIN_FUNCTION {

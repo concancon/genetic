@@ -39,6 +39,7 @@ public:
 
     std::vector<DNA> newPopulation;
     Population(const std::vector<double>& tp);
+    Population(int numberOfParams);
     
     c74::max::t_atomarray* toAtomArray(); //TODO: MAKE PRIVATE
      
