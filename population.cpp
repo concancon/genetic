@@ -25,7 +25,7 @@ Population::Population(const vector<double>& tp): popDict(c74::min::symbol(true)
     finished = false;
     population.clear();
     mutationRate = 0.001;
-    maxPopulation = 200;
+    maxPopulation = 6;
 	numParams = targetParams.size();
     
     for(int i = 0; i< maxPopulation; i++) {
@@ -48,7 +48,7 @@ Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), cou
     finished = false;
     population.clear();
     mutationRate = 0.001;
-    maxPopulation = 200;
+    maxPopulation = 6;
 	numParams = numberOfParams;
     
     for(int i = 0; i < maxPopulation; i++) {
@@ -191,7 +191,7 @@ void Population::generate(double mutationIndex) {
     //population= newPopulation;
     generations++;
     
-    calcFitness();
+   // calcFitness();
 }
 
 

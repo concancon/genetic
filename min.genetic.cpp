@@ -35,7 +35,7 @@ public:
     
     inlet<>  input {this, "(toggle) on/off"};
     outlet<> output {this, "(dict) the dictionary of random values to be evaluated", "dictionary"};
-    outlet<> output2 {this, "(dict) dict with appended fitness", "dictionary"};
+    outlet<> output2 {this, "(DNA) Selected DNA", "result"};
     outlet<> output3{this, "(float) current max fitness"};
     
     void initializeObject(const atoms& args= {}){
@@ -83,6 +83,7 @@ public:
            MIN_FUNCTION {
               
             if(population.get()){
+                result.clear();
                try {
                    dict d = {args[0]};
                   // can we convert this dict back to a double array?
@@ -97,8 +98,24 @@ public:
                            if (dictionary_getfloat(popd, gensym(keyname), &val) == MAX_ERR_NONE) {
                                
                                //we populate our probabilityArray with the incoming fitness values
-                               population->probabilityArray.push_back(val);
-                            
+                               cout << "set " ;
+                               population->population[i].displayGenes();
+                               cout<< " to fitness of: " << val<<endl;
+                               population->population[i].setFitness(val);
+                               population->generate(population->mutationIndex);
+
+                               int index;
+                               std::vector<int>& currentBest = population->getBest(index);
+                               for (auto it : currentBest) {
+                                   result.push_back(it);
+                               }
+
+                               vector<double> occurences= population->displayPopulation();
+
+                               output2.send(result);
+                             
+        
+                               
                            }
                            else {
                                cout << "missing key " << keyname << endl;
@@ -122,7 +139,8 @@ public:
 
 			//population->targetParams.clear();
 			//population->generations= 0;
-
+            population->population.clear();
+                               
 			initializeObject(args);
 			alreadyPrinted= false;
 		}
