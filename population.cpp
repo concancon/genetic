@@ -168,14 +168,7 @@ void Population::generate(double mutationIndex) {
     double sum = 0.;
     // Refill the population with children from the mating pool
     newPopulation.clear();
-    //newPopulation.shrink_to_fit();
-    vector<double> scores(population.size());
     
-//    double sum = std::accumulate(LightIterator{population.begin()}, LightIterator{population.end()}, (double) 0.0);
-//    double inverseSum = 1.0 / sum;
-//    for (int i = 0; i < population.size(); i++) {
-//        scores[i] = population[i].fitness * inverseSum;
-//    }
     std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
     int elitelen = population.size() * 0.1;
     for (int i = 0; i < elitelen; i++) {
@@ -206,7 +199,7 @@ std::vector<double>& Population::exponentialRankSelector(double c){
     
     probabilityArray.clear();
      //first we need to sort the array in descending order
-         std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
+    std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
 
      for(int i = 0; i< population.size(); i++){
         
@@ -239,22 +232,7 @@ DNA& Population::select(double sum) {
 
 
 
-//choose a single member of the population based on its score
-DNA& Population::select(const vector<double>& scores, double sum) {
-    double random = (double)equalRandom(gen) * sum;
 
-    int index = 0;
-    for ( ; random > 0. && index < scores.size(); index++) {
-        random -= scores[index];
-    }
-    if (random > 0.0) {
-        cout << "random is greater than 0!" << endl;
-    }
-    index--;
-
-    population[index].count++;
-    return population[index];
-}
 vector<double>& Population::displayPopulation() {
 	for (int i = 0; i < population.size(); i++) {
         for (int j = 0; j < population[i].genes.size(); j++) {

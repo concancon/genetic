@@ -11,6 +11,10 @@ std::mt19937 gen{rd()}; //Standard mersenne_twister_engine seeded with rd()
 std::uniform_int_distribution<int> equalRandom{0, 255};
 
 
+void DNA::setFitness(double f){
+    this->fitness = f;
+}
+
  //constructor for DNA class
 DNA::DNA(int paramSize, bool randomize)
 	: genes(paramSize, 0)

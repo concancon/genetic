@@ -34,8 +34,8 @@ public:
     MIN_RELATED {""};
     
     inlet<>  input {this, "(toggle) on/off"};
-    outlet<> output {this, "(list) the dictionary of random values to be evaluated", "dictionary"};
-    outlet<> output2 {this, "(list) frequency of values to examine mutation"};
+    outlet<> output {this, "(dict) the dictionary of random values to be evaluated", "dictionary"};
+    outlet<> output2 {this, "(dict) dict with appended fitness", "dictionary"};
     outlet<> output3{this, "(float) current max fitness"};
     
     void initializeObject(const atoms& args= {}){
@@ -59,6 +59,7 @@ public:
         t_dictionary *d = population->toDict();
 
         dictionary_appendlong(population->maxDict, gensym("generation"), population->generations);
+        
         dictionary_appenddictionary(population->maxDict, gensym("population"), (t_object *)d);
 
 		//notify max that these
@@ -77,6 +78,44 @@ public:
         }
     }
     
+    message<> dictionary { this, "dictionary",
+           "Dictionary containing the generation and fitness values for a population",
+           MIN_FUNCTION {
+              
+            if(population.get()){
+               try {
+                   dict d = {args[0]};
+                  // can we convert this dict back to a double array?
+                   t_dictionary *popd;
+                 
+                    if (dictionary_getdictionary(d, gensym("population"), &popd) == MAX_ERR_NONE) {
+                       long size = dictionary_getentrycount(popd);
+                       for (long i = 0; i < size; i++) {
+                           char keyname[256];
+                           double val;
+                           snprintf(keyname, 256, "pop_%ld", i);
+                           if (dictionary_getfloat(popd, gensym(keyname), &val) == MAX_ERR_NONE) {
+                               
+                               //we populate our probabilityArray with the incoming fitness values
+                               population->probabilityArray.push_back(val);
+                            
+                           }
+                           else {
+                               cout << "missing key " << keyname << endl;
+                           }
+                       }
+                   }
+               }
+               catch (std::exception& e) {
+                   cerr << e.what() << endl;
+               }
+            }
+            else{
+                 cout << "initialize population before trying to pass in an array of fitness vals" <<c74::min::endl;
+                }
+               return {};
+           }
+       };
     message<> buildPopulation {this, "buildPopulation", "build an initial population", MIN_FUNCTION {
             
 	   if(population.get()){
@@ -96,7 +135,7 @@ public:
 			return args;
 		}
 
-		//population->popDict.touch();
+	
 		output.send("dictionary", population->popDict.name());
         return args;
     }};
@@ -166,13 +205,14 @@ public:
      return {args};
    }}};
    
+    //attribute to test polynomialMutate method
     attribute<int> mutate{
     
                 this, "mutate", 200 , setter{ MIN_FUNCTION {
                 
-                atom value= (atom)DNA::polynomialMutate(args[0], args[1]);
+                //atom value= (atom)DNA::polynomialMutate(args[0], args[1]);
             
-                output2.send(value);
+                //output2.send(value);
                 return {args};
     }}};
                 

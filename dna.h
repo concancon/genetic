@@ -18,6 +18,8 @@ public:
     std::vector<int> genes;
     int numberOfGenes;
     int count = 0;
+    void setFitness(double f);
+    
     void fitnessFunction(const std::vector<double>& target);
  
     
