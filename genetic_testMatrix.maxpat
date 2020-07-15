@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 162.0, 56.0, 1209.0, 810.0 ],
+		"rect" : [ 162.0, 56.0, 842.0, 810.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,19 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-40",
+					"linecount" : 6,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 222.0, 633.0, 69.0, 89.0 ],
+					"text" : "70 18 220 92 150 120 92 150 120 92 150 120 92 150 120 92 150 120"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-11",
 					"maxclass" : "dict.view",
@@ -977,7 +990,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 3,
-					"outlettype" : [ "dictionary", "dictionary", "" ],
+					"outlettype" : [ "dictionary", "result", "" ],
 					"patching_rect" : [ 166.0, 567.0, 70.0, 22.0 ],
 					"text" : "min.genetic"
 				}
@@ -1088,7 +1101,8 @@
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
-					"destination" : [ "obj-11", 0 ],
+					"destination" : [ "obj-40", 1 ],
+					"midpoints" : [ 201.0, 610.5, 281.5, 610.5 ],
 					"source" : [ "obj-1", 1 ]
 				}
 

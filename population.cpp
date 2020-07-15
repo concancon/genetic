@@ -48,7 +48,7 @@ Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), cou
     finished = false;
     population.clear();
     mutationRate = 0.001;
-    maxPopulation = 6;
+    maxPopulation = 10;
 	numParams = numberOfParams;
     
     for(int i = 0; i < maxPopulation; i++) {

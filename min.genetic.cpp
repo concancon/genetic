@@ -98,9 +98,9 @@ public:
                            if (dictionary_getfloat(popd, gensym(keyname), &val) == MAX_ERR_NONE) {
                                
                                //we populate our probabilityArray with the incoming fitness values
-                               cout << "set " ;
-                               population->population[i].displayGenes();
-                               cout<< " to fitness of: " << val<<endl;
+//                               cout << "set " ;
+//                               population->population[i].displayGenes();
+//                               cout<< " to fitness of: " << val<<endl;
                                population->population[i].setFitness(val);
                                population->generate(population->mutationIndex);
 
