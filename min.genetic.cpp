@@ -96,29 +96,12 @@ public:
 			return args;
 		}
 
-		population->popDict.touch();
+		//population->popDict.touch();
 		output.send("dictionary", population->popDict.name());
         return args;
     }};
     
-//    attribute<vector<double>> target {this, "target", {},
-//        setter { MIN_FUNCTION {
-//            
-//           if(population.get()){
-//                population->targetParams.clear();
-//                population->generations= 0;
-//                
-//                initializeObject(args);
-//                alreadyPrinted= false;
-//            }
-//            else if(args.size()>0){
-//                
-//                initializeObject(args);
-//                cout << "Object initialized" <<c74::min::endl;
-//                }
-//                
-//        return args;
-//    }}};
+
                 
   attribute<double> mutationRate {this, "mutationRate", 0.001,
         setter { MIN_FUNCTION {

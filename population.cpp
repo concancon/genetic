@@ -38,7 +38,7 @@ Population::Population(const vector<double>& tp): popDict(c74::min::symbol(true)
 		workers[i] = std::make_unique<WorkerThread>();
 	}
 #endif
-    calcFitness();
+    cout << "our old constructor has been called" <<endl;
 }
 
 Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), counter(256) {
@@ -80,7 +80,7 @@ void Population::setMaxPopulation(int mp){
         DNA dna(numParams, true);
         population.push_back(std::move(dna));
     }
-    calcFitness();
+    //calcFitness();
 }
 
 // uncomment to time the function, it's definitely faster
