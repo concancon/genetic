@@ -110,14 +110,20 @@ public:
                          }
 
                        vector<double> occurences= population->displayPopulation();
-                       output2.send(result);
+                       
+                        output2.send(result);
 
+                      if(!(this->population->finished)){
                        population->generate(population->mutationIndex);
                       
                        output.send("dictionary", population->toDict().name());
                        //create a dictionary once again with the new population
                                
+                    }
+                    else{
+                               cout << "we are finished!" << c74::min::endl;
                                
+                      }
                    }
                    
                }

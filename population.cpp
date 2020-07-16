@@ -148,7 +148,7 @@ vector<int>& Population::getBest(int& index) {
         }
     }
   
-    if (maxFitness >= numParams * 0.95) {
+    if (maxFitness >= 95) {
         finished = true;
     }
 	if (index >= 0) {

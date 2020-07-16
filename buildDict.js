@@ -1,8 +1,8 @@
 autowatch =1;
 
 var outputObject = {};
-var target= [];
-
+var target= [255, 255, 255];
+var d = new Dict;
 
 
 function anything(){
@@ -34,15 +34,19 @@ function anything(){
 
 function generation(g){
 	
-	outputObject.generation= g;
+	outputObject.generation = g;
 
 }
 
 function bang(){
-   var d= new Dict();
    d.parse(JSON.stringify(outputObject));
-   outlet(0, "dictionary", d.name);
-		
+   outlet(0, "dictionary", d.name);	
+}
+
+function reset(){
+	
+	outputObject= {};
+ 	
 }
 function setTarget(){
   
