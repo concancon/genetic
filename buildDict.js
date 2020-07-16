@@ -3,33 +3,38 @@ autowatch =1;
 var outputObject = {};
 var target= [255, 255, 255];
 var d = new Dict;
-
+var popSize = 0;
 
 function anything(){
 	
-	var msg = messagename; //pop_0, pop_1...
-	var args = arrayfromargs(arguments);
-	if(args.length == target.length){
-	//bewerte args
-		var score = 0;
-		for(var i = 0; i< args.length; i++){
-			var difference= Math.abs(args[i]- target[i] );
-			var distance = (255 - difference) /255;
-	    	score += (distance);	
-	  	}
+	var key = messagename; //pop_0, pop_1...
+	var args = arrayfromargs(arguments); 
+	  
 	
-	score =  (score / args.length) * 100.;
 	
 	if(!outputObject.population) outputObject.population= {};
-	outputObject.population[messagename] = score;
+	outputObject.population[messagename]= args[0];
+	//is it complete? if so send it out
 	
+	post("current length is " + Object.keys(outputObject.population).length +'\n');
+	post("target length is" + popSize + '\n');
+	for( var key in  Object.keys(outputObject.population)){
+			
+			post('\'' + Object.keys(outputObject.population)[key] +'\'\n');
+		}
 	
+	if(Object.keys(outputObject.population).length == popSize) {
+	//post('outputting dict\n');
+	bang();
 	}
-	else{
-		post('target and args have different lengths');
-	}
+			
+}
+
+function setSize(l){
 	
-	
+	popSize = l;
+
+
 }
 
 function generation(g){
@@ -39,20 +44,22 @@ function generation(g){
 }
 
 function bang(){
+   //post('bang\n');
    d.parse(JSON.stringify(outputObject));
    outlet(0, "dictionary", d.name);	
 }
 
+
+
 function reset(){
 	
+	d = new Dict;
 	outputObject= {};
+	bang();
+	
  	
 }
-function setTarget(){
-  
-	target = arrayfromargs(arguments);
-		
-}
+
 
 
 
