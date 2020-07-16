@@ -42,7 +42,7 @@ public:
     Population(const std::vector<double>& tp);
     Population(int numberOfParams);
     
-    c74::max::t_dictionary *toDict(); //TODO: MAKE PRIVATE
+    const c74::min::dict& toDict(); //TODO: MAKE PRIVATE
      
     void setMutationRate(double mr){
        mutationRate= mr;

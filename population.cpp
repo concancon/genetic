@@ -59,7 +59,7 @@ Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), cou
 }
    
 //converts a population to an atomarray
-c74::max::t_dictionary* Population::toDict(){
+const c74::min::dict& Population::toDict(){
 
 	t_dictionary* d = dictionary_new();
     long idx = 0;
@@ -69,7 +69,11 @@ c74::max::t_dictionary* Population::toDict(){
 		string keyname = basename + to_string(idx++);
 		dictionary_appendatomarray(d, gensym(keyname.c_str()), (t_object*)pop.toAtomArray());
 	}
-	return d;
+    dictionary_appendlong(maxDict, gensym("generation"), generations);
+    
+    dictionary_appenddictionary(maxDict, gensym("population"), (t_object *)d);
+    
+	return popDict;
 }
 
 //setter for the population size
@@ -88,11 +92,6 @@ void Population::setMaxPopulation(int mp){
 
 //Iterate through the population to calculate the fitness of each individual therein
 void Population::calcFitness(){
-
-   
-    t_dictionary* d = toDict();
-    dictionary_appendlong(maxDict, gensym("generation"), generations);
-    dictionary_appenddictionary(maxDict, gensym("population"), (t_object*)d);
 
 #ifdef BENCHMARK
 	auto start = high_resolution_clock::now();

@@ -56,12 +56,7 @@ public:
             reInit= true;
         }
         population = std::make_unique<Population>(t);
-        t_dictionary *d = population->toDict();
-
-        dictionary_appendlong(population->maxDict, gensym("generation"), population->generations);
-        
-        dictionary_appenddictionary(population->maxDict, gensym("population"), (t_object *)d);
-
+    
 		//notify max that these
         if(reInit){
             
@@ -77,6 +72,9 @@ public:
             
         }
     }
+    
+
+   
     
     message<> dictionary { this, "dictionary",
            "Dictionary containing the generation and fitness values for a population",
@@ -97,11 +95,8 @@ public:
                            snprintf(keyname, 256, "pop_%ld", i);
                            if (dictionary_getfloat(popd, gensym(keyname), &val) == MAX_ERR_NONE) {
                                
-                               //we populate our probabilityArray with the incoming fitness values
-//                             cout << "set " ;
-//                               population->population[i].displayGenes();
-//                               cout<< " to fitness of: " << val<<endl;
-                               cout << "i:  " << i<< "val: " << val<< endl;
+
+                              
                                population->population[i].fitness = val;
                            }
                            else {
@@ -118,6 +113,11 @@ public:
                        output2.send(result);
 
                        population->generate(population->mutationIndex);
+                      
+                       output.send("dictionary", population->toDict().name());
+                       //create a dictionary once again with the new population
+                               
+                               
                    }
                    
                }
@@ -152,7 +152,7 @@ public:
 		}
 
 	
-		output.send("dictionary", population->popDict.name());
+        output.send("dictionary", population->toDict().name());
         return args;
     }};
     
