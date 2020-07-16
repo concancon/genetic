@@ -98,30 +98,28 @@ public:
                            if (dictionary_getfloat(popd, gensym(keyname), &val) == MAX_ERR_NONE) {
                                
                                //we populate our probabilityArray with the incoming fitness values
-//                               cout << "set " ;
+//                             cout << "set " ;
 //                               population->population[i].displayGenes();
 //                               cout<< " to fitness of: " << val<<endl;
-                               population->population[i].setFitness(val);
-                               population->generate(population->mutationIndex);
-
-                               int index;
-                               std::vector<int>& currentBest = population->getBest(index);
-                               for (auto it : currentBest) {
-                                   result.push_back(it);
-                               }
-
-                               vector<double> occurences= population->displayPopulation();
-
-                               output2.send(result);
-                             
-        
-                               
+                               cout << "i:  " << i<< "val: " << val<< endl;
+                               population->population[i].fitness = val;
                            }
                            else {
                                cout << "missing key " << keyname << endl;
                            }
-                       }
+                        }
+                        int index;
+                        std::vector<int>& currentBest = population->getBest(index);
+                        for (auto it : currentBest) {
+                             result.push_back(it);
+                         }
+
+                       vector<double> occurences= population->displayPopulation();
+                       output2.send(result);
+
+                       population->generate(population->mutationIndex);
                    }
+                   
                }
                catch (std::exception& e) {
                    cerr << e.what() << endl;

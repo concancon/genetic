@@ -48,7 +48,7 @@ Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), cou
     finished = false;
     population.clear();
     mutationRate = 0.001;
-    maxPopulation = 10;
+    maxPopulation = 11;
 	numParams = numberOfParams;
     
     for(int i = 0; i < maxPopulation; i++) {
@@ -138,7 +138,7 @@ double Population::getAverageFitness() {
 //we use this to output the best member to Max
 vector<int>& Population::getBest(int& index) {
 
-	static vector<int> defaultGenes;
+    static vector<int> defaultGenes = {-1};
 
 	maxFitness = 0.;
 	index= -1;
@@ -179,7 +179,7 @@ void Population::generate(double mutationIndex) {
     for (int i = 0; i<population.size(); i++){
         sum+=probabilityArray[i];
     }
-    
+  
     for (int i = 0; i < population.size() - elitelen; i++) {
         DNA partnerA = select(sum);
         DNA partnerB = select(sum);
@@ -199,7 +199,7 @@ std::vector<double>& Population::exponentialRankSelector(double c){
     
     probabilityArray.clear();
      //first we need to sort the array in descending order
-    std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
+    //std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
 
      for(int i = 0; i< population.size(); i++){
         
