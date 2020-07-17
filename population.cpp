@@ -148,7 +148,7 @@ vector<int>& Population::getBest(int& index) {
         }
     }
   
-    if (maxFitness >= 95) {
+    if (maxFitness >= 99) {
         finished = true;
     }
 	if (index >= 0) {

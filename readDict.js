@@ -29,4 +29,8 @@ function popSize(){
   outlet(2, Object.keys(inputObject.population).length);	
 }
 
+function reset(){
+	post('reset');
+		i = 0;
+}
 

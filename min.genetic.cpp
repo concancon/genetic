@@ -81,12 +81,13 @@ public:
            MIN_FUNCTION {
               
             if(population.get()){
+                //look at population->population[i-n]
                 result.clear();
-               try {
+                
+                try {
                    dict d = {args[0]};
                   // can we convert this dict back to a double array?
                    t_dictionary *popd;
-                 
                     if (dictionary_getdictionary(d, gensym("population"), &popd) == MAX_ERR_NONE) {
                        long size = dictionary_getentrycount(popd);
                        for (long i = 0; i < size; i++) {
@@ -94,38 +95,34 @@ public:
                            double val;
                            snprintf(keyname, 256, "pop_%ld", i);
                            if (dictionary_getfloat(popd, gensym(keyname), &val) == MAX_ERR_NONE) {
-                               
-
-                              
                                population->population[i].fitness = val;
                            }
                            else {
                                cout << "missing key " << keyname << endl;
                            }
                         }
-                        int index;
-                        std::vector<int>& currentBest = population->getBest(index);
-                        for (auto it : currentBest) {
-                             result.push_back(it);
-                         }
-
                        vector<double> occurences= population->displayPopulation();
-                       
+                       int index;
+                       std::vector<int>& currentBest = population->getBest(index);
+                       for (auto it : currentBest) {
+                               result.push_back(it);
+                           }
                         output2.send(result);
 
                       if(!(this->population->finished)){
-                       population->generate(population->mutationIndex);
+                       
+                            population->generate(population->mutationIndex);
+                            //create a dictionary once again with the new population
+                            output.send("dictionary", population->toDict().name());
                       
-                       output.send("dictionary", population->toDict().name());
-                       //create a dictionary once again with the new population
                                
                     }
                     else{
                                cout << "we are finished!" << c74::min::endl;
-                               
+                               output3.send(result);
                       }
+                            
                    }
-                   
                }
                catch (std::exception& e) {
                    cerr << e.what() << endl;

@@ -16,8 +16,7 @@ function anything(){
 	outputObject.population[messagename]= args[0];
 	//is it complete? if so send it out
 	
-	post("current length is " + Object.keys(outputObject.population).length +'\n');
-	post("target length is" + popSize + '\n');
+	
 	for( var key in  Object.keys(outputObject.population)){
 			
 			post('\'' + Object.keys(outputObject.population)[key] +'\'\n');
@@ -26,6 +25,7 @@ function anything(){
 	if(Object.keys(outputObject.population).length == popSize) {
 	//post('outputting dict\n');
 	bang();
+	reset();
 	}
 			
 }
@@ -38,7 +38,7 @@ function setSize(l){
 }
 
 function generation(g){
-	
+
 	outputObject.generation = g;
 
 }
