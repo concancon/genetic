@@ -19,7 +19,6 @@ public:
     c74::min::dict popDict;
     c74::max::t_object* maxDict;   //we need a t_object to write to dictionary
 	std::vector<DNA> population;
-    std::vector<DNA> matingPool;
     std::vector<double> targetParams;
     std::vector<double> counter;
     std::vector<double> probabilityArray;
