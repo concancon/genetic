@@ -35,8 +35,8 @@ public:
     
     inlet<>  input {this, "(toggle) on/off"};
     outlet<> output {this, "(dict) the dictionary of random values to be evaluated", "dictionary"};
-    outlet<> output2 {this, "(DNA) Selected DNA", "result"};
-    outlet<> output3{this, "(float) current max fitness"};
+    outlet<> output2 {this, "(DNA) Current best, result"};
+    outlet<> output3{this, "(float) best after accuracy thresh is passed"};
     
     void initializeObject(const atoms& args= {}){
         
