@@ -122,6 +122,14 @@ vector<int>& Population::getBest(int& index) {
 	return defaultGenes;
 }
 
+
+void Population::calcFitness(){
+    if(targetParams.size()){
+        for (auto it = population.begin(); it < population.end(); it++) {
+            it->fitnessFunction(targetParams);
+        }
+    }
+}
 //This method replaces what used to be the natural selection method.
 //it is based on the idea of setting each fitness value to a percentage in
 //relation to the sum of all individuals.

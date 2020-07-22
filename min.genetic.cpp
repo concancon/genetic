@@ -44,6 +44,17 @@ public:
         return population;
     }
     
+    vector<double>& getResultAsVector(){
+        vector<double>* doubleResult = new vector<double>; //TODO: free this or improve it
+        if(result.size()){
+            for(auto r: result){
+                doubleResult->push_back((double) r );
+                
+            }
+            return *doubleResult;
+        }
+        
+    }
     void initializeObject(const atoms& args= {}){
         
         
@@ -80,8 +91,7 @@ public:
     }
     
 
-   
-    
+   //message to assign a fitness value to each member of a population
     message<> dictionary { this, "dictionary",
            "Dictionary containing the generation and fitness values for a population",
            MIN_FUNCTION {
@@ -90,9 +100,17 @@ public:
                 //look at population->population[i-n]
                 result.clear();
                 
+                if(args.size() == 0){
+                    
+                    cout << "we are going to use a vector instead of a dict for testing purposes" <<endl;
+                    
+                    population->calcFitness();
+                    
+                }
+                else{
                 try {
                    dict d = {args[0]};
-                  // can we convert this dict back to a double array?
+                  
                    t_dictionary *popd;
                     if (dictionary_getdictionary(d, gensym("population"), &popd) == MAX_ERR_NONE) {
                        long size = dictionary_getentrycount(popd);
@@ -133,7 +151,8 @@ public:
                }
                catch (std::exception& e) {
                    cerr << e.what() << endl;
-               }
+                        }
+             }
             }
             else{
                  cout << "initialize population before trying to pass in an array of fitness vals" <<c74::min::endl;
