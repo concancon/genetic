@@ -75,7 +75,10 @@ TEST_CASE("object initialization:calling buildPopulation sets default values for
     }
 }
 
-TEST_CASE("object's average fitness constantly improves"){
+TEST_CASE("object's average fitness improves with a higher mutation rate"){
+    
+    long generationsOne= 0;
+    long generationsTwo= 0;
     ext_main(nullptr);
     test_wrapper<genetic> an_instance;
     genetic&    my_object = an_instance;
@@ -84,6 +87,7 @@ TEST_CASE("object's average fitness constantly improves"){
     my_object.buildPopulation(args);
     my_object.getPopulation()->setMaxPopulation(200);
     my_object.getPopulation()->targetParams = {1.0, 2.0, 3.0};
+    
   
     SECTION("object can reach target"){
         
@@ -100,13 +104,12 @@ TEST_CASE("object's average fitness constantly improves"){
         my_object.getPopulation()->getAverageFitness() ;
         vector<double> r= my_object.getResultAsVector();
         REQUIRE(r== my_object.getPopulation()->targetParams);
-       // std::cout << "generations on 1: " << my_object.getPopulation()->generations <<endl;
+        generationsOne= my_object.getPopulation()->generations;
            
        }
-    SECTION("object can reach target faster with settings:"){
+    SECTION("object can reach target faster with mutationRate= 0.5"){
            
-          // my_object.getPopulation()->setMutationRate(0.5);
-         
+           my_object.getPopulation()->setMutationRate(0.5);
            my_object.accuracy = 100.0;
            my_object.dictionary(); //assign fitness scores according to target
            my_object.bang();
@@ -119,8 +122,9 @@ TEST_CASE("object's average fitness constantly improves"){
            
            my_object.getPopulation()->getAverageFitness() ;
            vector<double> r= my_object.getResultAsVector();
-           //REQUIRE(r== my_object.getPopulation()->targetParams);
-           //std::cout << "generations on 2: " << my_object.getPopulation()->generations <<endl;
+           generationsOne= my_object.getPopulation()->generations;
+           REQUIRE(r== my_object.getPopulation()->targetParams);
+           REQUIRE(generationsTwo < generationsOne);
           }
     
 }
