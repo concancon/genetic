@@ -85,11 +85,12 @@ TEST_CASE("object's average fitness constantly improves"){
     my_object.getPopulation()->setMaxPopulation(200);
     my_object.getPopulation()->targetParams = {1.0, 2.0, 3.0};
   
-    SECTION("myobject reacts to dictionary message"){
+    SECTION("object can reach target"){
         
+        my_object.accuracy = 100.0;
         my_object.dictionary(); //assign fitness scores according to target
         my_object.bang();
-        
+      
         while(my_object.getPopulation()->finished == false){
            my_object.bang();
            my_object.getPopulation()->calcFitness();
@@ -99,7 +100,27 @@ TEST_CASE("object's average fitness constantly improves"){
         my_object.getPopulation()->getAverageFitness() ;
         vector<double> r= my_object.getResultAsVector();
         REQUIRE(r== my_object.getPopulation()->targetParams);
+       // std::cout << "generations on 1: " << my_object.getPopulation()->generations <<endl;
            
        }
+    SECTION("object can reach target faster with settings:"){
+           
+          // my_object.getPopulation()->setMutationRate(0.5);
+         
+           my_object.accuracy = 100.0;
+           my_object.dictionary(); //assign fitness scores according to target
+           my_object.bang();
+           
+           while(my_object.getPopulation()->finished == false){
+              my_object.bang();
+              my_object.getPopulation()->calcFitness();
+              my_object.getPopulation()->getMaxFitness();
+           }
+           
+           my_object.getPopulation()->getAverageFitness() ;
+           vector<double> r= my_object.getResultAsVector();
+           //REQUIRE(r== my_object.getPopulation()->targetParams);
+           //std::cout << "generations on 2: " << my_object.getPopulation()->generations <<endl;
+          }
     
 }

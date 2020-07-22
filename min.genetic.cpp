@@ -208,6 +208,26 @@ public:
             else return {0};
     }}};
                 
+    attribute<double> accuracy {this, "accuracy", 99.0,
+          setter { MIN_FUNCTION {
+                  
+          if(population.get()){
+                  
+              population->accuracy= double(args[0]);
+                  return {args[0]};
+              }
+                  
+              return {0};
+                  
+              }},
+             getter { MIN_GETTER_FUNCTION {
+              if(population.get()){
+            
+                return {population->accuracy};
+                  
+              }
+              else return {0};
+      }}};
                 
    attribute<double>  expFactor {this, "expFactor", 0.975,
        setter { MIN_FUNCTION {

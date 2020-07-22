@@ -113,7 +113,7 @@ vector<int>& Population::getBest(int& index) {
         }
     }
   
-    if (maxFitness >= 99.7) {
+    if (maxFitness >= accuracy) {
         finished = true;
     }
 	if (index >= 0) {

@@ -22,7 +22,7 @@ public:
     std::vector<double> targetParams;
     std::vector<double> counter;
     std::vector<double> probabilityArray;
-    
+    double accuracy = 99.0;
     double expFactor;
     double mutationIndex= 0.;
     int maxPopulation;
