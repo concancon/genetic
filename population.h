@@ -83,7 +83,9 @@ public:
        return finished;
      }
 
-     int getGenerations() {
+    int getNumberOfParams();
+    
+    int getGenerations() {
        return generations;
      }
     

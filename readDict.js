@@ -9,8 +9,8 @@ function getNext(){
 	
  if(i < populationSize){
  var tag = nextPop.concat(i++);
- outlet(0, tag);
  outlet(1, inputObject.population[tag]);
+ outlet(0, tag);
  popSize();
 }
  else post('you already iterated through the whole population');

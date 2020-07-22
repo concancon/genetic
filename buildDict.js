@@ -16,11 +16,12 @@ function anything(){
 	outputObject.population[messagename]= args[0];
 	//is it complete? if so send it out
 	
+	post('\'' + messagename +'\': ' + outputObject.population[messagename] + '\n');
 	
-	for( var key in  Object.keys(outputObject.population)){
+//	for( var key in  Object.keys(outputObject.population)){
 			
-			post('\'' + Object.keys(outputObject.population)[key] +'\'\n');
-		}
+//			post('\'' + Object.keys(outputObject.population)[key] +'\'\n');
+//		}
 	
 	if(Object.keys(outputObject.population).length == popSize) {
 	//post('outputting dict\n');
@@ -53,10 +54,8 @@ function bang(){
 
 function reset(){
 	
-	d = new Dict;
-	outputObject= {};
-	bang();
-	
+	d.clear();
+	outputObject= {};	
  	
 }
 

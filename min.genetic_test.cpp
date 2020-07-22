@@ -16,14 +16,10 @@ SCENARIO("object produces correct output") {
 
         test_wrapper<genetic> an_instance;
         genetic&    my_object = an_instance;
-
-        my_object.initializeObject();
+        const atoms& args= {1};
+        my_object.buildPopulation(args);
         
-
-
-        REQUIRE(true);
-            
-
+        REQUIRE(my_object.getPopulation()->getNumberOfParams() == 1);
 
 
       }

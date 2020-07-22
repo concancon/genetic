@@ -35,8 +35,14 @@ public:
     
     inlet<>  input {this, "(toggle) on/off"};
     outlet<> output {this, "(dict) the dictionary of random values to be evaluated", "dictionary"};
-    outlet<> output2 {this, "(DNA) Current best, result"};
-    outlet<> output3{this, "(float) best after accuracy thresh is passed"};
+    outlet<> output2{this, "(list) best after accuracy thresh is passed"};
+    outlet<> output3 {this, "(DNA) Current best, result"};
+    
+    
+    
+    std::unique_ptr<Population>& getPopulation(){
+        return population;
+    }
     
     void initializeObject(const atoms& args= {}){
         
@@ -107,7 +113,8 @@ public:
                        for (auto it : currentBest) {
                                result.push_back(it);
                            }
-                        output2.send(result);
+                        //output current best
+                        output3.send(result);
 
                       if(!(this->population->finished)){
                        
@@ -119,7 +126,7 @@ public:
                     }
                     else{
                                cout << "we are finished!" << c74::min::endl;
-                               output3.send(result);
+                               output2.send(result);
                       }
                             
                    }

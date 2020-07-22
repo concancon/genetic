@@ -55,7 +55,6 @@ Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), cou
         DNA dna(numberOfParams, true);
         population.push_back(std::move(dna));
     }
-    cout << "our new constructor has been called" <<endl;
 }
    
 //converts a population to an atomarray
@@ -79,6 +78,7 @@ const c74::min::dict& Population::toDict(){
 //setter for the population size
 void Population::setMaxPopulation(int mp){
     maxPopulation = mp;
+    generations = 0;
     population.clear();
     for (int i = 0; i < maxPopulation; i++) {
         DNA dna(numParams, true);
@@ -90,41 +90,6 @@ void Population::setMaxPopulation(int mp){
 // uncomment to time the function, it's definitely faster
 // #define BENCHMARK
 
-//Iterate through the population to calculate the fitness of each individual therein
-void Population::calcFitness(){
-
-#ifdef BENCHMARK
-	auto start = high_resolution_clock::now();
-#endif
-
-#if USE_THREADS
-	int div = population.size() / numThreads;
-
-	for (int i = 0; i < numThreads; i++) {
-		workers[i]->doAsync([this, div, i] {  // add new tasks
-			auto it1 = population.begin() + (i * div);
-			auto it2 = (i == numThreads - 1) ? population.end() : (it1 + div); //if we are in the last thread then the end has to be rounded to end of the population.
-			for ( ; it1 < it2; it1++) { //two iterators to address sub arrays of the population
-				it1->fitnessFunction(targetParams);
-			}
-		});
-	}
-	for (int i = 0; i < numThreads; i++) {
-		workers[i]->wait();  // wait for all threads to be finished. for synchronisation. pattern is called barrier.
-	}
-#else
-	for (auto it = population.begin(); it < population.end(); it++) {
-		it->fitnessFunction(targetParams);
-	}
-#endif
-
-#ifdef BENCHMARK
-	auto stop = high_resolution_clock::now();
-	auto duration = duration_cast<microseconds>(stop - start);
-	std::cout << "calcFitness: " << duration.count() << std::endl;
-#endif
-
-}
 
 // Compute average fitness for the population
 double Population::getAverageFitness() {
@@ -193,6 +158,10 @@ void Population::generate(double mutationIndex) {
    // calcFitness();
 }
 
+//Creates probability array which maps raw fitness values to values which have a hyper exponential curve.
+// @Param c defines steepness of curve. where c must within the range [0..1).
+//A small value of c increases the probability of the best phenotypes to be selected. If c is set to zero, the selection probability of the best
+//phenotype is set to one. The selection probability of all other phenotypes is zero. A value near one equalizes the selection probabilities.
 
 std::vector<double>& Population::exponentialRankSelector(double c){
     
@@ -229,9 +198,6 @@ DNA& Population::select(double sum) {
     
 }
 
-
-
-
 vector<double>& Population::displayPopulation() {
 	for (int i = 0; i < population.size(); i++) {
         for (int j = 0; j < population[i].genes.size(); j++) {
@@ -240,4 +206,8 @@ vector<double>& Population::displayPopulation() {
         }
     }
     return counter;
+}
+
+int Population::getNumberOfParams(){
+    return numParams;
 }
