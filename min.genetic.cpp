@@ -112,51 +112,51 @@ public:
                     
                 }
                 else{
-                try {
-                   dict d = {args[0]};
-                  
-                   t_dictionary *popd;
-                    if (dictionary_getdictionary(d, gensym("population"), &popd) == MAX_ERR_NONE) {
-                       long size = dictionary_getentrycount(popd);
-                       for (long i = 0; i < size; i++) {
-                           char keyname[256];
-                           double val;
-                           snprintf(keyname, 256, "pop_%ld", i);
-                           if (dictionary_getfloat(popd, gensym(keyname), &val) == MAX_ERR_NONE) {
-                               population->population[i].fitness = val;
-                           }
-                           else {
-                               cout << "missing key " << keyname << endl;
-                           }
-                        }
-                       vector<double> occurences= population->displayPopulation();
-                       int index;
-                       std::vector<int>& currentBest = population->getBest(index);
-                       for (auto it : currentBest) {
-                               result.push_back(it);
-                           }
-                        //output current best
-                        output3.send(result);
-
-                      if(!(this->population->finished)){
-                       
-                            population->generate(population->mutationIndex);
-                            //create a dictionary once again with the new population
-                            output.send("dictionary", population->toDict().name());
+                    try {
+                       dict d = {args[0]};
                       
-                               
-                    }
-                    else{
-                               cout << "we are finished!" << c74::min::endl;
-                               output2.send(result);
-                      }
-                            
-                   }
-               }
-               catch (std::exception& e) {
-                   cerr << e.what() << endl;
+                       t_dictionary *popd;
+                        if (dictionary_getdictionary(d, gensym("population"), &popd) == MAX_ERR_NONE) {
+                           long size = dictionary_getentrycount(popd);
+                           for (long i = 0; i < size; i++) {
+                               char keyname[256];
+                               double val;
+                               snprintf(keyname, 256, "pop_%ld", i);
+                               if (dictionary_getfloat(popd, gensym(keyname), &val) == MAX_ERR_NONE) {
+                                   population->population[i].fitness = val;
+                               }
+                               else {
+                                   cout << "missing key " << keyname << endl;
+                               }
+                            }
+                           vector<double> occurences= population->displayPopulation();
+                           int index;
+                           std::vector<int>& currentBest = population->getBest(index);
+                           for (auto it : currentBest) {
+                                   result.push_back(it);
+                               }
+                            //output current best
+                            output3.send(result);
+
+                          if(!(this->population->finished)){
+                           
+                                population->generate(population->mutationIndex);
+                                //create a dictionary once again with the new population
+                                output.send("dictionary", population->toDict().name());
+                          
+                                   
                         }
-             }
+                        else{
+                                   cout << "we are finished!" << c74::min::endl;
+                                   output2.send(result);
+                          }
+                                
+                       }
+                   }
+                   catch (std::exception& e) {
+                       cerr << e.what() << endl;
+                            }
+                    }
             }
             else{
                  cout << "initialize population before trying to pass in an array of fitness vals" <<c74::min::endl;
@@ -191,26 +191,7 @@ public:
     
 
                 
-  attribute<double> mutationRate {this, "mutationRate", 0.214,
-        setter { MIN_FUNCTION {
-                
-        if(population.get()){
-                
-            population->mutationRate= double(args[0]);
-                return {args[0]};
-            }
-                
-            return {0};
-                
-            }},
-           getter { MIN_GETTER_FUNCTION {
-            if(population.get()){
-          
-              return {population->mutationRate};
-                
-            }
-            else return {0.214};
-    }}};
+
     
     attribute<double> mutationIndex {this, "mutationIndex", 5.,
             setter { MIN_FUNCTION {
@@ -267,14 +248,26 @@ public:
    attribute<int> maxPopulation {this, "maxPopulation", 50,
             setter { MIN_FUNCTION {
                 
-                //cout << "args[0] " << int(args[0]) << c74::min::endl;
+            
             if(population.get()){
             population->setMaxPopulation(int(args[0]));
             }
             return {args};
     }}};
            
-
+  
+attribute<double> mutationRate {this, "mutationRate", 0.214,
+        setter { MIN_FUNCTION {
+                
+        if(population.get()){
+                
+            population->setMutationRate(double(args[0]));
+              
+            }
+                
+            return {args};
+                
+    }}};
    
     //attribute to test polynomialMutate method
     attribute<int> mutate{

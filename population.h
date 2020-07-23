@@ -44,10 +44,7 @@ public:
     
     const c74::min::dict& toDict(); //TODO: MAKE PRIVATE
      
-    void setMutationRate(double mr){
-       mutationRate= mr;
-    }
-    
+    void setMutationRate(double mr);
     void setMutationIndex(double mi){
         mutationIndex= mi;
     
@@ -55,6 +52,7 @@ public:
     double getMutationRate(){
         return mutationRate;
     }
+    
     void setMaxPopulation(int mp);
     int getMaxPopulation(){
         

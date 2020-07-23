@@ -88,6 +88,12 @@ void Population::setMaxPopulation(int mp){
     //calcFitness();
 }
 
+void Population::setMutationRate(double mr){
+    
+    mutationRate = mr;
+    
+}
+
 // uncomment to time the function, it's definitely faster
 // #define BENCHMARK
 
