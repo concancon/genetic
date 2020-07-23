@@ -211,7 +211,17 @@ public:
             }
             else return {0.214};
     }}};
-                
+    
+    attribute<double> mutationIndex {this, "mutationIndex", 5.,
+            setter { MIN_FUNCTION {
+                                
+         if(population.get()){
+              population->setMutationIndex(int(args[0]));
+        }
+       
+       return {args};
+     }}};
+
     attribute<double> accuracy {this, "accuracy", 95.0,
           setter { MIN_FUNCTION {
                   
@@ -233,7 +243,7 @@ public:
               else return {95.0};
       }}};
                 
-   attribute<double>  expFactor {this, "expFactor", 0.005,
+   attribute<double>  expFactor {this, "expFactor", 0.123,
        setter { MIN_FUNCTION {
                
        if(population.get()){
@@ -251,7 +261,7 @@ public:
              return {population->expFactor};
 
            }
-           else return {0.005};
+           else return {0.123};
    }}};
                 
    attribute<int> maxPopulation {this, "maxPopulation", 50,
@@ -264,15 +274,7 @@ public:
             return {args};
     }}};
            
-  attribute<double> mutationIndex {this, "mutationIndex", 0.,
-          setter { MIN_FUNCTION {
-                              
-       if(population.get()){
-            population->setMutationIndex(int(args[0]));
-      }
-     
-     return {args};
-   }}};
+
    
     //attribute to test polynomialMutate method
     attribute<int> mutate{
