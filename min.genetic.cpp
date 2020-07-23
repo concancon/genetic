@@ -64,12 +64,16 @@ public:
         double oldMutationRate;
         double oldMaxPopulation;
         double oldExpFactor;
+        double oldmutationIndex;
+        double oldAccuracy;
         bool reInit= false;
         if(population.get()){
             //save mutation rate
             oldMutationRate = population->mutationRate;
             oldMaxPopulation = population->maxPopulation;
             oldExpFactor = population->expFactor;
+            oldmutationIndex = population->mutationIndex;
+            oldAccuracy = population->accuracy;
             reInit= true;
         }
         population = std::make_unique<Population>(t);
@@ -187,7 +191,7 @@ public:
     
 
                 
-  attribute<double> mutationRate {this, "mutationRate", 0.001,
+  attribute<double> mutationRate {this, "mutationRate", 0.214,
         setter { MIN_FUNCTION {
                 
         if(population.get()){
@@ -205,10 +209,10 @@ public:
               return {population->mutationRate};
                 
             }
-            else return {0};
+            else return {0.214};
     }}};
                 
-    attribute<double> accuracy {this, "accuracy", 99.0,
+    attribute<double> accuracy {this, "accuracy", 95.0,
           setter { MIN_FUNCTION {
                   
           if(population.get()){
@@ -226,31 +230,31 @@ public:
                 return {population->accuracy};
                   
               }
-              else return {0};
+              else return {95.0};
       }}};
                 
-   attribute<double>  expFactor {this, "expFactor", 0.975,
+   attribute<double>  expFactor {this, "expFactor", 0.005,
        setter { MIN_FUNCTION {
                
        if(population.get()){
                
            population->expFactor = double(args[0]); //TODO: make a setter!
-               return {args[0]};
+               
            }
                
-           return {0};
-               
+           return {args};
+                    
            }},
           getter { MIN_GETTER_FUNCTION {
            if(population.get()){
-         
+
              return {population->expFactor};
-               
+
            }
-           else return {0};
+           else return {0.005};
    }}};
                 
-   attribute<int> maxPopulation {this, "maxPopulation", 200,
+   attribute<int> maxPopulation {this, "maxPopulation", 50,
             setter { MIN_FUNCTION {
                 
                 //cout << "args[0] " << int(args[0]) << c74::min::endl;
@@ -260,7 +264,7 @@ public:
             return {args};
     }}};
            
-  attribute<double> mutationIndex {this, "mutationIndex", 20.,
+  attribute<double> mutationIndex {this, "mutationIndex", 0.,
           setter { MIN_FUNCTION {
                               
        if(population.get()){

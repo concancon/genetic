@@ -44,11 +44,12 @@ Population::Population(const vector<double>& tp): popDict(c74::min::symbol(true)
 Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), counter(256) {
     
     maxDict = (t_object*)popDict; //produces a memory leak //TODO: CREATE DESTRUCTOR TO RELEASE THIS
-    expFactor = 0.975;
+    expFactor = 0.005;
     finished = false;
     population.clear();
-    mutationRate = 0.001;
-    maxPopulation = 11;
+    mutationRate = 0.214;
+    mutationIndex= 0.;
+    maxPopulation = 50;
 	numParams = numberOfParams;
     
     for(int i = 0; i < maxPopulation; i++) {
