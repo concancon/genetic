@@ -118,6 +118,8 @@ double Population::getAverageFitness() {
 //we use this to output the best member to Max
 vector<int>& Population::getBest(int& index) {
 
+    cout << "max pop: " << maxPopulation <<endl;
+    cout << "accuracy"   << accuracy << endl;
     static vector<int> defaultGenes = {-1};
 
 	maxFitness = 0.;

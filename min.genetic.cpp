@@ -88,8 +88,15 @@ public:
             a.push_back(oldMutationRate);
             mutationRate.set(a);
             a.clear();
+            a.push_back(oldmutationIndex);
+            mutationIndex.set(a);
+            a.clear();
             a.push_back(oldExpFactor);
             expFactor.set(a);
+            a.clear();
+            a.push_back(oldAccuracy);
+            accuracy.set(a);
+         
             
         }
     }
