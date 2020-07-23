@@ -22,10 +22,10 @@ public:
     std::vector<double> targetParams;
     std::vector<double> counter;
     std::vector<double> probabilityArray;
-    double accuracy = 95.0;
+    double accuracy;
     double expFactor;
-    double mutationIndex= 5.;
-       double mutationRate = 0.214;
+    double mutationIndex;
+    double mutationRate;
     int maxPopulation;
     bool calledOnce= false;
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -34,7 +34,7 @@ public:
 
     bool finished;
     double generations= 0;              // Number of generations
-    double perfectScore;   //TODO: FIGURE OUT PERFECT SCORE
+    double perfectScore;   
     double maxFitness=0.;
 	int numParams = 0;
 
@@ -52,7 +52,8 @@ public:
     double getMutationRate(){
         return mutationRate;
     }
-    
+    void setAccuracy(double a);
+    void setExpFactor(double ef);
     void setMaxPopulation(int mp);
     int getMaxPopulation(){
         

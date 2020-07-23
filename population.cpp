@@ -50,6 +50,7 @@ Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), cou
     mutationRate = 0.214;
     mutationIndex= 5.;
     maxPopulation = 50;
+    accuracy = 97;
 	numParams = numberOfParams;
     
     for(int i = 0; i < maxPopulation; i++) {
@@ -93,7 +94,15 @@ void Population::setMutationRate(double mr){
     mutationRate = mr;
     
 }
+void Population::setExpFactor(double ef){
+    
+    expFactor= ef;
+    
+}
 
+void Population::setAccuracy(double a){
+    accuracy= a;
+}
 // uncomment to time the function, it's definitely faster
 // #define BENCHMARK
 
