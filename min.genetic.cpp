@@ -51,9 +51,9 @@ public:
                 doubleResult->push_back((double) r );
                 
             }
-            return *doubleResult;
+            
         }
-        
+        return *doubleResult;
     }
     void initializeObject(const atoms& args= {}){
         

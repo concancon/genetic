@@ -128,3 +128,35 @@ TEST_CASE("object's average fitness improves with a higher mutation rate"){
           }
     
 }
+
+TEST_CASE("exponentialSelector"){
+    
+    ext_main(nullptr);
+    test_wrapper<genetic> an_instance;
+    genetic&    my_object = an_instance;
+    const atoms& args= {3};
+    
+    my_object.buildPopulation(args);
+    my_object.getPopulation()->setMaxPopulation(20);
+    my_object.getPopulation()->targetParams = {1.0, 2.0, 3.0};
+    
+    
+    SECTION(" If c is set to zero only the best phenotype will be selected"){
+       
+      
+        my_object.dictionary(); //assign fitness scores according to target
+       //sort according to fintess
+        std::sort(my_object.getPopulation()->population.begin(), my_object.getPopulation()->population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
+          //create probabiltiy array
+        my_object.getPopulation()->expFactor = 0.999; //expected only the best phenotype should be selected
+        my_object.bang();
+        //my_object.getPopulation()->calcFitness();
+        //here we should see that the new population consists only of best phenotypes, as these have an immense fitness compared to others
+        //to do that we average the scores of the DNAS
+        double avg = my_object.getPopulation()->getAverageFitness();
+        
+        
+    }
+    
+}
+
