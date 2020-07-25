@@ -121,7 +121,7 @@ public:
     }}};
                 
                 
-   attribute<double>  expFactor {this, "expFactor", 0.975,
+   attribute<double>  expFactor {this, "expFactor", 0.204,
        setter { MIN_FUNCTION {
                
        if(population.get()){
@@ -142,7 +142,7 @@ public:
            else return {0};
    }}};
                 
-   attribute<int> maxPopulation {this, "maxPopulation", 200,
+   attribute<int> maxPopulation {this, "maxPopulation", 40,
             setter { MIN_FUNCTION {
                 
                 //cout << "args[0] " << int(args[0]) << c74::min::endl;
@@ -152,7 +152,7 @@ public:
             return {args};
     }}};
            
-  attribute<double> mutationIndex {this, "mutationIndex", 20.,
+  attribute<double> mutationIndex {this, "mutationIndex", 10.,
           setter { MIN_FUNCTION {
                               
        if(population.get()){

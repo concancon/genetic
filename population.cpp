@@ -21,12 +21,13 @@ struct LightIterator : public std::vector<DNA>::iterator
 Population::Population(const vector<double>& tp):  counter(256) {
     
    // maxDict = (t_object*)popDict; //produces a memory leak //TODO: CREATE DESTRUCTOR TO RELEASE THIS
-    expFactor = 0.975;
+    expFactor = 0.204;
     targetParams= tp;
     finished = false;
     population.clear();
     mutationRate = 0.001;
-    maxPopulation = 200;
+    maxPopulation = 40;
+    mutationIndex = 10;
     
     for(int i = 0; i< maxPopulation; i++) {
         DNA dna(targetParams.size(), true);
@@ -138,7 +139,7 @@ vector<int>& Population::getBest(int& index) {
         }
     }
   
-    if (maxFitness >= targetParams.size() * 0.95) {
+    if (maxFitness >= targetParams.size() * 0.99) {
         finished = true;
     }
 	if (index >= 0) {
