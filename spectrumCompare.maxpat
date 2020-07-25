@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 90.0, 56.0, 949.0, 810.0 ],
+		"rect" : [ 457.0, 56.0, 949.0, 810.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -394,6 +394,7 @@
 						"style" : "",
 						"subpatcher_template" : "",
 						"assistshowspatchername" : 0,
+						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"id" : "obj-3",
@@ -698,7 +699,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 499.0, 74.0, 59.0, 35.0 ],
-					"text" : "134 97 23"
+					"text" : "251 179 18"
 				}
 
 			}
@@ -1121,7 +1122,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 613.0, 746.0, 63.0, 22.0 ],
-					"text" : "0.214375"
+					"text" : "0.455218"
 				}
 
 			}
@@ -1144,8 +1145,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 162.0, 426.0, 63.0, 22.0 ],
-					"text" : "0.214375"
+					"patching_rect" : [ 193.0, 417.0, 63.0, 22.0 ],
+					"text" : "0.455218"
 				}
 
 			}
@@ -1205,8 +1206,8 @@
 					"numinlets" : 6,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 162.0, 457.0, 143.0, 22.0 ],
-					"text" : "scale 0. 60. 100. 0. 0.8"
+					"patching_rect" : [ 177.0, 457.0, 137.0, 22.0 ],
+					"text" : "scale 0. 260. 100. 0. 0.8"
 				}
 
 			}
@@ -1355,7 +1356,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 817.299999999999955, 746.0, 99.0, 22.0 ],
-					"text" : "116268.548169"
+					"text" : "486177.353932"
 				}
 
 			}
@@ -1368,7 +1369,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 710.0, 746.0, 77.0, 35.0 ],
-					"text" : "1776016.325533"
+					"text" : "7001330.692853"
 				}
 
 			}
@@ -2323,7 +2324,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-58", 0 ],
-					"midpoints" : [ 693.0, 418.0, 171.5, 418.0 ],
+					"midpoints" : [ 693.0, 418.0, 202.5, 418.0 ],
 					"source" : [ "obj-67", 0 ]
 				}
 
