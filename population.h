@@ -85,6 +85,8 @@ public:
 
     int getNumberOfParams();
     
+    std::vector<int> getSelectionCount();
+    
     int getGenerations() {
        return generations;
      }

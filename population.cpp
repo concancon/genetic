@@ -238,8 +238,7 @@ DNA& Population::rSelect(){
         }
         
     }
-    cout << "chromosome selected: " ;
-    population[pick].displayGenes();
+    population[pick].count++;
     return population[pick];
    
     
@@ -257,4 +256,13 @@ vector<double>& Population::displayPopulation() {
 
 int Population::getNumberOfParams(){
     return numParams;
+}
+
+vector<int> Population::getSelectionCount(){
+    vector<int> numberOfTimesSelected;
+    for(int i = 0; i <population.size(); i++){
+        numberOfTimesSelected.push_back(population[i].count);
+    }
+        
+    return numberOfTimesSelected;
 }

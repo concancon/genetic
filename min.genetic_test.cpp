@@ -159,17 +159,57 @@ TEST_CASE("exponentialSelector"){
         for (int i = 0; i<my_object.getPopulation()->population.size(); i++){
                sum+= my_object.getPopulation()->probabilityArray[i];
            }
+    
         REQUIRE(sum== 1); //in between step
-        for(int i = 0 ; i< 100; i++){
         DNA partnerA = my_object.getPopulation()->rSelect();
         REQUIRE(partnerA.genes.size()==3);
         REQUIRE(partnerA.genes == my_object.getPopulation()->getBest(index));
         
-        }
-        //my_object.getPopulation()->calcFitness();
-        //here we should see that the new population consists only of best phenotypes, as these have an immense fitness compared to others
-        //to do that we average the scores of the DNAS
     }
     
 }
 
+TEST_CASE("exponentialSelector 2"){
+    
+    ext_main(nullptr);
+    test_wrapper<genetic> an_instance;
+    genetic&    my_object = an_instance;
+    const atoms& args= {3};
+    
+    my_object.buildPopulation(args);
+    my_object.getPopulation()->setMaxPopulation(20);
+    my_object.getPopulation()->targetParams = {1.0, 2.0, 3.0};
+    
+    double sum = 0;
+    int index = 0;
+    SECTION(" If c is set to almost one all the phenotypes will be selected"){
+       
+      
+        my_object.dictionary(); //assign fitness scores according to target
+       //sort according to fintess
+        std::sort(my_object.getPopulation()->population.begin(), my_object.getPopulation()->population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
+          //create probabiltiy array
+        my_object.getPopulation()->expFactor = 0.999; //expect all members to have roughly the same probability of being chosen
+        //my_object.bang(); instead of calling bang lets test all of its constituent steps
+        //roughly speaking bang just calls generate getBest and outputs the result
+        //generate
+        //TODO: TEST THIS WITH ELITISM TOO!!!!!
+        my_object.getPopulation()->exponentialRankSelector(my_object.getPopulation()->expFactor);
+
+        //here we can test the values in probabilityArray
+        
+        for (int i = 0; i<my_object.getPopulation()->population.size(); i++){
+               sum+= my_object.getPopulation()->probabilityArray[i];
+           }
+    
+        REQUIRE(sum== 1); //in between step
+        for(int i = 0; i < my_object.getPopulation()->getMaxPopulation();i++ ){
+            my_object.getPopulation()->rSelect();
+        }
+        
+         std::cout << "selection: " << my_object.getPopulation()->getSelectionCount()<<endl;
+  
+        
+    }
+    
+}
