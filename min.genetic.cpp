@@ -184,7 +184,7 @@ public:
 		}
 		else if(args.size()>0){
 			initializeObject(args);
-			cout << "Object initialized" <<c74::min::endl;
+			cout << "Object initialized" <<endl;
 		}
 		else {
 			cout << "Missing arguments (number of parameters)" <<c74::min::endl;

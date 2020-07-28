@@ -77,7 +77,7 @@ public:
     std::vector<double>& exponentialRankSelector(double c);
     
     DNA& select(double sum);
-    
+    DNA& rSelect();
     
     bool terminate() {
        return finished;

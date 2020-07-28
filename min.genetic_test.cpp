@@ -61,9 +61,9 @@ TEST_CASE("object initialization:calling buildPopulation sets default values for
     SECTION("buildpopulation sets defaults"){
 
         REQUIRE(my_object.getPopulation()->finished== false);
-        REQUIRE(my_object.getPopulation()->mutationRate == 0.001);
-        REQUIRE(my_object.getPopulation()->maxPopulation== 11);
-        REQUIRE(my_object.getPopulation()->expFactor== 0.975);
+        REQUIRE(my_object.getPopulation()->mutationRate == 0.214);
+        REQUIRE(my_object.getPopulation()->maxPopulation== 50);
+        REQUIRE(my_object.getPopulation()->expFactor== 0.123);
         
     }
     
@@ -140,7 +140,8 @@ TEST_CASE("exponentialSelector"){
     my_object.getPopulation()->setMaxPopulation(20);
     my_object.getPopulation()->targetParams = {1.0, 2.0, 3.0};
     
-    
+    double sum = 0;
+    int index = 0;
     SECTION(" If c is set to zero only the best phenotype will be selected"){
        
       
@@ -148,14 +149,26 @@ TEST_CASE("exponentialSelector"){
        //sort according to fintess
         std::sort(my_object.getPopulation()->population.begin(), my_object.getPopulation()->population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
           //create probabiltiy array
-        my_object.getPopulation()->expFactor = 0.999; //expected only the best phenotype should be selected
-        my_object.bang();
+        my_object.getPopulation()->expFactor = 0.0; //expected only the best phenotype should be selected
+        //my_object.bang(); instead of calling bang lets test all of its constituent steps
+        //roughly speaking bang just calls generate getBest and outputs the result
+        //generate
+        //TODO: TEST THIS WITH ELITISM TOO!!!!!
+        my_object.getPopulation()->exponentialRankSelector(my_object.getPopulation()->expFactor);
+
+        for (int i = 0; i<my_object.getPopulation()->population.size(); i++){
+               sum+= my_object.getPopulation()->probabilityArray[i];
+           }
+        REQUIRE(sum== 1); //in between step
+        for(int i = 0 ; i< 100; i++){
+        DNA partnerA = my_object.getPopulation()->rSelect();
+        REQUIRE(partnerA.genes.size()==3);
+        REQUIRE(partnerA.genes == my_object.getPopulation()->getBest(index));
+        
+        }
         //my_object.getPopulation()->calcFitness();
         //here we should see that the new population consists only of best phenotypes, as these have an immense fitness compared to others
         //to do that we average the scores of the DNAS
-        double avg = my_object.getPopulation()->getAverageFitness();
-        
-        
     }
     
 }

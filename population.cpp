@@ -118,8 +118,8 @@ double Population::getAverageFitness() {
 //we use this to output the best member to Max
 vector<int>& Population::getBest(int& index) {
 
-    cout << "max pop: " << maxPopulation <<endl;
-    cout << "accuracy"   << accuracy << endl;
+//    cout << "max pop: " << maxPopulation <<endl;
+//    cout << "accuracy"   << accuracy << endl;
     static vector<int> defaultGenes = {-1};
 
 	maxFitness = 0.;
@@ -171,8 +171,8 @@ void Population::generate(double mutationIndex) {
     }
   
     for (int i = 0; i < population.size() - elitelen; i++) {
-        DNA partnerA = select(sum);
-        DNA partnerB = select(sum);
+        DNA partnerA = rSelect();
+        DNA partnerB = rSelect();
         DNA child = partnerA.crossover(partnerB); // this should be moved or elided, thus ok
         child.mutate(mutationRate, mutationIndex);
         newPopulation.push_back(std::move(child)); //std::move(child));
@@ -215,12 +215,33 @@ DNA& Population::select(double sum) {
     }
     if (random > 0.0) {
         cout << "random is greater than 0!" << endl;
+        
     }
     index--;
 
     population[index].count++;
     return population[index];
     
+    
+}
+
+DNA& Population::rSelect(){
+    double rndNumber = rand() / (double) RAND_MAX;
+    double offset = 0.0;
+    int pick = 0;
+
+    for (int i = 0; i < population.size(); i++) {
+        offset += probabilityArray[i];
+        if (rndNumber < offset) {
+            pick = i;
+            break;
+        }
+        
+    }
+    cout << "chromosome selected: " ;
+    population[pick].displayGenes();
+    return population[pick];
+   
     
 }
 
