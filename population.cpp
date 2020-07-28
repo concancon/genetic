@@ -254,3 +254,9 @@ vector<double>& Population::displayPopulation() {
     }
     return counter;
 }
+
+void Population::setExpFactor(double ef){
+    
+    expFactor= ef;
+    
+}

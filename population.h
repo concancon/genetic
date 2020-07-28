@@ -52,6 +52,8 @@ public:
     double getMutationRate(){
         return mutationRate;
     }
+    
+    void setExpFactor(double ef);
     void setMaxPopulation(int mp);
     int getMaxPopulation(){
         
