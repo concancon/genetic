@@ -76,6 +76,8 @@ public:
 
     std::vector<double>& exponentialRankSelector(double c);
     
+    DNA& rSelect();
+    //https://stackoverflow.com/questions/24609131/implementation-of-roulette-wheel-selection
     DNA& select(double sum);
     
     DNA& select(const std::vector<double>& scores, double sum);

@@ -227,7 +227,25 @@ DNA& Population::select(double sum) {
     
 }
 
+DNA& Population::rSelect(){
+    double rndNumber = rand() / (double) RAND_MAX;
+    double offset = 0.0;
+    int pick = 0;
 
+    for (int i = 0; i < population.size(); i++) {
+        offset += probabilityArray[i];
+        if (rndNumber < offset) {
+            pick = i;
+            break;
+        }
+        
+    }
+    cout << "chromosome selected: " ;
+    population[pick].displayGenes();
+    return population[pick];
+   
+    
+}
 
 //choose a single member of the population based on its score
 DNA& Population::select(const vector<double>& scores, double sum) {
