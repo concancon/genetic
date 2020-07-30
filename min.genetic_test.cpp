@@ -180,7 +180,7 @@ TEST_CASE("exponentialSelector 2"){
     my_object.getPopulation()->setMaxPopulation(20);
     my_object.getPopulation()->targetParams = {1.0, 2.0, 3.0};
     
-    double sum = 0;
+    double sum = 0.;
     int index = 0;
     SECTION(" If c is set to almost one all the phenotypes will be selected"){
        
@@ -201,13 +201,17 @@ TEST_CASE("exponentialSelector 2"){
         for (int i = 0; i<my_object.getPopulation()->population.size(); i++){
                sum+= my_object.getPopulation()->probabilityArray[i];
            }
-    
-        REQUIRE(sum== 1); //in between step
-        for(int i = 0; i < my_object.getPopulation()->getMaxPopulation();i++ ){
+
+        REQUIRE( sum == Approx(1.) );
+        
+        for(int i = 0; i < 200;i++ ){
             my_object.getPopulation()->rSelect();
         }
+        vector<int> ans = my_object.getPopulation()->getSelectionCount();
+      
         
-         std::cout << "selection: " << my_object.getPopulation()->getSelectionCount()<<endl;
+        
+        //std::cout << ans<<endl;
   
         
     }
