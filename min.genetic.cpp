@@ -122,7 +122,16 @@ public:
                   
               return {args};
                   
-      }}};
+            }},
+          getter { MIN_GETTER_FUNCTION {
+          if(population.get()){
+          
+          return {population->getMutationRate()};
+          
+          }
+          else return {0};
+                
+    }}};
                       
   attribute<double> mutationIndex {this, "mutationIndex", 5.,
          setter { MIN_FUNCTION {
