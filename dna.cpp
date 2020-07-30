@@ -81,12 +81,13 @@ DNA& DNA::crossover(const DNA& partner) {
 
 //apply a random values to random genes that DONT match the target value
 void DNA::mutate(double mutationRate, double eta){
+   
     for(int i= 0; i< this->numberOfGenes; i++){
         double r = ((double) rand() / (RAND_MAX));
       
         if(r < mutationRate ){
             //this->genes[i] = equalRandom(gen);
-            this->genes[i] = polynomialMutate(this->genes[i], eta);
+            this->genes[i] = polynomialMutate(this->genes[i], 30.);
         }
     }
     
