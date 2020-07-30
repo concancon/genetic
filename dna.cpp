@@ -87,7 +87,7 @@ void DNA::mutate(double mutationRate, double eta){
       
         if(r < mutationRate ){
             //this->genes[i] = equalRandom(gen);
-            this->genes[i] = polynomialMutate(this->genes[i], 30.);
+            this->genes[i] = polynomialMutate(this->genes[i], eta); //TODO: work here with dnas instead of a single value. just pass mutationRate and eta here as well
         }
     }
     

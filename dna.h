@@ -29,13 +29,15 @@ public:
     void mutate(double mutationRate, double eta);
     
   
-    int static polynomialMutate(int originalValue, double index){
+    int static polynomialMutate(int originalValue , double index){
        
 //        void static polynomial_mutation_impl( DNA& child, const std::pair<double, double> &bounds,
 //        const double p_m, const double eta_m)
+       
         
         DNA child(1, 0);
-        polynomial_mutation_impl(child, {0, 255}, 1., 30);
+        child.genes[0] = originalValue;
+        polynomial_mutation_impl(child, {0, 255}, 1., index);
         int result = child.genes[0];
         return result;
         
@@ -50,7 +52,7 @@ public:
         std::random_device rd;  //Will be used to obtain a seed for the random number engine
         std::mt19937 randomEngine{rd()}; //Standard mersenne_twister_engine seeded with rd()//TODO: MAKE THESE GLOBAL
         
-        child.genes[0] = 200;
+        //child.genes[0] = 200;
         // Decision vector dimensions
         auto nx = child.genes.size();
         auto ncx = nx;

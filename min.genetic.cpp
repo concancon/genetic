@@ -153,12 +153,10 @@ public:
     
                 this, "mutate", 200 , setter{ MIN_FUNCTION {
                 
-                atom value= (atom)DNA::polynomialMutate(args[0], args[1]);
-
-                
-                
-                
+                if(population.get()){
+                atom value= (atom)DNA::polynomialMutate(args[0] , population->mutationIndex);
                 output2.send(value);
+                }
                 return {args};
     }}};
                 
