@@ -149,16 +149,16 @@ public:
           
   }}};
                 
-    attribute<int> mutate{
-    
-                this, "mutate", 200 , setter{ MIN_FUNCTION {
-                
-                if(population.get()){
-                atom value= (atom)DNA::polynomialMutate(args[0] , population->mutationIndex);
-                output2.send(value);
-                }
-                return {args};
-    }}};
+//    attribute<int> mutate{
+//    
+//                this, "mutate", 200 , setter{ MIN_FUNCTION {
+//                
+//                if(population.get()){
+//                //atom value= (atom)DNA::polynomialMutate(args[0] , population->mutationIndex);
+//                output2.send(value);
+//                }
+//                return {args};
+//    }}};
                 
    message<> getMaxFitness {
    this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {

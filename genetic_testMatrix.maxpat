@@ -46,7 +46,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 504.0, 443.999997615814209, 50.0, 22.0 ],
-					"text" : "12800"
+					"text" : "3600"
 				}
 
 			}
@@ -447,39 +447,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 881.0, 20.0, 75.0, 22.0 ],
-					"text" : "dim 40 40"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-18",
-					"maxclass" : "multislider",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
-					"parameter_enable" : 0,
-					"patching_rect" : [ 238.0, -13.0, 191.0, 138.0 ],
-					"setminmax" : [ 0.0, 255.0 ],
-					"setstyle" : 1,
-					"settype" : 0,
-					"size" : 20
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-11",
-					"maxclass" : "multislider",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
-					"parameter_enable" : 0,
-					"patching_rect" : [ 38.0, -13.0, 191.0, 138.0 ],
-					"setminmax" : [ 0.0, 1.0 ],
-					"setstyle" : 1,
-					"settype" : 0,
-					"size" : 20
+					"text" : "dim 60 60"
 				}
 
 			}
@@ -858,7 +826,7 @@
 					"numoutlets" : 2,
 					"onscreen" : 0,
 					"outlettype" : [ "jit_matrix", "" ],
-					"patching_rect" : [ 1050.0, 701.0, 346.0, 179.0 ]
+					"patching_rect" : [ 1011.0, 701.0, 346.0, 179.0 ]
 				}
 
 			}
@@ -920,7 +888,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 166.0, 399.749994397163391, 69.0, 22.0 ],
-					"text" : "qmetro 10"
+					"text" : "qmetro 20"
 				}
 
 			}
@@ -1113,14 +1081,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-13", 0 ],
-					"midpoints" : [ 47.5, 321.5, 175.5, 321.5 ],
-					"source" : [ "obj-11", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-13", 0 ]
 				}
@@ -1163,14 +1123,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-17", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-13", 0 ],
-					"midpoints" : [ 247.5, 323.5, 175.5, 323.5 ],
-					"source" : [ "obj-18", 0 ]
 				}
 
 			}
