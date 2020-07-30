@@ -193,20 +193,20 @@ void Population::generate(double mutationIndex) {
 
 
 std::vector<double>& Population::exponentialRankSelector(double c){
-    
-    probabilityArray.clear();
-     //first we need to sort the array in descending order
-         std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
+   
+   probabilityArray.clear();
+    //first we need to sort the array in descending order
+   //std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
 
-     for(int i = 1; i< population.size(); i++){
-        
-         double nominator = pow(c, (i-1.));
-         double denominator = pow(c, population.size()) -1.;
-         double probability = (c - 1.) * (nominator/ denominator);
-         probabilityArray.push_back(probability);
-     }
-     return probabilityArray;
- }
+    for(int i = 0; i< population.size(); i++){
+       
+        double numerator = c-1;
+        double denominator=  pow(c, population.size()) -1.;
+        double probability = pow(c, i) *  (numerator/ denominator);
+        probabilityArray.push_back(probability);
+    }
+    return probabilityArray;
+}
 //select based on exponentialSelector
 DNA& Population::select(double sum) {
     

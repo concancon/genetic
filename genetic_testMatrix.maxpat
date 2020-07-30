@@ -46,7 +46,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 504.0, 443.999997615814209, 50.0, 22.0 ],
-					"text" : "10000"
+					"text" : "1600"
 				}
 
 			}
@@ -447,7 +447,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 881.0, 20.0, 75.0, 22.0 ],
-					"text" : "dim 100 100"
+					"text" : "dim 40 40"
 				}
 
 			}
@@ -919,8 +919,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 166.0, 399.749994397163391, 63.0, 22.0 ],
-					"text" : "qmetro 20"
+					"patching_rect" : [ 166.0, 399.749994397163391, 69.0, 22.0 ],
+					"text" : "qmetro 10"
 				}
 
 			}
