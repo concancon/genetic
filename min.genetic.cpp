@@ -189,7 +189,7 @@ public:
                 
             if(population.get()){
 
-            if(!(this->population->finished)){
+            if(!(population->finished)){
                 //cout <<c74::min::endl;
                 result.clear();
                 //Create next generation

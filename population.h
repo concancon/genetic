@@ -57,11 +57,11 @@ public:
     void setMaxPopulation(int mp);
     int getMaxPopulation(){
         
-        return this->maxPopulation;
+        return maxPopulation;
     }
     
     double getMaxFitness(){
-        return this->maxFitness;
+        return maxFitness;
     }
     void calcFitness();
 

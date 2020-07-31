@@ -5,10 +5,6 @@
 
 using namespace std;
 //using namespace c74::max;
-std::random_device rd;  //Will be used to obtain a seed for the random number engine
-std::mt19937 gen{rd()}; //Standard mersenne_twister_engine seeded with rd()
-std::uniform_int_distribution<int> equalRandom{0, 255};
-
 
  //constructor for DNA class
 DNA::DNA(int paramSize, bool randomize)
@@ -18,7 +14,7 @@ DNA::DNA(int paramSize, bool randomize)
     int randomGene = 0;
 	if (randomize) {
 		for (int i = 0; i < numberOfGenes; i++) {
-			randomGene= equalRandom(gen);
+			randomGene= randomInt(engine);
 			genes[i] = randomGene;
 		}
 	}
@@ -60,13 +56,13 @@ void DNA::fitnessFunction(const vector<double>& target){
     
 
     
-    this->fitness = score; //TODO: GET RID OF SCORE VAR IF THIS APPROACH WORKS. Currently range is 0-1600 or 0-number of genes  
+    fitness = score; //TODO: GET RID OF SCORE VAR IF THIS APPROACH WORKS. Currently range is 0-1600 or 0-number of genes
  }
     //combine two DNA's to generate a third. This is done stochastically
 DNA& DNA::crossover(const DNA& partner) {
 	//DNA child(numberOfGenes, false);
 	if (numberOfGenes != 0) {
-		int midpoint =  (int)(equalRandom(gen) * (double)numberOfGenes);
+		int midpoint =  (int)(randomInt(engine) * (double)numberOfGenes);
 		for (int i = 0; i < numberOfGenes; i++) {
 			if (i > midpoint) {
                 ;
@@ -90,11 +86,9 @@ void DNA::mutate(double mutationRate, double eta){
 void DNA::polynomialMutationImpl(const std::pair<double, double> &bounds,
                                      const double p_m, const double eta_m){
     
-   std::random_device rd;  //Will be used to obtain a seed for the random number engine
-   std::mt19937 randomEngine{rd()}; //Standard mersenne_twister_engine seeded with rd()//TODO: MAKE THESE GLOBAL
    //child.genes[0] = 200;
    // Decision vector dimensions
-   auto nx = this->genes.size();
+   auto nx = genes.size();
    auto ncx = nx;
    // Problem bounds
    const auto lb = bounds.first;
@@ -106,13 +100,13 @@ void DNA::polynomialMutationImpl(const std::pair<double, double> &bounds,
    std::uniform_real_distribution<> drng(0., 1.); // to generate a number in [0, 1)
    // This implements the real polinomial mutation and applies it to the non integer part of the decision vector
    for (decltype(ncx) j = 0u; j < ncx; ++j) {
-       if (drng(randomEngine) < p_m && lb != ub) {
-           y = this->genes[j];
+       if (drng(engine) < p_m && lb != ub) {
+           y = genes[j];
            yl = lb;
            yu = ub;
            delta1 = (y - yl) / (yu - yl);
            delta2 = (yu - y) / (yu - yl);
-           rnd = drng(randomEngine);
+           rnd = drng(engine);
            
            mut_pow = 1. / (eta_m + 1.);
            if (rnd < 0.5) {
@@ -127,24 +121,21 @@ void DNA::polynomialMutationImpl(const std::pair<double, double> &bounds,
            y = y + deltaq * (yu - yl);
            if (y < yl) y = yl;
            if (y > yu) y = yu;
-           this->genes[j] = y;
+           genes[j] = y;
        }
    }
 
    // This implements the integer mutation for an individual
    for (decltype(nx) j = ncx; j < nx; ++j) {
-       if (drng(randomEngine) < p_m) {
+       if (drng(engine) < p_m) {
            // We need to draw a random integer in [lb, ub].
-           rnd = drng(randomEngine);
+           rnd = drng(engine);
            rnd *= (ub-lb);
            rnd += lb;
            //auto mutated = uniform_integral_from_range(lb, ub, randomEngine);
-           this->genes[j] = rnd;
+           genes[j] = rnd;
        }
    }
-    
-    
-    
 }
 
 

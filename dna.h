@@ -8,7 +8,8 @@
 
 static std::random_device rad;  //Will be used to obtain a seed for the random number engine
 static std::mt19937 engine{rad()}; //Standard mersenne_twister_engine seeded with rd()
-static std::uniform_real_distribution<double> equal{0., 1.};
+static std::uniform_real_distribution<double> drng{0., 1.};
+static std::uniform_int_distribution<int> randomInt{0, 255};
 
 class DNA{
     
