@@ -100,7 +100,9 @@ void DNA::polynomialMutationImpl(const std::pair<double, double> &bounds,
    std::uniform_real_distribution<> drng(0., 1.); // to generate a number in [0, 1)
    // This implements the real polinomial mutation and applies it to the non integer part of the decision vector
    for (decltype(ncx) j = 0u; j < ncx; ++j) {
-       if (drng(engine) < p_m && lb != ub) {
+       
+       auto temp = drng(engine);
+       if (temp < p_m && lb != ub) {
            y = genes[j];
            yl = lb;
            yu = ub;

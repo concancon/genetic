@@ -122,14 +122,15 @@ public:
                   
               return {args};
                   
-            }},
-          getter { MIN_GETTER_FUNCTION {
-          if(population.get()){
-          
-          return {population->getMutationRate()};
-          
-          }
-          else return {0};
+                
+//                ,
+//          getter { MIN_GETTER_FUNCTION {
+//          if(population.get()){
+//
+//          return {population->getMutationRate()};
+//
+//          }
+//          else return {args};
                 
     }}};
                       

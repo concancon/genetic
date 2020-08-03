@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 56.0, 1372.0, 810.0 ],
+		"rect" : [ 34.0, 56.0, 1005.0, 810.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,13 +40,63 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-11",
+					"maxclass" : "jit.cellblock",
+					"numinlets" : 2,
+					"numoutlets" : 4,
+					"outlettype" : [ "list", "", "", "" ],
+					"patching_rect" : [ 162.0, 690.5, 200.0, 200.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-48",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 1164.0, 648.0, 150.0, 47.0 ],
+					"text" : "compare the output of getBest with its previous output"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-45",
+					"linecount" : 6,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 1164.0, 557.0, 150.0, 87.0 ],
+					"text" : "what would happen if we wrote a function to measure this rate and always look for parameters that keep the rate high? "
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-18",
+					"linecount" : 5,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 991.0, 557.0, 150.0, 74.0 ],
+					"text" : "the rate of change of these pixels is representative of how quickly the solution space is discovered. "
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-46",
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 504.0, 443.999997615814209, 50.0, 22.0 ],
-					"text" : "3600"
+					"text" : "4"
 				}
 
 			}
@@ -82,18 +132,6 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 717.0, 760.5, 150.0, 60.0 ],
 					"text" : "race conditions in attrui. debug and discuss with Tim\n"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-38",
-					"linecount" : 5,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 717.0, 665.0, 151.0, 74.0 ],
-					"text" : "pixel shader : generate a new picture where the distance of desired values is represented. then we read this out on the cpu. "
 				}
 
 			}
@@ -447,7 +485,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 881.0, 20.0, 75.0, 22.0 ],
-					"text" : "dim 60 60"
+					"text" : "dim 2 2"
 				}
 
 			}
@@ -1138,6 +1176,15 @@
 				"patchline" : 				{
 					"destination" : [ "obj-17", 0 ],
 					"source" : [ "obj-20", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-11", 0 ],
+					"midpoints" : [ 895.5, 680.25, 171.5, 680.25 ],
+					"order" : 2,
+					"source" : [ "obj-23", 0 ]
 				}
 
 			}

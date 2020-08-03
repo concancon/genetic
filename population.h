@@ -37,6 +37,7 @@ public:
     double maxFitness=0.;
 
     std::vector<DNA> newPopulation;
+    std::vector<int> lastBest;
     Population(const std::vector<double>& tp);
     
     //c74::max::t_atomarray* toAtomArray(); //TODO: MAKE PRIVATE

@@ -17,7 +17,7 @@ public:
     
     DNA(int paramSize, bool randomize);
     double fitness;
-    std::vector<int> genes;
+    std::vector<int>genes;
     int numberOfGenes;
     int count = 0;
     void fitnessFunction(const std::vector<double>& target);
