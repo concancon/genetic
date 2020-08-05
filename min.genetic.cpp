@@ -198,6 +198,15 @@ public:
 
 				int index;
                 std::vector<int>& currentBest = population->getBest(index);
+                //we know that rate of improvement will have been calculated by now
+                
+                if(population->getGenerations() % 20 == 0){
+                
+                cout << "prog: " << population->getRateOfImprovement()<< c74::min::endl;
+                
+                }
+                
+                
                 for (auto it : currentBest) {
 					result.push_back(it);
                 }

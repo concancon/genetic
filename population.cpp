@@ -157,10 +157,10 @@ vector<int>& Population::getBest(int& index) {
                                  std::inserter(diff, diff.begin()));
         
          //if(lastBest.size()) lastBest.clear();
-        double rateOfImprovement = (double) diff.size() /(double)population[index].genes.size();
-        cout << rateOfImprovement << " rate of improvement" << endl;
-        for (auto i : diff) std::cout << i << ' ';
-        cout <<endl;
+        rateOfImprovement = (double) diff.size() /(double)population[index].genes.size();
+        //cout << rateOfImprovement << " rate of improvement" << endl;
+        //for (auto i : diff) std::cout << i << ' ';
+        //     cout <<endl;
         //lastBest.swap(population[index].genes);
     
         lastBest = population[index].genes;
