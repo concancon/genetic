@@ -145,7 +145,7 @@ public:
                             //output current best
                             output3.send(result);
 
-                          if(!(this->population->finished)){
+                          if(!(population->finished)){
                            
                                 population->generate(population->mutationIndex);
                                 //create a dictionary once again with the new population
