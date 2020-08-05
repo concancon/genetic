@@ -339,17 +339,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-38",
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 381.0, 70.0, 150.0, 34.0 ],
-					"text" : "flocoma.org\n"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-28",
 					"maxclass" : "newobj",
 					"numinlets" : 3,
@@ -699,7 +688,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 499.0, 74.0, 59.0, 35.0 ],
-					"text" : "251 179 18"
+					"text" : "33 19 164"
 				}
 
 			}
@@ -745,7 +734,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 83.0, 107.0, 868.0, 625.0 ],
+						"rect" : [ 34.0, 56.0, 868.0, 625.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -1117,12 +1106,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-72",
+					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 613.0, 746.0, 63.0, 22.0 ],
-					"text" : "0.455218"
+					"patching_rect" : [ 613.0, 746.0, 63.0, 35.0 ],
+					"text" : "357.757088"
 				}
 
 			}
@@ -1141,12 +1131,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-58",
+					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 193.0, 417.0, 63.0, 22.0 ],
-					"text" : "0.455218"
+					"patching_rect" : [ 193.0, 417.0, 63.0, 35.0 ],
+					"text" : "357.757088"
 				}
 
 			}
@@ -1356,20 +1347,19 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 817.299999999999955, 746.0, 99.0, 22.0 ],
-					"text" : "486177.353932"
+					"text" : "1.817533"
 				}
 
 			}
 , 			{
 				"box" : 				{
 					"id" : "obj-50",
-					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 710.0, 746.0, 77.0, 35.0 ],
-					"text" : "7001330.692853"
+					"patching_rect" : [ 710.0, 746.0, 77.0, 22.0 ],
+					"text" : "15.346098"
 				}
 
 			}

@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 79.0, 56.0, 638.0, 810.0 ],
+		"rect" : [ 79.0, 56.0, 1360.0, 810.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -26,7 +26,7 @@
 		"toptoolbarpinned" : 0,
 		"righttoolbarpinned" : 0,
 		"bottomtoolbarpinned" : 0,
-		"toolbars_unpinned_last_save" : 0,
+		"toolbars_unpinned_last_save" : 4,
 		"tallnewobj" : 0,
 		"boxanimatetime" : 200,
 		"enablehscroll" : 1,
@@ -39,6 +39,41 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-15",
+					"linecount" : 3,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 1017.0, 419.0, 150.0, 47.0 ],
+					"text" : "4 slices for the fitness function. there we build the average fitness"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-14",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 271.0, 855.0, 150.0, 34.0 ],
+					"text" : "flocoma.org\n"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-9",
+					"linecount" : 4,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 271.0, 785.0, 153.0, 60.0 ],
+					"text" : "what are adequate step sizes for measuring an average fitness of a sound with an envelope?"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-27",
 					"maxclass" : "newobj",
@@ -57,7 +92,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 342.5, 670.0, 81.5, 22.0 ],
-					"text" : "249 178 39"
+					"text" : "33 19 164"
 				}
 
 			}
@@ -791,6 +826,13 @@
 		}
 ,
 		"dependency_cache" : [ 			{
+				"name" : "genetic_testMatrix.maxsnap",
+				"bootpath" : "~/Documents/Max 8/Snapshots",
+				"patcherrelativepath" : "../../../../../Snapshots",
+				"type" : "mx@s",
+				"implicit" : 1
+			}
+, 			{
 				"name" : "spectrumCompare.maxpat",
 				"bootpath" : "~/Documents/Max 8/Packages/min-devkit/source/projects/min.genetic",
 				"patcherrelativepath" : ".",
@@ -858,7 +900,97 @@
 				"type" : "iLaX"
 			}
  ],
-		"autosave" : 0
+		"autosave" : 0,
+		"snapshot" : 		{
+			"filetype" : "C74Snapshot",
+			"version" : 2,
+			"minorversion" : 0,
+			"name" : "snapshotlist",
+			"origin" : "jpatcher",
+			"type" : "list",
+			"subtype" : "Undefined",
+			"embed" : 1,
+			"snapshot" : 			{
+				"valuedictionary" : 				{
+					"parameter_values" : 					{
+						"CV1" : 0.0,
+						"CV1[1]" : 0.0,
+						"CV2" : 100.0,
+						"CV2[1]" : 100.0,
+						"CV3" : 0.0,
+						"CV3[1]" : 0.0,
+						"Freq" : 6766.246564310111353,
+						"Freq[1]" : 6766.246564310111353,
+						"Offset" : 0.0,
+						"Offset[1]" : 0.0,
+						"Res" : 0.0,
+						"ResCV" : 100.0,
+						"ResCV[1]" : 100.0,
+						"Res[1]" : 0.0,
+						"live.gain~" : -36.0,
+						"power" : 0.0,
+						"power[1]" : 0.0,
+						"TimeMode" : 1.0,
+						"TimeMode[1]" : 1.0
+					}
+
+				}
+
+			}
+,
+			"snapshotlist" : 			{
+				"current_snapshot" : 0,
+				"entries" : [ 					{
+						"filetype" : "C74Snapshot",
+						"version" : 2,
+						"minorversion" : 0,
+						"name" : "genetic_testMatrix",
+						"origin" : "genetic_testMatrix",
+						"type" : "patcher",
+						"subtype" : "Undefined",
+						"embed" : 0,
+						"snapshot" : 						{
+							"valuedictionary" : 							{
+								"parameter_values" : 								{
+									"CV1" : 0.0,
+									"CV1[1]" : 0.0,
+									"CV2" : 100.0,
+									"CV2[1]" : 100.0,
+									"CV3" : 0.0,
+									"CV3[1]" : 0.0,
+									"Freq" : 6766.246564310111353,
+									"Freq[1]" : 6766.246564310111353,
+									"Offset" : 0.0,
+									"Offset[1]" : 0.0,
+									"Res" : 0.0,
+									"ResCV" : 100.0,
+									"ResCV[1]" : 100.0,
+									"Res[1]" : 0.0,
+									"live.gain~" : -36.0,
+									"power" : 0.0,
+									"power[1]" : 0.0,
+									"TimeMode" : 1.0,
+									"TimeMode[1]" : 1.0
+								}
+
+							}
+
+						}
+,
+						"fileref" : 						{
+							"name" : "genetic_testMatrix",
+							"filename" : "genetic_testMatrix.maxsnap",
+							"filepath" : "~/Documents/Max 8/Snapshots",
+							"filepos" : -1,
+							"snapshotfileid" : "e22eef2bd7bd702ad524fe6fc0456a43"
+						}
+
+					}
+ ]
+			}
+
+		}
+
 	}
 
 }
