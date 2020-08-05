@@ -12,7 +12,7 @@ std::uniform_int_distribution<int> equalRandom{0, 255};
 
 
 void DNA::setFitness(double f){
-    this->fitness = f;
+    fitness = f;
 }
 
  //constructor for DNA class
@@ -60,7 +60,7 @@ void DNA::fitnessFunction(const vector<double>& target){
     
 
     
-    this->fitness = (score / numberOfGenes) * 100.; //TODO: GET RID OF SCORE VAR IF THIS APPROACH WORKS. Currently range is 0-1600 or 0-number of genes  
+    fitness = (score / numberOfGenes) * 100.; //TODO: GET RID OF SCORE VAR IF THIS APPROACH WORKS. Currently range is 0-1600 or 0-number of genes  
  }
     //combine two DNA's to generate a third. This is done stochastically
 DNA& DNA::crossover(const DNA& partner) {
