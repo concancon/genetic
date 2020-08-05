@@ -23,7 +23,7 @@ DNA::DNA(int paramSize, bool randomize)
     int randomGene = 0;
 	if (randomize) {
 		for (int i = 0; i < numberOfGenes; i++) {
-			randomGene= equalRandom(gen);
+			randomGene= randomInt(engine);
 			genes[i] = randomGene;
 		}
 	}
@@ -66,7 +66,7 @@ void DNA::fitnessFunction(const vector<double>& target){
 DNA& DNA::crossover(const DNA& partner) {
 	//DNA child(numberOfGenes, false);
 	if (numberOfGenes != 0) {
-		int midpoint =  (int)(equalRandom(gen) * (double)numberOfGenes);
+		int midpoint =  (int)(randomInt(engine) * (double)numberOfGenes);
 		for (int i = 0; i < numberOfGenes; i++) {
 			if (i > midpoint) {
                 ;
@@ -81,16 +81,69 @@ DNA& DNA::crossover(const DNA& partner) {
 
 //apply a random values to random genes that DONT match the target value
 void DNA::mutate(double mutationRate, double eta){
-    for(int i= 0; i< this->numberOfGenes; i++){
-        double r = ((double) rand() / (RAND_MAX));
-      
-        if(r < mutationRate ){
-            //this->genes[i] = equalRandom(gen);
-            this->genes[i] = polynomialMutate(this->genes[i], eta);
-        }
-    }
+   
+	polynomialMutationImpl({0.,255.}, mutationRate, eta);
     
 }
+
+//dont pass child as reference, just use the class we're in and mutate 'in place' :)
+void DNA::polynomialMutationImpl(const std::pair<double, double> &bounds,
+                                     const double p_m, const double eta_m){
+    
+   //child.genes[0] = 200;
+   // Decision vector dimensions
+   auto nx = genes.size();
+   auto ncx = nx;
+   // Problem bounds
+   const auto lb = bounds.first;
+   const auto ub = bounds.second;
+   // declarations
+   double rnd, delta1, delta2, mut_pow, deltaq;
+   double y, yl, yu, val, xy;
+   // Random distributions
+   std::uniform_real_distribution<> drng(0., 1.); // to generate a number in [0, 1)
+   // This implements the real polinomial mutation and applies it to the non integer part of the decision vector
+   for (decltype(ncx) j = 0u; j < ncx; ++j) {
+       
+       auto temp = drng(engine);
+       if (temp < p_m && lb != ub) {
+           y = genes[j];
+           yl = lb;
+           yu = ub;
+           delta1 = (y - yl) / (yu - yl);
+           delta2 = (yu - y) / (yu - yl);
+           rnd = drng(engine);
+           
+           mut_pow = 1. / (eta_m + 1.);
+           if (rnd < 0.5) {
+               xy = 1. - delta1;
+               val = 2. * rnd + (1. - 2. * rnd) * (std::pow(xy, (eta_m + 1.)));
+               deltaq = std::pow(val, mut_pow) - 1.;
+           } else {
+               xy = 1. - delta2;
+               val = 2. * (1. - rnd) + 2. * (rnd - 0.5) * (std::pow(xy, (eta_m + 1.)));
+               deltaq = 1. - (std::pow(val, mut_pow));
+           }
+           y = y + deltaq * (yu - yl);
+           if (y < yl) y = yl;
+           if (y > yu) y = yu;
+           genes[j] = y;
+       }
+   }
+
+   // This implements the integer mutation for an individual
+   for (decltype(nx) j = ncx; j < nx; ++j) {
+       if (drng(engine) < p_m) {
+           // We need to draw a random integer in [lb, ub].
+           rnd = drng(engine);
+           rnd *= (ub-lb);
+           rnd += lb;
+           //auto mutated = uniform_integral_from_range(lb, ub, randomEngine);
+           genes[j] = rnd;
+       }
+   }
+}
+
 
 
 void DNA::displayGenes() {

@@ -36,15 +36,23 @@ public:
     double generations= 0;              // Number of generations
     double perfectScore;   
     double maxFitness=0.;
+    double rateOfImprovement = 0.;
 	int numParams = 0;
 
     std::vector<DNA> newPopulation;
+    std::vector<int> lastBest;
     Population(const std::vector<double>& tp);
     Population(int numberOfParams);
     
     const c74::min::dict& toDict(); //TODO: MAKE PRIVATE
      
-    void setMutationRate(double mr);
+    double getRateOfImprovement(){
+        return rateOfImprovement;
+    }
+    void setMutationRate(double mr){
+       mutationRate= mr;
+    }
+    
     void setMutationIndex(double mi){
         mutationIndex= mi;
     
@@ -57,11 +65,11 @@ public:
     void setMaxPopulation(int mp);
     int getMaxPopulation(){
         
-        return this->maxPopulation;
+        return maxPopulation;
     }
     
     double getMaxFitness(){
-        return this->maxFitness;
+        return maxFitness;
     }
     void calcFitness();
 
@@ -76,9 +84,10 @@ public:
 
     std::vector<double>& exponentialRankSelector(double c);
     
-    DNA& select(double sum);
     DNA& rSelect();
-    
+    //https://stackoverflow.com/questions/24609131/implementation-of-roulette-wheel-selection
+    DNA& select(double sum);
+
     bool terminate() {
        return finished;
      }

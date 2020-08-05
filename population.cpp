@@ -8,6 +8,7 @@
 using namespace std;
 using namespace std::chrono;
 using namespace c74::max;
+
 struct LightIterator : public std::vector<DNA>::iterator
 {
     LightIterator(std::vector<DNA>::iterator it) : std::vector<DNA>::iterator(it) {}
@@ -20,14 +21,15 @@ struct LightIterator : public std::vector<DNA>::iterator
 Population::Population(const vector<double>& tp): popDict(c74::min::symbol(true)), counter(256) {
     
     maxDict = (t_object*)popDict; //produces a memory leak //TODO: CREATE DESTRUCTOR TO RELEASE THIS
-    expFactor = 0.975;
+    expFactor = 0.204;
     targetParams= tp;
     finished = false;
     population.clear();
     mutationRate = 0.001;
-    maxPopulation = 6;
-	numParams = targetParams.size();
-    
+    maxPopulation = 40;
+    mutationIndex = 10;
+    numParams = targetParams.size();
+
     for(int i = 0; i< maxPopulation; i++) {
         DNA dna(numParams, true);
         population.push_back(std::move(dna));
@@ -89,11 +91,6 @@ void Population::setMaxPopulation(int mp){
     //calcFitness();
 }
 
-void Population::setMutationRate(double mr){
-    
-    mutationRate = mr;
-    
-}
 void Population::setExpFactor(double ef){
     
     expFactor= ef;
@@ -118,10 +115,9 @@ double Population::getAverageFitness() {
 //we use this to output the best member to Max
 vector<int>& Population::getBest(int& index) {
 
-//    cout << "max pop: " << maxPopulation <<endl;
-//    cout << "accuracy"   << accuracy << endl;
     static vector<int> defaultGenes = {-1};
-
+    vector<int> diff;
+    
 	maxFitness = 0.;
 	index= -1;
     for (int i = 0; i < population.size(); i++) {
@@ -135,7 +131,25 @@ vector<int>& Population::getBest(int& index) {
         finished = true;
     }
 	if (index >= 0) {
-		return population[index].genes;
+        
+        diff.clear();
+       
+        //calculate the amount of elements that have changed since last call
+        std::set_difference(population[index].genes.begin(),
+                            population[index].genes.end(),
+                            lastBest.begin(),
+                            lastBest.end(),
+                                 std::inserter(diff, diff.begin()));
+        
+         //if(lastBest.size()) lastBest.clear();
+        rateOfImprovement = (double) diff.size() /(double)population[index].genes.size();
+        //cout << rateOfImprovement << " rate of improvement" << endl;
+        //for (auto i : diff) std::cout << i << ' ';
+        //     cout <<endl;
+        //lastBest.swap(population[index].genes);
+    
+        lastBest = population[index].genes;
+        return population[index].genes;
 	}
 	return defaultGenes;
 }
@@ -190,20 +204,20 @@ void Population::generate(double mutationIndex) {
 //phenotype is set to one. The selection probability of all other phenotypes is zero. A value near one equalizes the selection probabilities.
 
 std::vector<double>& Population::exponentialRankSelector(double c){
-    
-    probabilityArray.clear();
-     //first we need to sort the array in descending order
-    //std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
+   
+   probabilityArray.clear();
+    //first we need to sort the array in descending order
+   //std::sort(population.begin(), population.end(), [](const DNA& a, const DNA& b) -> bool { return a.fitness > b.fitness; });
 
-     for(int i = 0; i< population.size(); i++){
-        
-         double numerator = c-1;
-         double denominator=  pow(c, population.size()) -1.;
-         double probability = pow(c, i) *  (numerator/ denominator);
-         probabilityArray.push_back(probability);
-     }
-     return probabilityArray;
- }
+    for(int i = 0; i< population.size(); i++){
+       
+        double numerator = c-1;
+        double denominator=  pow(c, population.size()) -1.;
+        double probability = pow(c, i) *  (numerator/ denominator);
+        probabilityArray.push_back(probability);
+    }
+    return probabilityArray;
+}
 //select based on exponentialSelector
 DNA& Population::select(double sum) {
     
@@ -215,7 +229,6 @@ DNA& Population::select(double sum) {
     }
     if (random > 0.0) {
         cout << "random is greater than 0!" << endl;
-        
     }
     index--;
 
@@ -238,7 +251,8 @@ DNA& Population::rSelect(){
         }
         
     }
-    population[pick].count++;
+    cout << "chromosome selected: " ;
+    population[pick].displayGenes();
     return population[pick];
    
     

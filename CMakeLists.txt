@@ -25,6 +25,7 @@ file(GLOB GENETIC_SOURCE
 set( SOURCE_FILES
     ${GENETIC_SOURCE}
 )
+list(FILTER SOURCE_FILES EXCLUDE REGEX ".*_test.cpp$")
 
 
 add_library(
