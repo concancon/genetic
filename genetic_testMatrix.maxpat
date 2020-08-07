@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 79.0, 56.0, 1360.0, 810.0 ],
+		"rect" : [ 544.0, 56.0, 1039.0, 810.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -92,7 +92,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 342.5, 670.0, 81.5, 22.0 ],
-					"text" : "33 19 164"
+					"text" : "199 83 80"
 				}
 
 			}
@@ -784,6 +784,10 @@
 			}
 ,
 			"parameter_overrides" : 			{
+				"obj-21::obj-16" : 				{
+					"parameter_longname" : "live.gain~"
+				}
+,
 				"obj-21::obj-28::obj-15::obj-20" : 				{
 					"parameter_longname" : "Freq[1]"
 				}
@@ -836,13 +840,6 @@
 				"name" : "spectrumCompare.maxpat",
 				"bootpath" : "~/Documents/Max 8/Packages/min-devkit/source/projects/min.genetic",
 				"patcherrelativepath" : ".",
-				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "magnitude.maxpat",
-				"bootpath" : "~/Desktop",
-				"patcherrelativepath" : "../../../../../../../Desktop",
 				"type" : "JSON",
 				"implicit" : 1
 			}
