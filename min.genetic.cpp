@@ -26,8 +26,10 @@ private:
     vector<double> sVec;
     bool alreadyPrinted {false};
     
+    
 public:
     
+    vector<double>* doubleResult;
     MIN_DESCRIPTION {"apply genetic algorithm to n params"};
     MIN_TAGS {"time"};
     MIN_AUTHOR {"Cycling 74"};
@@ -45,7 +47,7 @@ public:
     }
     
     vector<double>& getResultAsVector(){
-        vector<double>* doubleResult = new vector<double>; //TODO: free this or improve it
+        
         if(result.size()){
             for(auto r: result){
                 doubleResult->push_back((double) r );
@@ -77,7 +79,7 @@ public:
             reInit= true;
         }
         population = std::make_unique<Population>(t);
-    
+        doubleResult = new vector<double>; //TODO: free this or improve it
 		//notify max that these
         if(reInit){
             

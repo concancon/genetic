@@ -105,7 +105,7 @@ TEST_CASE("object's average fitness improves with a higher mutation rate"){
         vector<double> r= my_object.getResultAsVector();
         REQUIRE(r== my_object.getPopulation()->targetParams);
         generationsOne= my_object.getPopulation()->generations;
-           
+        delete my_object.doubleResult;
        }
     SECTION("object can reach target faster with mutationRate= 0.5"){
            
@@ -122,9 +122,11 @@ TEST_CASE("object's average fitness improves with a higher mutation rate"){
            
            my_object.getPopulation()->getAverageFitness() ;
            vector<double> r= my_object.getResultAsVector();
+         
            generationsOne= my_object.getPopulation()->generations;
            REQUIRE(r== my_object.getPopulation()->targetParams);
            REQUIRE(generationsTwo < generationsOne);
+           delete my_object.doubleResult;
           }
     
 }
