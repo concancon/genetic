@@ -24,7 +24,7 @@ function anything(){
 //		}
 	
 	if(Object.keys(outputObject.population).length == popSize) {
-	//post('outputting dict\n');
+	post('outputting dict\n');
 	bang();
 	reset();
 	}

@@ -6,7 +6,7 @@ var nextPop = "pop_";
 var populationSize= 0;
 
 function getNext(){
-	
+
  if(i < populationSize){
  var tag = nextPop.concat(i++);
  outlet(1, inputObject.population[tag]);
@@ -23,6 +23,7 @@ function dictionary(id){
 	var d = new Dict(id);
 	inputObject = JSON.parse(d.stringify());
 	populationSize = Object.keys(inputObject.population).length; 
+
 }
 
 function popSize(){

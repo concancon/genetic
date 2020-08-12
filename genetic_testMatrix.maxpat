@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 96.0, 56.0, 1039.0, 810.0 ],
+		"rect" : [ 46.0, 56.0, 689.0, 810.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,17 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-5",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 17.0, 599.0, 79.0, 22.0 ],
+					"text" : "send getNext"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-15",
 					"linecount" : 3,
@@ -75,17 +86,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-27",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 17.0, 591.0, 59.0, 22.0 ],
-					"text" : "s getNext"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-16",
 					"linecount" : 2,
 					"maxclass" : "message",
@@ -93,7 +93,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 342.5, 670.0, 81.5, 35.0 ],
-					"text" : "145 136 187 221"
+					"text" : "241 91 192 174"
 				}
 
 			}
@@ -722,7 +722,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-27", 0 ],
+					"destination" : [ "obj-5", 0 ],
 					"order" : 1,
 					"source" : [ "obj-47", 0 ]
 				}
@@ -869,6 +869,13 @@
 				"name" : "bp.Ladder.maxpat",
 				"bootpath" : "C74:/packages/BEAP/clippings/BEAP/Filter",
 				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "bassoonA3.wav",
+				"bootpath" : "~/Documents/Max 8/Packages/dada/media",
+				"patcherrelativepath" : "../../../../dada/media",
+				"type" : "WAVE",
 				"implicit" : 1
 			}
 , 			{
