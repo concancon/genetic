@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 544.0, 56.0, 1039.0, 810.0 ],
+		"rect" : [ 524.0, 56.0, 1039.0, 810.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -26,7 +26,7 @@
 		"toptoolbarpinned" : 0,
 		"righttoolbarpinned" : 0,
 		"bottomtoolbarpinned" : 0,
-		"toolbars_unpinned_last_save" : 4,
+		"toolbars_unpinned_last_save" : 0,
 		"tallnewobj" : 0,
 		"boxanimatetime" : 200,
 		"enablehscroll" : 1,
@@ -87,12 +87,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-16",
+					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 342.5, 670.0, 81.5, 22.0 ],
-					"text" : "199 83 80"
+					"patching_rect" : [ 342.5, 670.0, 81.5, 35.0 ],
+					"text" : "197 222 140 232"
 				}
 
 			}
@@ -221,8 +222,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 61.0, 543.0, 101.0, 22.0 ],
-					"text" : "buildPopulation 3"
+					"patching_rect" : [ 73.0, 557.0, 101.0, 22.0 ],
+					"text" : "buildPopulation 4"
 				}
 
 			}
@@ -600,7 +601,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
-					"midpoints" : [ 70.5, 575.0, 123.0, 575.0, 123.0, 575.0, 175.5, 575.0 ],
+					"midpoints" : [ 82.5, 575.0, 123.0, 575.0, 123.0, 600.0, 175.5, 600.0 ],
 					"source" : [ "obj-18", 0 ]
 				}
 
@@ -830,7 +831,7 @@
 		}
 ,
 		"dependency_cache" : [ 			{
-				"name" : "genetic_testMatrix.maxsnap",
+				"name" : "genetic_testMatrix[1].maxsnap",
 				"bootpath" : "~/Documents/Max 8/Snapshots",
 				"patcherrelativepath" : "../../../../../Snapshots",
 				"type" : "mx@s",
@@ -941,7 +942,7 @@
 						"filetype" : "C74Snapshot",
 						"version" : 2,
 						"minorversion" : 0,
-						"name" : "genetic_testMatrix",
+						"name" : "genetic_testMatrix[1]",
 						"origin" : "genetic_testMatrix",
 						"type" : "patcher",
 						"subtype" : "Undefined",
@@ -975,11 +976,11 @@
 						}
 ,
 						"fileref" : 						{
-							"name" : "genetic_testMatrix",
-							"filename" : "genetic_testMatrix.maxsnap",
+							"name" : "genetic_testMatrix[1]",
+							"filename" : "genetic_testMatrix[1].maxsnap",
 							"filepath" : "~/Documents/Max 8/Snapshots",
 							"filepos" : -1,
-							"snapshotfileid" : "e22eef2bd7bd702ad524fe6fc0456a43"
+							"snapshotfileid" : "670240fa1ef6c4d1341967b6c23f6bdd"
 						}
 
 					}
