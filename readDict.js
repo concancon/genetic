@@ -8,6 +8,7 @@ var populationSize= 0;
 function getNext(){
 
  if(i < populationSize){
+
  var tag = nextPop.concat(i++);
  outlet(1, inputObject.population[tag]);
  outlet(0, tag);

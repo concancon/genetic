@@ -26,7 +26,7 @@ Population::Population(const vector<double>& tp): popDict(c74::min::symbol(true)
     finished = false;
     population.clear();
     mutationRate = 0.001;
-    maxPopulation = 40;
+    maxPopulation = 10;
     mutationIndex = 10;
     numParams = targetParams.size();
 
@@ -51,7 +51,7 @@ Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), cou
     population.clear();
     mutationRate = 0.214;
     mutationIndex= 5.;
-    maxPopulation = 50;
+    maxPopulation = 10;
     accuracy = 97;
 	numParams = numberOfParams;
     

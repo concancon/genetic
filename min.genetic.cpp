@@ -219,7 +219,7 @@ public:
                 
 
                 
-   attribute<int> maxPopulation {this, "maxPopulation", 50,
+   attribute<int> maxPopulation {this, "maxPopulation", 10,
             setter { MIN_FUNCTION {
                 
             

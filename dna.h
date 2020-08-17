@@ -36,7 +36,7 @@ public:
 
             
     
-    void displayGenes();
+   const void displayGenes();
 };
 
 
