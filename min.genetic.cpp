@@ -203,7 +203,7 @@ public:
 
     
 
-    attribute<double> accuracy {this, "accuracy", 97.0,
+    attribute<double> accuracy {this, "accuracy", 99.5,
           setter { MIN_FUNCTION {
                   
           if(population.get()){

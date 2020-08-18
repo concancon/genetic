@@ -52,7 +52,7 @@ Population::Population(int numberOfParams): popDict(c74::min::symbol(true)), cou
     mutationRate = 0.214;
     mutationIndex= 5.;
     maxPopulation = 10;
-    accuracy = 97;
+    accuracy = 99.5;
 	numParams = numberOfParams;
     
     for(int i = 0; i < maxPopulation; i++) {
