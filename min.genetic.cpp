@@ -122,7 +122,17 @@ public:
                   
               return {args};
                   
-      }}};
+                
+//                ,
+//          getter { MIN_GETTER_FUNCTION {
+//          if(population.get()){
+//
+//          return {population->getMutationRate()};
+//
+//          }
+//          else return {args};
+                
+    }}};
                       
   attribute<double> mutationIndex {this, "mutationIndex", 5.,
          setter { MIN_FUNCTION {
@@ -149,15 +159,16 @@ public:
           
   }}};
                 
-    attribute<int> mutate{
-    
-                this, "mutate", 200 , setter{ MIN_FUNCTION {
-                
-                atom value= (atom)DNA::polynomialMutate(args[0], args[1]);
-            
-                output2.send(value);
-                return {args};
-    }}};
+//    attribute<int> mutate{
+//    
+//                this, "mutate", 200 , setter{ MIN_FUNCTION {
+//                
+//                if(population.get()){
+//                //atom value= (atom)DNA::polynomialMutate(args[0] , population->mutationIndex);
+//                output2.send(value);
+//                }
+//                return {args};
+//    }}};
                 
    message<> getMaxFitness {
    this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {
@@ -179,7 +190,7 @@ public:
                 
             if(population.get()){
 
-            if(!(this->population->finished)){
+            if(!(population->finished)){
                 //cout <<c74::min::endl;
                 result.clear();
                 //Create next generation
@@ -187,6 +198,15 @@ public:
 
 				int index;
                 std::vector<int>& currentBest = population->getBest(index);
+                //we know that rate of improvement will have been calculated by now
+                
+                if(population->getGenerations() % 20 == 0){
+                
+                cout << "prog: " << population->getRateOfImprovement()<< c74::min::endl;
+                
+                }
+                
+                
                 for (auto it : currentBest) {
 					result.push_back(it);
                 }

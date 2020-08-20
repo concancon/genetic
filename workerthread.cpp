@@ -5,7 +5,7 @@ WorkerThread::WorkerThread() :isRunning(false)
 	thread.reset(new std::thread([this]  // makes a new thread
 	{    //this is the stuff that runs in the thread
 		isRunning = true;
-		this->startThread(); // here we set a mutex
+		startThread(); // here we set a mutex
 	}));
 }
 

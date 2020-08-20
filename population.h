@@ -35,12 +35,16 @@ public:
     double generations= 0;              // Number of generations
     double perfectScore;   //TODO: FIGURE OUT PERFECT SCORE
     double maxFitness=0.;
-
+    double rateOfImprovement = 0.;
     std::vector<DNA> newPopulation;
+    std::vector<int> lastBest;
     Population(const std::vector<double>& tp);
     
     //c74::max::t_atomarray* toAtomArray(); //TODO: MAKE PRIVATE
      
+    double getRateOfImprovement(){
+        return rateOfImprovement;
+    }
     void setMutationRate(double mr){
        mutationRate= mr;
     }
@@ -57,11 +61,11 @@ public:
     void setMaxPopulation(int mp);
     int getMaxPopulation(){
         
-        return this->maxPopulation;
+        return maxPopulation;
     }
     
     double getMaxFitness(){
-        return this->maxFitness;
+        return maxFitness;
     }
     void calcFitness();
 

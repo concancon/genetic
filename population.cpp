@@ -8,6 +8,8 @@
 
 using namespace std;
 using namespace std::chrono;
+
+
 //using namespace c74::max;
 struct LightIterator : public std::vector<DNA>::iterator
 {
@@ -129,7 +131,8 @@ double Population::getAverageFitness() {
 vector<int>& Population::getBest(int& index) {
 
 	static vector<int> defaultGenes;
-
+    vector<int> diff;
+    
 	maxFitness = 0.;
 	index= -1;
     for (int i = 0; i < population.size(); i++) {
@@ -143,7 +146,25 @@ vector<int>& Population::getBest(int& index) {
         finished = true;
     }
 	if (index >= 0) {
-		return population[index].genes;
+        
+        diff.clear();
+       
+        //calculate the amount of elements that have changed since last call
+        std::set_difference(population[index].genes.begin(),
+                            population[index].genes.end(),
+                            lastBest.begin(),
+                            lastBest.end(),
+                                 std::inserter(diff, diff.begin()));
+        
+         //if(lastBest.size()) lastBest.clear();
+        rateOfImprovement = (double) diff.size() /(double)population[index].genes.size();
+        //cout << rateOfImprovement << " rate of improvement" << endl;
+        //for (auto i : diff) std::cout << i << ' ';
+        //     cout <<endl;
+        //lastBest.swap(population[index].genes);
+    
+        lastBest = population[index].genes;
+        return population[index].genes;
 	}
 	return defaultGenes;
 }
