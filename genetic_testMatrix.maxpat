@@ -266,13 +266,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-16",
-					"linecount" : 2,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 342.5, 670.0, 81.5, 35.0 ],
-					"text" : "238 65 162 19"
+					"patching_rect" : [ 342.5, 670.0, 81.5, 22.0 ],
+					"text" : "198 96 144"
 				}
 
 			}
@@ -402,7 +401,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 73.0, 557.0, 101.0, 22.0 ],
-					"text" : "buildPopulation 4"
+					"text" : "buildPopulation 3"
 				}
 
 			}
@@ -895,6 +894,13 @@
 				"bootpath" : "~/Documents/Max 8/Packages/min-devkit/source/projects/min.genetic",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "fcompare~.maxpat",
+				"bootpath" : "~/Documents/Max 8/Packages/min-devkit/source/projects/min.genetic",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
