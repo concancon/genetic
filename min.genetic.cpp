@@ -156,8 +156,8 @@ public:
                                    
                         }
                         else{
-                                   cout << "we are finished!" << c74::min::endl;
-                                   output2.send(result);
+                                cout << "we are finished!" << c74::min::endl;
+                                output2.send(result);
                           }
                                 
                        }
@@ -173,6 +173,7 @@ public:
                return {};
            }
        };
+                    
     message<> buildPopulation {this, "buildPopulation", "build an initial population", MIN_FUNCTION {
             
 	   if(population.get()){
@@ -199,96 +200,79 @@ public:
     }};
     
 
-                
-
-    
-
     attribute<double> accuracy {this, "accuracy", 99.5,
           setter { MIN_FUNCTION {
                   
-          if(population.get()){
-                  
+           if(population.get()){
               population->setAccuracy(double(args[0]));
-                  
-              }
+            }
                   
               return {args};
                   
-              
       }}};
                 
 
                 
    attribute<int> maxPopulation {this, "maxPopulation", 10,
-            setter { MIN_FUNCTION {
+          setter { MIN_FUNCTION {
                 
-            
-            if(population.get()){
-            population->setMaxPopulation(int(args[0]));
+           if(population.get()){
+              population->setMaxPopulation(int(args[0]));
             }
             return {args};
     }}};
            
   
-attribute<double> mutationRate {this, "mutationRate", 0.214,
+   attribute<double> mutationRate {this, "mutationRate", 0.214,
         setter { MIN_FUNCTION {
                 
-        if(population.get()){
+           if(population.get()){
+              population->setMutationRate(double(args[0]));
+           }
                 
-            population->setMutationRate(double(args[0]));
-              
-            }
-                
-            return {args};
+        return {args};
                 
     }}};
                     
-attribute<double> mutationIndex {this, "mutationIndex", 5.,
+   attribute<double> mutationIndex {this, "mutationIndex", 5.,
        setter { MIN_FUNCTION {
                            
-    if(population.get()){
-         population->setMutationIndex(int(args[0]));
-   }
+          if(population.get()){
+           population->setMutationIndex(int(args[0]));
+           }
   
-  return {args};
-}}};
+        return {args};
+    }}};
 
                     
-attribute<double>  expFactor {this, "expFactor", 0.123,
-    setter { MIN_FUNCTION {
+   attribute<double>  expFactor {this, "expFactor", 0.123,
+     setter { MIN_FUNCTION {
             
-    if(population.get()){
-            
+     if(population.get()){
         population->setExpFactor(double(args[0]));
-            
         }
             
-        return {args};
+    return {args};
                  
-        
-}}};
+    }}};
+                    
     //attribute to test polynomialMutate method
-    attribute<int> mutate{
-    
-                this, "mutate", 200 , setter{ MIN_FUNCTION {
+   attribute<int> mutate{ this, "mutate", 200 , setter{ MIN_FUNCTION {
                 
-                //atom value= (atom)DNA::polynomialMutate(args[0], args[1]);
-            
-                //output2.send(value);
-                return {args};
+     //atom value= (atom)DNA::polynomialMutate(args[0], args[1]);
+     //output2.send(value);
+     return {args};
     }}};
                 
-   message<> getMaxFitness {
-   this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {
-       if(population.get()){
-           
-        double currentMax= (population->getMaxFitness()/population->numParams) * 100.;
-           
-         cout<< currentMax << c74::min::endl;
-          //output3.send((atom)currentMax); //TODO: DISPLAY CURRENT MAX
+  
+    message<> getMaxFitness {this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {
+       
+      if(population.get()){
+           double currentMax= (population->getMaxFitness()/population->numParams) * 100.;
+           cout<< currentMax << c74::min::endl;
        }
       
-           return {};
+      return {};
     }};
    
                 

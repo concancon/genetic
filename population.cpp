@@ -255,8 +255,7 @@ DNA &Population::rSelect() {
             break;
         }
     }
-    cout << "chromosome selected: ";
-    population[pick].displayGenes();
+    
     return population[pick];
 }
 
