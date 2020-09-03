@@ -271,7 +271,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 342.5, 670.0, 81.5, 22.0 ],
-					"text" : "198 96 144"
+					"text" : "195 97 87"
 				}
 
 			}
@@ -986,7 +986,7 @@
 							"number" : [ 97 ],
 							"number[1]" : [ 10 ],
 							"number[2]" : [ 200.0 ],
-							"number[3]" : [ 20 ],
+							"number[3]" : [ 168 ],
 							"number[4]" : [ 200 ]
 						}
 
@@ -1033,7 +1033,7 @@
 										"number" : [ 97 ],
 										"number[1]" : [ 10 ],
 										"number[2]" : [ 200.0 ],
-										"number[3]" : [ 20 ],
+										"number[3]" : [ 168 ],
 										"number[4]" : [ 200 ]
 									}
 
