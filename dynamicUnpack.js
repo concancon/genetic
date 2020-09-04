@@ -29,3 +29,19 @@ function list(myList){
 		
 }
 
+
+function msg_int(val){
+	
+  
+   
+
+   //post(args.length + "\n");
+   createOutlets(val);
+   //compile 
+ 
+   //dont send a list, this is mere preparation
+
+   
+
+		
+}
