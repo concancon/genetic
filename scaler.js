@@ -5,7 +5,7 @@ inlets = 1;
 var numScales= 0;
 var theScales = new Array(128);
 var theOutlets = new Array(128);
-
+var memory = 0;
 
 
 function scales(val){
@@ -18,11 +18,12 @@ function scales(val){
 		if(a<0) a = 0; // too few scales, set to 0
 		if(a>128) a = 128; // too many scales, set to 128		
 		
-		
-		for(var i =0; i<numScales; i++){
-			this.patcher.remove(theScales[i]);
-			this.patcher.remove(theOutlets[i]);
+		if(memory){
+			for(var i =0; i<memory; i++){
+				this.patcher.remove(theScales[i]);
+				this.patcher.remove(theOutlets[i]);
 			}
+		}
 			
 		// ...in with the new
 		numScales = a;
@@ -38,7 +39,7 @@ function scales(val){
 				this.patcher.connect(theScales[k], 0, theOutlets[k], 0);
 			}
 		}			
-		
+		memory=a;
 			
 		
 		
