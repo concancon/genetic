@@ -8,7 +8,7 @@ using namespace c74::max;
 std::random_device
     rd; // Will be used to obtain a seed for the random number engine
 std::mt19937 gen{rd()}; // Standard mersenne_twister_engine seeded with rd()
-std::uniform_int_distribution<int> equalRandom{0, 65535};
+std::uniform_int_distribution<int> equalRandom{0, 255};
 
 void DNA::setFitness(double f) { fitness = f; }
 
@@ -47,7 +47,7 @@ void DNA::fitnessFunction(const vector<double> &target) {
 
         int difference = abs(target[i] - genes[i]);
 
-        double distance = (double)(65535.0 - difference) / 65535.0;
+        double distance = (double)(255.0 - difference) / 255.0;
         score += distance;
     }
 
@@ -59,7 +59,7 @@ void DNA::fitnessFunction(const vector<double> &target) {
 DNA &DNA::crossover(const DNA &partner) {
     // DNA child(numberOfGenes, false);
     if (numberOfGenes != 0) {
-        int midpoint = (int)(randomInt(engine) * (double)numberOfGenes);
+        int midpoint = (int)(drng(engine) * (double)numberOfGenes);
         for (int i = 0; i < numberOfGenes; i++) {
             if (i > midpoint) {
                 ;
@@ -74,7 +74,7 @@ DNA &DNA::crossover(const DNA &partner) {
 // apply a random values to random genes that DONT match the target value
 void DNA::mutate(double mutationRate, double eta) {
 
-    polynomialMutationImpl({0., 65535.}, mutationRate, eta);
+    polynomialMutationImpl({0., 255.}, mutationRate, eta);
 }
 
 // dont pass child as reference, just use the class we're in and mutate 'in
