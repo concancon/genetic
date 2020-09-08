@@ -59,7 +59,7 @@ void DNA::fitnessFunction(const vector<double> &target) {
 DNA &DNA::crossover(const DNA &partner) {
     // DNA child(numberOfGenes, false);
     if (numberOfGenes != 0) {
-        int midpoint = (int)(randomInt(engine) * (double)numberOfGenes);
+        int midpoint = (int)(drng(engine) * (double)numberOfGenes);
         for (int i = 0; i < numberOfGenes; i++) {
             if (i > midpoint) {
                 ;
