@@ -10,7 +10,7 @@ static std::random_device
 static std::mt19937 engine{
     rad()}; // Standard mersenne_twister_engine seeded with rd()
 static std::uniform_real_distribution<double> drng{0., 1.};
-static std::uniform_int_distribution<int> randomInt{0, 255};
+static std::uniform_int_distribution<int> randomInt{0, 65535};
 
 class DNA {
 

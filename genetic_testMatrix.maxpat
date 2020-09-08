@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 27.0, 56.0, 748.0, 810.0 ],
+		"rect" : [ 34.0, 56.0, 748.0, 810.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -278,13 +278,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-16",
-					"linecount" : 5,
+					"linecount" : 6,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 342.5, 670.0, 81.5, 76.0 ],
-					"text" : "197 146 70 199 33 170 111 155 86 84 77 62 80 83 139 135"
+					"patching_rect" : [ 342.5, 670.0, 81.5, 89.0 ],
+					"text" : "216 81 87 223 236 225 38 194 79 108 174 44 193 37 95 194"
 				}
 
 			}
@@ -832,6 +832,7 @@
 			"obj-21::obj-90::obj-96" : [ "number[1]", "number[1]", 0 ],
 			"obj-21::obj-97::obj-39" : [ "number[12]", "number[1]", 0 ],
 			"obj-21::obj-97::obj-41" : [ "number[11]", "number[2]", 0 ],
+			"obj-21::obj-97::obj-70" : [ "number[13]", "number[13]", 0 ],
 			"obj-21::obj-9::obj-26" : [ "number[7]", "number", 0 ],
 			"obj-21::obj-9::obj-39" : [ "number[6]", "number[1]", 0 ],
 			"obj-21::obj-9::obj-41" : [ "number[5]", "number[2]", 0 ],
@@ -968,30 +969,27 @@
 				"valuedictionary" : 				{
 					"parameter_values" : 					{
 						"CV1" : 0.0,
-						"CV1[1]" : 0.0,
 						"CV2" : 100.0,
-						"CV2[1]" : 100.0,
 						"CV3" : 0.0,
-						"CV3[1]" : 0.0,
 						"Freq" : 6766.246564310111353,
-						"Freq[1]" : 6766.246564310111353,
 						"Offset" : 0.0,
-						"Offset[1]" : 0.0,
 						"Res" : 0.0,
 						"ResCV" : 100.0,
-						"ResCV[1]" : 100.0,
-						"Res[1]" : 0.0,
 						"live.gain~" : -6.0,
 						"power" : 0.0,
-						"power[1]" : 0.0,
 						"TimeMode" : 1.0,
-						"TimeMode[1]" : 1.0,
 						"blob" : 						{
 							"number" : [ 97 ],
+							"number[11]" : [ 0.0 ],
+							"number[12]" : [ 0.0 ],
+							"number[13]" : [ 49.0 ],
 							"number[1]" : [ 10 ],
 							"number[2]" : [ 200.0 ],
 							"number[3]" : [ 168 ],
-							"number[4]" : [ 200 ]
+							"number[4]" : [ 200 ],
+							"number[5]" : [ 0.0 ],
+							"number[6]" : [ 0.0 ],
+							"number[7]" : [ 49.0 ]
 						}
 
 					}
@@ -1015,30 +1013,27 @@
 							"valuedictionary" : 							{
 								"parameter_values" : 								{
 									"CV1" : 0.0,
-									"CV1[1]" : 0.0,
 									"CV2" : 100.0,
-									"CV2[1]" : 100.0,
 									"CV3" : 0.0,
-									"CV3[1]" : 0.0,
 									"Freq" : 6766.246564310111353,
-									"Freq[1]" : 6766.246564310111353,
 									"Offset" : 0.0,
-									"Offset[1]" : 0.0,
 									"Res" : 0.0,
 									"ResCV" : 100.0,
-									"ResCV[1]" : 100.0,
-									"Res[1]" : 0.0,
 									"live.gain~" : -6.0,
 									"power" : 0.0,
-									"power[1]" : 0.0,
 									"TimeMode" : 1.0,
-									"TimeMode[1]" : 1.0,
 									"blob" : 									{
 										"number" : [ 97 ],
+										"number[11]" : [ 0.0 ],
+										"number[12]" : [ 0.0 ],
+										"number[13]" : [ 49.0 ],
 										"number[1]" : [ 10 ],
 										"number[2]" : [ 200.0 ],
 										"number[3]" : [ 168 ],
-										"number[4]" : [ 200 ]
+										"number[4]" : [ 200 ],
+										"number[5]" : [ 0.0 ],
+										"number[6]" : [ 0.0 ],
+										"number[7]" : [ 49.0 ]
 									}
 
 								}
