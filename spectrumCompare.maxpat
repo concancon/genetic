@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 531.0, 73.0, 1117.0, 810.0 ],
+		"rect" : [ 289.0, 73.0, 1117.0, 810.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -6724,8 +6724,8 @@
 									"id" : "obj-1",
 									"maxclass" : "newobj",
 									"numinlets" : 1,
-									"numoutlets" : 16,
-									"outlettype" : [ "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
+									"numoutlets" : 1,
+									"outlettype" : [ "" ],
 									"patching_rect" : [ 252.0, -312.0, 314.0, 22.0 ],
 									"saved_object_attributes" : 									{
 										"filename" : "dynamicUnpack",
@@ -7907,7 +7907,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 159.0, 986.0, 61.0, 22.0 ],
-					"text" : "delay 600"
+					"text" : "delay 200"
 				}
 
 			}

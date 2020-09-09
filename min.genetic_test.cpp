@@ -37,13 +37,13 @@ TEST_CASE("object initialization"){
         REQUIRE(my_object.getPopulation()->getNumberOfParams() == 3);
         
     }
-    SECTION("build population with size 3"){
+    SECTION("build population with size 8"){
          const atoms& args= {8};
          my_object.buildPopulation(args);
          REQUIRE(my_object.getPopulation()->getNumberOfParams() == 8);
          
      }
-    SECTION("build population with size 3"){
+    SECTION("build population with size 12"){
             const atoms& args= {12};
             my_object.buildPopulation(args);
             REQUIRE(my_object.getPopulation()->getNumberOfParams() == 12);
@@ -52,28 +52,6 @@ TEST_CASE("object initialization"){
     
 }
 
-TEST_CASE("object initialization:calling buildPopulation sets default values for finished, mutationrate, maxPopulation and expFactor "){
-    ext_main(nullptr);
-    test_wrapper<genetic> an_instance;
-    genetic&    my_object = an_instance;
-    const atoms& args= {3};
-    my_object.buildPopulation(args);
-    SECTION("buildpopulation sets defaults"){
-
-        REQUIRE(my_object.getPopulation()->finished== false);
-        REQUIRE(my_object.getPopulation()->mutationRate == 0.214);
-        REQUIRE(my_object.getPopulation()->maxPopulation== 50);
-        REQUIRE(my_object.getPopulation()->expFactor== 0.123);
-        
-    }
-    
-    SECTION("population starts with average fitness of 0"){
-
-        double expected = 0.0;
-        REQUIRE(my_object.getPopulation()->getAverageFitness() < 0.0001);
-    
-    }
-}
 
 TEST_CASE("object's average fitness improves with a higher mutation rate"){
     
