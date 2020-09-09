@@ -278,13 +278,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-16",
-					"linecount" : 6,
+					"linecount" : 5,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 342.5, 670.0, 81.5, 89.0 ],
-					"text" : "216 81 87 223 236 225 38 194 79 108 174 44 193 37 95 194"
+					"patching_rect" : [ 342.5, 670.0, 81.5, 76.0 ],
+					"text" : "123 91 129 14 108 60 110 11 234 4 5 66 82 10 215 231"
 				}
 
 			}
@@ -818,18 +818,6 @@
  ],
 		"parameters" : 		{
 			"obj-21::obj-16" : [ "live.gain~", "live.gain~", 0 ],
-			"obj-21::obj-90::obj-11" : [ "number[2]", "number[2]", 0 ],
-			"obj-21::obj-90::obj-82::obj-15::obj-20" : [ "Freq", "Freq", 0 ],
-			"obj-21::obj-90::obj-82::obj-15::obj-22" : [ "TimeMode", "TimeMode", 1 ],
-			"obj-21::obj-90::obj-82::obj-15::obj-23" : [ "CV2", "CV2", 0 ],
-			"obj-21::obj-90::obj-82::obj-15::obj-28" : [ "Res", "Res", 0 ],
-			"obj-21::obj-90::obj-82::obj-15::obj-4" : [ "Offset", "Offset", 0 ],
-			"obj-21::obj-90::obj-82::obj-15::obj-54" : [ "CV1", "CV1", 0 ],
-			"obj-21::obj-90::obj-82::obj-15::obj-55" : [ "power", "power", 0 ],
-			"obj-21::obj-90::obj-82::obj-15::obj-63" : [ "CV3", "CV3", 0 ],
-			"obj-21::obj-90::obj-82::obj-15::obj-95" : [ "ResCV", "CV", 0 ],
-			"obj-21::obj-90::obj-95" : [ "number", "number", 0 ],
-			"obj-21::obj-90::obj-96" : [ "number[1]", "number[1]", 0 ],
 			"obj-21::obj-97::obj-39" : [ "number[12]", "number[1]", 0 ],
 			"obj-21::obj-97::obj-41" : [ "number[11]", "number[2]", 0 ],
 			"obj-21::obj-97::obj-70" : [ "number[13]", "number[13]", 0 ],
@@ -899,12 +887,6 @@
 				"bootpath" : "~/Documents/Max 8/Packages/dada/media",
 				"patcherrelativepath" : "../../../../dada/media",
 				"type" : "WAVE",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "bp.Ladder.maxpat",
-				"bootpath" : "C74:/packages/BEAP/clippings/BEAP/Filter",
-				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
