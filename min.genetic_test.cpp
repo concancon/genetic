@@ -61,14 +61,14 @@ TEST_CASE("Fitness function assigns higher fitness values to members of the popu
 TEST_CASE("crossover function combines genes from two dna instances"){
     ext_main(nullptr);
     SECTION("crossover assigns genes according to a stochastic midpoint"){
-        DNA* sna = new DNA(3,0); // now all the 'random genes' should be set to 0
+        DNA dna({3., 3., 3., 6.});
         DNA partner({7., 7., 7., 7.});
-        sna->crossover(partner);
+        dna.crossover(partner);
         //std::cout << sna->numberOfGenes<<endl;
         
-        for(int i = 0; i < sna->numberOfGenes; i++){
+        for(int i = 0; i < dna.numberOfGenes; i++){
 
-            std::cout<< "gene" << sna->genes[i] <<endl;
+            std::cout<< "gene" << dna.genes[i] <<endl;
         }
     
        }
