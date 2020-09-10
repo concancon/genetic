@@ -102,8 +102,7 @@ public:
             
         }
     }
-    
-
+ 
    //message to assign a fitness value to each member of a population
     message<> dictionary { this, "dictionary",
            "Dictionary containing the generation and fitness values for a population",
@@ -115,7 +114,7 @@ public:
                 
                 if(args.size() == 0){
                     
-                    cout << "we are going to use a vector instead of a dict for testing purposes" <<endl;
+                    //cout << "we are going to use a vector instead of a dict for testing purposes" <<endl;
                     
                     population->calcFitness();
                     
@@ -187,7 +186,7 @@ public:
 		}
 		else if(args.size()>0){
 			initializeObject(args);
-			cout << "Object initialized" <<endl;
+	
 		}
 		else {
 			cout << "Missing arguments (number of parameters)" <<c74::min::endl;

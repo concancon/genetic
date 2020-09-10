@@ -95,7 +95,7 @@ void Population::setMaxPopulation(int mp) {
         DNA dna(numParams, true);
         population.push_back(std::move(dna));
     }
-    // calcFitness();
+
 }
 
 void Population::setExpFactor(double ef) { expFactor = ef; }
@@ -140,13 +140,8 @@ vector<int> &Population::getBest(int &index) {
                             population[index].genes.end(), lastBest.begin(),
                             lastBest.end(), std::inserter(diff, diff.begin()));
 
-        // if(lastBest.size()) lastBest.clear();
         rateOfImprovement =
             (double)diff.size() / (double)population[index].genes.size();
-        // cout << rateOfImprovement << " rate of improvement" << endl;
-        // for (auto i : diff) std::cout << i << ' ';
-        //     cout <<endl;
-        // lastBest.swap(population[index].genes);
 
         lastBest = population[index].genes;
         return population[index].genes;

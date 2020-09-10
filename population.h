@@ -77,6 +77,10 @@ class Population {
     bool terminate() { return finished; }
 
     int getNumberOfParams();
+    
+    std::vector<double> &getTargetParams(){
+        return targetParams;
+    }
 
     std::vector<int> getSelectionCount();
 

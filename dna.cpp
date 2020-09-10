@@ -23,6 +23,14 @@ DNA::DNA(int paramSize, bool randomize)
         }
     }
 }
+//overload constructor for testing
+DNA::DNA(const vector<double> &tp): numberOfGenes(tp.size()){
+        
+    for(auto it: tp){
+        genes.push_back(it);
+    }
+    
+}
 
 c74::max::t_atomarray *DNA::toAtomArray() {
 
@@ -47,8 +55,8 @@ void DNA::fitnessFunction(const vector<double> &target) {
 
         int difference = abs(target[i] - genes[i]);
 
-        double distance = (double)(255.0 - difference) / 255.0;
-        score += distance;
+        score += (double)(255.0 - difference) / 255.0;
+       
     }
 
     fitness = (score / numberOfGenes) *

@@ -5,26 +5,13 @@
 //
 #include "c74_min_unittest.h"    // required unit test header
 #include "min.genetic.cpp"      // need the source of our object so that we can access it
+#include "dna.h"
 //
 //// Unit tests are written using the Catch framework as described at
 //// https://github.com/philsquared/Catch/blob/master/docs/tutorial.md
 //
-SCENARIO("object has the right number of params") {
-    ext_main(nullptr);    // every unit test must call ext_main() once to configure the class
-
-    GIVEN("An instance of our object whose population has been built with an arg of length 1") {
-
-        test_wrapper<genetic> an_instance;
-        genetic&    my_object = an_instance;
-        const atoms& args= {1};
-        my_object.buildPopulation(args);
-        
-        REQUIRE(my_object.getPopulation()->getNumberOfParams() == 1);
 
 
-      }
-
-}
 
 TEST_CASE("object initialization"){
     ext_main(nullptr);
@@ -51,6 +38,45 @@ TEST_CASE("object initialization"){
         }
     
 }
+TEST_CASE("Fitness function assigns higher fitness values to members of the population that are closer to target"){
+    ext_main(nullptr);
+    SECTION("Fitness of a vector with 0s is 100 percent given 0 randomize flag"){
+        DNA dna(3, 0); // now all the 'random genes' should be set to 0
+        dna.fitnessFunction({0, 0, 0});
+        REQUIRE(dna.fitness == 100.0);
+    }
+    SECTION("Fitness of a vector with user specified gene values is 100 percent when matched by target vector"){
+        DNA dna({3., 3., 3.}); // now all the 'random genes' should be set to 0
+        dna.fitnessFunction({3., 3., 3.});
+        REQUIRE(dna.fitness == 100.0);
+    }
+    SECTION("Fitness of a vector with user specified gene values is 50 percent when half of it is matched by target vector"){
+           DNA dna({3., 3., 3., 6.}); // now we specify the genes 
+           dna.fitnessFunction({3., 3., 3., 3.});
+           REQUIRE(dna.fitness == 99.7058823529);
+       }
+    
+}
+
+TEST_CASE("crossover function combines genes from two dna instances"){
+    ext_main(nullptr);
+    SECTION("crossover assigns genes according to a stochastic midpoint"){
+        DNA* sna = new DNA(3,0); // now all the 'random genes' should be set to 0
+        DNA partner({7., 7., 7., 7.});
+        sna->crossover(partner);
+        //std::cout << sna->numberOfGenes<<endl;
+        
+        for(int i = 0; i < sna->numberOfGenes; i++){
+
+            std::cout<< "gene" << sna->genes[i] <<endl;
+        }
+    
+       }
+        
+    }
+
+
+
 
 
 TEST_CASE("object's average fitness improves with a higher mutation rate"){
@@ -70,16 +96,14 @@ TEST_CASE("object's average fitness improves with a higher mutation rate"){
     SECTION("object can reach target"){
         
         my_object.accuracy = 100.0;
-        my_object.dictionary(); //assign fitness scores according to target
-        my_object.bang();
+
       
         while(my_object.getPopulation()->finished == false){
            my_object.bang();
            my_object.getPopulation()->calcFitness();
-           my_object.getPopulation()->getMaxFitness();
+           
         }
         
-        my_object.getPopulation()->getAverageFitness() ;
         vector<double> r= my_object.getResultAsVector();
         REQUIRE(r== my_object.getPopulation()->targetParams);
         generationsOne= my_object.getPopulation()->generations;

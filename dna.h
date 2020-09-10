@@ -16,6 +16,7 @@ class DNA {
 
   public:
     DNA(int paramSize, bool randomize);
+    DNA(const std::vector<double> &tp);
     double fitness;
     std::vector<int> genes;
     int numberOfGenes;
