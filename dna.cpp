@@ -92,12 +92,7 @@ DNA &DNA::crossover(const DNA &partner) {
     return *this;
 }
 
-//DNA &DNA::onePointCrossOver(const DNA &partner){
-//    
-//     int midpoint = (int)(drng(engine) * (double)numberOfGenes);
-//
-//    
-//}
+
 
 // apply a random values to random genes that DONT match the target value
 void DNA::mutate(double mutationRate, double eta) {

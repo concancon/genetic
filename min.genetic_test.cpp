@@ -72,35 +72,33 @@ TEST_CASE("crossover function combines genes from two dna instances"){
         }
        }
     
-     SECTION("crossover wgives the same likelihood that a value from this or from partner is assigned to new vector"){
+     SECTION("crossover wgives the same likelihood that a value from this or from partner is assigned to new vector (uniform distribution)"){
          
          int countThis = 0;
          int countPartner = 0;
          
          
-         for(int i = 0; i < 10000; i++){
+         for(int i = 0; i < 1000; i++){
                         
             DNA dna({3., 3., 3., 3.});
             const DNA partner({7., 7., 7., 7.});
              dna.crossover(partner);
              for(auto gene: dna.genes){
-                 
-                         if(gene== 3.){
-                             countThis++;
-                             
-                         }
-                         else{
-                             countPartner++;
-                         }
-                      
-
+            
+                 if(gene== 3.){
+                     countThis++;
+                 }
+                 else{
+                     countPartner++;
+                 }
              }
-        
-      
          }
 
-         std::cout << "this count: " << countThis << std::endl;
-         std::cout << "parnter count " << countPartner <<std::endl;
+         double thisVectorFrequency = (double) countThis / (1000.* 4.) ;
+         double partnerVectorFrequency = (double)countPartner /(1000.* 4.);
+         REQUIRE (thisVectorFrequency == APPROX(partnerVectorFrequency).margin(0.02));
+         
+         
      }
     
 

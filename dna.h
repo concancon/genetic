@@ -29,7 +29,7 @@ class DNA {
     // between a slightly better
     // result and its inferior
     DNA &crossover(const DNA &partner);
-    DNA &onePointCrossOver(const DNA &partner);
+   
     c74::max::t_atomarray *toAtomArray();
     void mutate(double mutationRate, double eta);
 
