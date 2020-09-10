@@ -31,10 +31,9 @@ class DNA {
     DNA &crossover(const DNA &partner);
    
     c74::max::t_atomarray *toAtomArray();
-    void mutate(double mutationRate, double eta);
-
-    void polynomialMutationImpl(const std::pair<double, double> &bounds,
-                                const double p_m, const double eta_m);
+    void mutate(double mutationRate, double eta, std::vector<int> &genes);
+    static void polynomialMutationImpl(const std::pair<double, double> &bounds,
+                                       const double p_m, const double eta_m, std::vector<int> &genes);
 
     const void displayGenes();
 };

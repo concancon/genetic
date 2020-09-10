@@ -121,7 +121,7 @@ TEST_CASE("Polynomial mutation introduces perturbations in genes vector"){
             REQUIRE(geneInRange == true);
     
     }
-    SECTION("A lower eta sub m has a small standard deviation"){
+    SECTION("An eta sub m value of 20 has a big standard deviation"){
         DNA dna({3.});
         std::vector<vector<int>> mutatedValues;
         

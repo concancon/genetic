@@ -23,6 +23,7 @@ private:
     
     //Population population;
     atoms result;
+    atoms mutateResult;
     vector<double> sVec;
     bool alreadyPrinted {false};
     
@@ -38,7 +39,7 @@ public:
     inlet<>  input {this, "(toggle) on/off"};
     outlet<> output {this, "(dict) the dictionary of random values to be evaluated", "dictionary"};
     outlet<> output2{this, "(list) best after accuracy thresh is passed"};
-    outlet<> output3 {this, "(DNA) Current best, result"};
+    outlet<> output3 {this, "(DNA) output to test polynomialmutation"};
     
     
     
@@ -144,7 +145,7 @@ public:
                                    result.push_back(it);
                                }
                             //output current best
-                            output3.send(result);
+                           // output3.send(result);
 
                           if(!(population->finished)){
                            
@@ -255,13 +256,24 @@ public:
                  
     }}};
                     
-    //attribute to test polynomialMutate method
-   attribute<int> mutate{ this, "mutate", 200 , setter{ MIN_FUNCTION {
-                
-     //atom value= (atom)DNA::polynomialMutate(args[0], args[1]);
-     //output2.send(value);
-     return {args};
-    }}};
+    message<> mutate{
+
+        this, "mutate",  MIN_FUNCTION {
+
+        vector<int> testGenes{100};
+        DNA::polynomialMutationImpl({0, 255}, 1., args[0], testGenes);
+        for(auto g: testGenes)
+        {
+           output3.send((atom)g);
+                                   
+        }
+                                   
+                                   
+                                   
+        
+        
+        return {args};
+        }};
                 
   
     message<> getMaxFitness {this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {

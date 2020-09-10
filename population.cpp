@@ -186,7 +186,7 @@ void Population::generate(double mutationIndex) {
         DNA partnerB = rSelect();
         DNA child = partnerA.crossover(
             partnerB); // this should be moved or elided, thus ok
-        child.mutate(mutationRate, mutationIndex);
+        //child.mutate(mutationRate, mutationIndex);
         newPopulation.push_back(std::move(child)); // std::move(child));
     }
     population.swap(newPopulation);

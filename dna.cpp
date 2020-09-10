@@ -94,10 +94,9 @@ DNA &DNA::crossover(const DNA &partner) {
 
 
 
-// apply a random values to random genes that DONT match the target value
-void DNA::mutate(double mutationRate, double eta) {
+void DNA::mutate(double mutationRate, double eta, vector<int> &genes) {
 
-    polynomialMutationImpl({1., 8.}, mutationRate, eta);
+    polynomialMutationImpl({1., 8.}, mutationRate, eta, genes);
 }
 
 // dont pass child as reference, just use the class we're in and mutate 'in
@@ -105,7 +104,7 @@ void DNA::mutate(double mutationRate, double eta) {
 //induces an effect of a perturbation ofO((b−a)/ηm) in a variable, where a and b are lower and upper bounds of the variable. They also found that a value ηm ∈[20,100] is adequate in most problems that they tried.In this operator, a polynomial probability distribution is used to perturb a solution in a parent’s vicinity.The probability distribution in both left and right ofa variable value is adjusted so that no value outsidethe specified range [a, b] is created by the mutationoperato
 
 void DNA::polynomialMutationImpl(const std::pair<double, double> &bounds,
-                                 const double p_m, const double eta_m) {
+                                 const double p_m, const double eta_m, vector<int> &genes) {
 
     // child.genes[0] = 200;
     // Decision vector dimensions
