@@ -53,7 +53,7 @@ TEST_CASE("Fitness function assigns higher fitness values to members of the popu
     SECTION("Fitness of a vector with user specified gene values is 50 percent when half of it is matched by target vector"){
            DNA dna({3., 3., 3., 6.}); // now we specify the genes 
            dna.fitnessFunction({3., 3., 3., 3.});
-           REQUIRE(dna.fitness == 99.7058823529);
+           REQUIRE(dna.fitness == APPROX(99.7058823529));
        }
     
 }
@@ -61,21 +61,66 @@ TEST_CASE("Fitness function assigns higher fitness values to members of the popu
 TEST_CASE("crossover function combines genes from two dna instances"){
     ext_main(nullptr);
     SECTION("crossover assigns genes according to a stochastic midpoint"){
-        DNA dna({3., 3., 3., 6.});
-        DNA partner({7., 7., 7., 7.});
+        DNA dna({3., 3., 3., 3.});
+        const DNA partner({7., 7., 7., 7.});
         dna.crossover(partner);
-        //std::cout << sna->numberOfGenes<<endl;
         
-        for(int i = 0; i < dna.numberOfGenes; i++){
-
-            std::cout<< "gene" << dna.genes[i] <<endl;
+        for(auto gene: dna.genes){
+            
+             REQUIRE (((gene == 7.) || (gene == 3.)));
+            
         }
-    
        }
+    
+     SECTION("crossover wgives the same likelihood that a value from this or from partner is assigned to new vector"){
+         
+         int countThis = 0;
+         int countPartner = 0;
+         
+         
+         for(int i = 0; i < 10000; i++){
+                        
+            DNA dna({3., 3., 3., 3.});
+            const DNA partner({7., 7., 7., 7.});
+             dna.crossover(partner);
+             for(auto gene: dna.genes){
+                 
+                         if(gene== 3.){
+                             countThis++;
+                             
+                         }
+                         else{
+                             countPartner++;
+                         }
+                      
+
+             }
         
-    }
+      
+         }
 
+         std::cout << "this count: " << countThis << std::endl;
+         std::cout << "parnter count " << countPartner <<std::endl;
+     }
+    
 
+}
+
+//TEST_CASE("Polynomial mutation introduces perturbations in genes vector"){
+//    ext_main(nullptr);
+//    SECTION("Perturbation occurs only within range specified by eta sub m"){
+//        DNA dna({3., 3., 3., 3.});
+//        dna.mutate(0.999, 25);
+//        for(auto gene: dna.genes){
+//
+//            std::cout << gene << std::endl;
+//        }
+//
+//    }
+//
+//
+//
+//}
 
 
 
