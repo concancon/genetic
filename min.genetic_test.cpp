@@ -60,7 +60,7 @@ TEST_CASE("Fitness function assigns higher fitness values to members of the popu
 
 TEST_CASE("crossover function combines genes from two dna instances"){
     ext_main(nullptr);
-    SECTION("crossover assigns genes according to a stochastic midpoint"){
+    SECTION("crossover assigns genes from either calling dna or partner dna passed"){
         DNA dna({3., 3., 3., 3.});
         const DNA partner({7., 7., 7., 7.});
         dna.crossover(partner);
@@ -72,7 +72,7 @@ TEST_CASE("crossover function combines genes from two dna instances"){
         }
        }
     
-     SECTION("crossover wgives the same likelihood that a value from this or from partner is assigned to new vector (uniform distribution)"){
+     SECTION("crossover gives the same likelihood that a value from this or from partner is assigned to new vector (uniform distribution)"){
          
          int countThis = 0;
          int countPartner = 0;
@@ -96,7 +96,7 @@ TEST_CASE("crossover function combines genes from two dna instances"){
 
          double thisVectorFrequency = (double) countThis / (1000.* 4.) ;
          double partnerVectorFrequency = (double)countPartner /(1000.* 4.);
-         REQUIRE (thisVectorFrequency == APPROX(partnerVectorFrequency).margin(0.02));
+         REQUIRE (thisVectorFrequency == APPROX(partnerVectorFrequency).margin(0.09));
          
          
      }
@@ -104,22 +104,40 @@ TEST_CASE("crossover function combines genes from two dna instances"){
 
 }
 
-//TEST_CASE("Polynomial mutation introduces perturbations in genes vector"){
-//    ext_main(nullptr);
-//    SECTION("Perturbation occurs only within range specified by eta sub m"){
-//        DNA dna({3., 3., 3., 3.});
-//        dna.mutate(0.999, 25);
-//        for(auto gene: dna.genes){
-//
-//            std::cout << gene << std::endl;
-//        }
-//
-//    }
-//
-//
-//
-//}
-
+TEST_CASE("Polynomial mutation introduces perturbations in genes vector"){
+    ext_main(nullptr);
+    SECTION("Perturbation occurs only within range specified by eta sub m"){
+        bool geneInRange = true;
+        DNA dna({3., 3., 3., 3.});
+        dna.mutate(0.999, 25);
+        
+        for(int i = 0; i < 100; i++){
+            dna.mutate(0.999, 25);
+            for(auto g : dna.genes){
+                if(!(g >=0) && (g< 255))geneInRange = false;
+                
+                }
+            }
+            REQUIRE(geneInRange == true);
+    
+    }
+    SECTION("A lower eta sub m has a small standard deviation"){
+        DNA dna({3.});
+        std::vector<vector<int>> mutatedValues;
+        
+        for(int i = 0; i< 1000; i++){
+            
+            dna.mutate(1., 100.);
+            for(auto g: dna.genes){
+                
+                std::cout<< g<<std::endl;
+            }
+            mutatedValues.push_back(dna.genes);
+        
+        }
+       
+    }
+}
 
 
 TEST_CASE("object's average fitness improves with a higher mutation rate"){
