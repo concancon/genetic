@@ -185,9 +185,9 @@ void Population::generate(double mutationIndex) {
         DNA partnerA = rSelect();
         DNA partnerB = rSelect();
         DNA child = partnerA.crossover(
-            partnerB); // this should be moved or elided, thus ok
+            partnerB); 
         child.mutate(mutationRate, mutationIndex);
-        newPopulation.push_back(std::move(child)); // std::move(child));
+        newPopulation.push_back(std::move(child));
     }
     population.swap(newPopulation);
     // population= newPopulation;
@@ -204,6 +204,7 @@ void Population::generate(double mutationIndex) {
 // is set to one. The selection probability of all other phenotypes is zero. A
 // value near one equalizes the selection probabilities.
 
+//TOODO: RENAME TO exponentialRanker
 std::vector<double> &Population::exponentialRankSelector(double c) {
 
     probabilityArray.clear();

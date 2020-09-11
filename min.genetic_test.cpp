@@ -121,35 +121,33 @@ double standardDeviation(vector<vector<int>> &mutatedValues){
                          }
                      );
            
-           double mean = sum / (double) mutatedValues.size();
+   double mean = sum / (double) mutatedValues.size();
+        
+   //Then for each number: subtract the Mean and square the result (the squared difference).
+   vector< vector<int> >::iterator row;
+   vector<int>::iterator col;
+   for (row = mutatedValues.begin(); row != mutatedValues.end(); row++) {
+       for (col = row->begin(); col != row->end(); col++) {
            
+          double result = (double)*col - mean;
+          result *= result;
+          squaredDifferences.push_back(result);
+       }
+   }
+   //Then work out the average of those squared differences
+   
+   variance = std::accumulate(squaredDifferences.begin(), squaredDifferences.end(), 0.);
+   return sqrt(variance);
+   
 
-           
-           //Then for each number: subtract the Mean and square the result (the squared difference).
-           vector< vector<int> >::iterator row;
-           vector<int>::iterator col;
-           for (row = mutatedValues.begin(); row != mutatedValues.end(); row++) {
-               for (col = row->begin(); col != row->end(); col++) {
-                   
-                  double result = (double)*col - mean;
-                  result *= result;
-                  squaredDifferences.push_back(result);
-               }
-           }
-           //Then work out the average of those squared differences
-           
-           variance = std::accumulate(squaredDifferences.begin(), squaredDifferences.end(), 0.);
-           return sqrt(variance);
-           
-    
-    
-    
+
+
 }
 
 TEST_CASE("Polynomial mutation introduces perturbations in genes vector"){
+    
     ext_main(nullptr);
     const int numberOfValues = 1000;
-
     double deviationForEtaOfFive= 0.;
     double deviationForEtaOfTwenty= 0.;
     double deviationForEtaOfOneHundred= 0.;
@@ -221,11 +219,70 @@ TEST_CASE("Polynomial mutation introduces perturbations in genes vector"){
 }
 
 
-TEST_CASE("object's average fitness improves with a higher mutation rate"){
+TEST_CASE("Roulette Selection method works according to chromosome's fitness values"){
+    ext_main(nullptr);
+    test_wrapper<genetic> an_instance;
+    genetic&    my_object = an_instance;
+    const atoms& args{10};
+    my_object.buildPopulation(2);
+   
     
+    SECTION("a chromosome with a fitness of 30 will be selected about 30 percent of the time"){
+        DNA dnaThirty({30.});
+        DNA dnaSeventy({70.});
+        int thirtyCounter= 0;
+        int seventyCounter= 0;
+    
+        my_object.getPopulation()->population[0]= (dnaThirty);
+        my_object.getPopulation()->population[1]= (dnaSeventy);
+        
+        my_object.getPopulation()->probabilityArray= {0.3, 0.7 };
+       
+      
+       
+      
+        for(int i = 0; i< 1000; i++){
+            DNA selected= my_object.getPopulation()->rSelect();
+        
+            for(auto g: selected.genes){
+
+                if(g==30){
+                    ++thirtyCounter;
+                }
+                else if(g== 70){
+                    ++seventyCounter;
+                }
+                else{
+                    std::cout << "something else : " << g  << std::endl;
+                }
+            }
+        }
+        
+        double  seventyFrequency= seventyCounter/  1000.;
+        double thirtyFrequency = thirtyCounter / 1000.;
+        
+     
+        
+        
+        REQUIRE(((seventyFrequency == APPROX(0.7).margin(0.05) && thirtyFrequency==APPROX(0.3).margin(0.05))));
+      
+        
+    }
+    
+    
+    
+    
+}
+
+
+
+
+
+TEST_CASE("object's average fitness improves with a higher mutation rate"){
+   
+    ext_main(nullptr);
     long generationsOne= 0;
     long generationsTwo= 0;
-    ext_main(nullptr);
     test_wrapper<genetic> an_instance;
     genetic&    my_object = an_instance;
     const atoms& args= {3};
