@@ -121,22 +121,101 @@ TEST_CASE("Polynomial mutation introduces perturbations in genes vector"){
             REQUIRE(geneInRange == true);
     
     }
-    SECTION("A lower eta sub m has a small standard deviation"){
-        DNA dna({3.});
-        std::vector<vector<int>> mutatedValues;
-        
-        for(int i = 0; i< 1000; i++){
-            
-            dna.mutate(1., 100.);
-            for(auto g: dna.genes){
-                
-                std::cout<< g<<std::endl;
-            }
-            mutatedValues.push_back(dna.genes);
-        
-        }
+    SECTION("A higher eta sub m has a low(er) standard deviation"){
        
+        std::vector<vector<int>> mutatedValues;
+        std::vector<double> squaredDifferences;
+        int sum;
+        double variance;
+        const int numberOfValues = 1000;
+        
+        for(int i = 0; i< numberOfValues; i++){
+            DNA dna({100.});
+            dna.mutate(1., 100.);
+            mutatedValues.push_back(dna.genes);
+        }
+        sum = std::accumulate(
+                      mutatedValues.begin(), mutatedValues.end(),                       // iterators for the outer vector
+                      0,                                            // initial value for summation - 0
+                      [](int init, const std::vector<int>& intvec){ // binaryOp that sums a single vector<int>
+                          return std::accumulate(
+                              intvec.begin(), intvec.end(), // iterators for the inner vector
+                              init);                        // current sum
+                                                            // use the default binaryOp here
+                      }
+                  );
+        
+        double mean = sum / (double) numberOfValues;
+        
+        std::cout << "mean: " << mean <<std::endl;
+        
+        
+        //Then for each number: subtract the Mean and square the result (the squared difference).
+        vector< vector<int> >::iterator row;
+        vector<int>::iterator col;
+        for (row = mutatedValues.begin(); row != mutatedValues.end(); row++) {
+            for (col = row->begin(); col != row->end(); col++) {
+                
+               double result = (double)*col - mean;
+               result *= result;
+               squaredDifferences.push_back(result);
+            }
+        }
+        //Then work out the average of those squared differences
+        
+        variance = std::accumulate(squaredDifferences.begin(), squaredDifferences.end(), 0.);
+        double standardDeviation = sqrt(variance);
+        std::cout << "SIGMA: " << standardDeviation<< std::endl;
+        
     }
+      SECTION("A lower eta sub m has a big(er) standard deviation"){
+           
+            std::vector<vector<int>> mutatedValues;
+            std::vector<double> squaredDifferences;
+            int sum;
+            double variance;
+            const int numberOfValues = 1000;
+            
+            for(int i = 0; i< numberOfValues; i++){
+                DNA dna({100.});
+                dna.mutate(1., 5.);
+                mutatedValues.push_back(dna.genes);
+            }
+            sum = std::accumulate(
+                          mutatedValues.begin(), mutatedValues.end(),                       // iterators for the outer vector
+                          0,                                            // initial value for summation - 0
+                          [](int init, const std::vector<int>& intvec){ // binaryOp that sums a single vector<int>
+                              return std::accumulate(
+                                  intvec.begin(), intvec.end(), // iterators for the inner vector
+                                  init);                        // current sum
+                                                                // use the default binaryOp here
+                          }
+                      );
+            
+            double mean = sum / (double) numberOfValues;
+            
+            std::cout << "mean: " << mean <<std::endl;
+            
+            
+            //Then for each number: subtract the Mean and square the result (the squared difference).
+            vector< vector<int> >::iterator row;
+            vector<int>::iterator col;
+            for (row = mutatedValues.begin(); row != mutatedValues.end(); row++) {
+                for (col = row->begin(); col != row->end(); col++) {
+                    
+                   double result = (double)*col - mean;
+                   result *= result;
+                   squaredDifferences.push_back(result);
+                }
+            }
+            //Then work out the average of those squared differences
+            
+            variance = std::accumulate(squaredDifferences.begin(), squaredDifferences.end(), 0.);
+            double standardDeviation = sqrt(variance);
+            std::cout << "SIGMA: " << standardDeviation<< std::endl;
+            
+        }
+    
 }
 
 

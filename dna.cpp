@@ -97,7 +97,7 @@ DNA &DNA::crossover(const DNA &partner) {
 // apply a random values to random genes that DONT match the target value
 void DNA::mutate(double mutationRate, double eta) {
 
-    polynomialMutationImpl({1., 8.}, mutationRate, eta);
+    polynomialMutationImpl({1., 255.}, mutationRate, eta);
 }
 
 // dont pass child as reference, just use the class we're in and mutate 'in
