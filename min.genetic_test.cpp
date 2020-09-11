@@ -104,8 +104,56 @@ TEST_CASE("crossover function combines genes from two dna instances"){
 
 }
 
+
+
+double standardDeviation(vector<vector<int>> &mutatedValues){
+    std::vector<double> squaredDifferences;
+    int sum;
+    double variance;
+    sum = std::accumulate(
+                         mutatedValues.begin(), mutatedValues.end(),                       // iterators for the outer vector
+                         0,                                            // initial value for summation - 0
+                         [](int init, const std::vector<int>& intvec){ // binaryOp that sums a single vector<int>
+                             return std::accumulate(
+                                 intvec.begin(), intvec.end(), // iterators for the inner vector
+                                 init);                        // current sum
+                                                               // use the default binaryOp here
+                         }
+                     );
+           
+           double mean = sum / (double) mutatedValues.size();
+           
+
+           
+           //Then for each number: subtract the Mean and square the result (the squared difference).
+           vector< vector<int> >::iterator row;
+           vector<int>::iterator col;
+           for (row = mutatedValues.begin(); row != mutatedValues.end(); row++) {
+               for (col = row->begin(); col != row->end(); col++) {
+                   
+                  double result = (double)*col - mean;
+                  result *= result;
+                  squaredDifferences.push_back(result);
+               }
+           }
+           //Then work out the average of those squared differences
+           
+           variance = std::accumulate(squaredDifferences.begin(), squaredDifferences.end(), 0.);
+           return sqrt(variance);
+           
+    
+    
+    
+}
+
 TEST_CASE("Polynomial mutation introduces perturbations in genes vector"){
     ext_main(nullptr);
+    const int numberOfValues = 1000;
+
+    double deviationForEtaOfFive= 0.;
+    double deviationForEtaOfTwenty= 0.;
+    double deviationForEtaOfOneHundred= 0.;
+    
     SECTION("Perturbation occurs only within range specified by eta sub m"){
         bool geneInRange = true;
         DNA dna({3., 3., 3., 3.});
@@ -121,101 +169,55 @@ TEST_CASE("Polynomial mutation introduces perturbations in genes vector"){
             REQUIRE(geneInRange == true);
     
     }
-    SECTION("A higher eta sub m has a low(er) standard deviation"){
+    SECTION("A eta sub m of 5 has a higher standard deviation than eta sub m of 20"){
        
         std::vector<vector<int>> mutatedValues;
-        std::vector<double> squaredDifferences;
-        int sum;
-        double variance;
-        const int numberOfValues = 1000;
-        
+      
         for(int i = 0; i< numberOfValues; i++){
             DNA dna({100.});
-            dna.mutate(1., 100.);
+            dna.mutate(1., 5.);
             mutatedValues.push_back(dna.genes);
         }
-        sum = std::accumulate(
-                      mutatedValues.begin(), mutatedValues.end(),                       // iterators for the outer vector
-                      0,                                            // initial value for summation - 0
-                      [](int init, const std::vector<int>& intvec){ // binaryOp that sums a single vector<int>
-                          return std::accumulate(
-                              intvec.begin(), intvec.end(), // iterators for the inner vector
-                              init);                        // current sum
-                                                            // use the default binaryOp here
-                      }
-                  );
         
-        double mean = sum / (double) numberOfValues;
-        
-        std::cout << "mean: " << mean <<std::endl;
-        
-        
-        //Then for each number: subtract the Mean and square the result (the squared difference).
-        vector< vector<int> >::iterator row;
-        vector<int>::iterator col;
-        for (row = mutatedValues.begin(); row != mutatedValues.end(); row++) {
-            for (col = row->begin(); col != row->end(); col++) {
-                
-               double result = (double)*col - mean;
-               result *= result;
-               squaredDifferences.push_back(result);
-            }
-        }
-        //Then work out the average of those squared differences
-        
-        variance = std::accumulate(squaredDifferences.begin(), squaredDifferences.end(), 0.);
-        double standardDeviation = sqrt(variance);
-        std::cout << "SIGMA: " << standardDeviation<< std::endl;
-        
-    }
-      SECTION("A lower eta sub m has a big(er) standard deviation"){
-           
-            std::vector<vector<int>> mutatedValues;
-            std::vector<double> squaredDifferences;
-            int sum;
-            double variance;
-            const int numberOfValues = 1000;
-            
-            for(int i = 0; i< numberOfValues; i++){
+        deviationForEtaOfFive = standardDeviation(mutatedValues);
+        mutatedValues.clear();
+        for(int i = 0; i< numberOfValues; i++){
                 DNA dna({100.});
-                dna.mutate(1., 5.);
+                dna.mutate(1., 20.);
                 mutatedValues.push_back(dna.genes);
             }
-            sum = std::accumulate(
-                          mutatedValues.begin(), mutatedValues.end(),                       // iterators for the outer vector
-                          0,                                            // initial value for summation - 0
-                          [](int init, const std::vector<int>& intvec){ // binaryOp that sums a single vector<int>
-                              return std::accumulate(
-                                  intvec.begin(), intvec.end(), // iterators for the inner vector
-                                  init);                        // current sum
-                                                                // use the default binaryOp here
-                          }
-                      );
             
-            double mean = sum / (double) numberOfValues;
-            
-            std::cout << "mean: " << mean <<std::endl;
-            
-            
-            //Then for each number: subtract the Mean and square the result (the squared difference).
-            vector< vector<int> >::iterator row;
-            vector<int>::iterator col;
-            for (row = mutatedValues.begin(); row != mutatedValues.end(); row++) {
-                for (col = row->begin(); col != row->end(); col++) {
-                    
-                   double result = (double)*col - mean;
-                   result *= result;
-                   squaredDifferences.push_back(result);
-                }
-            }
-            //Then work out the average of those squared differences
-            
-            variance = std::accumulate(squaredDifferences.begin(), squaredDifferences.end(), 0.);
-            double standardDeviation = sqrt(variance);
-            std::cout << "SIGMA: " << standardDeviation<< std::endl;
-            
-        }
+         deviationForEtaOfTwenty= standardDeviation(mutatedValues);
+       
+        
+        REQUIRE(deviationForEtaOfFive > deviationForEtaOfTwenty);
+        
+    }
     
+    SECTION("An eta sub m of 20 has a higher standard deviation than an eta sub m of 100"){
+        
+        std::vector<vector<int>> mutatedValues;
+        for(int i = 0; i< numberOfValues; i++){
+                DNA dna({100.});
+                dna.mutate(1., 20.);
+                mutatedValues.push_back(dna.genes);
+            }
+            
+         deviationForEtaOfTwenty= standardDeviation(mutatedValues);
+        
+
+        mutatedValues.clear();
+
+        for(int i = 0; i< numberOfValues; i++){
+                    DNA dna({100.});
+                    dna.mutate(1., 100.);
+                    mutatedValues.push_back(dna.genes);
+                }
+        deviationForEtaOfOneHundred = standardDeviation(mutatedValues);
+        REQUIRE( deviationForEtaOfTwenty > deviationForEtaOfOneHundred );
+    }
+    
+     
 }
 
 
