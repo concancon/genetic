@@ -205,7 +205,7 @@ void Population::generate(double mutationIndex) {
 // value near one equalizes the selection probabilities.
 
 //TOODO: RENAME TO exponentialRanker
-std::vector<double> &Population::exponentialRankSelector(double c) {
+void Population::exponentialRankSelector(double c) {
 
     probabilityArray.clear();
     // first we need to sort the array in descending order
@@ -219,7 +219,7 @@ std::vector<double> &Population::exponentialRankSelector(double c) {
         double probability = pow(c, i) * (numerator / denominator);
         probabilityArray.push_back(probability);
     }
-    return probabilityArray;
+
 }
 // select based on exponentialSelector
 DNA &Population::select(double sum) {

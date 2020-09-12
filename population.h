@@ -68,7 +68,7 @@ class Population {
     // Create a new generation
     void generate(double eta);
 
-    std::vector<double> &exponentialRankSelector(double c);
+    void exponentialRankSelector(double c);
 
     DNA &rSelect();
     // https://stackoverflow.com/questions/24609131/implementation-of-roulette-wheel-selection
