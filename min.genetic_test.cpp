@@ -260,19 +260,50 @@ TEST_CASE("exponentialSelector") {
 
     my_object.buildPopulation(args);
     my_object.getPopulation()->setMaxPopulation(20);
-    my_object.getPopulation()->targetParams = {1.0, 2.0, 3.0};
+    my_object.getPopulation()->targetParams = {1.0, 1.0, 1.0};
 
     double sum = 0;
     int index = 0;
-    SECTION(" If c is set to zero only the best phenotype will be selected") {
+    
+    my_object.dictionary(); // assign fitness scores according to target
+           std::sort(my_object.getPopulation()->population.begin(),
+           my_object.getPopulation()->population.end(),
+           [](const DNA &a, const DNA &b) -> bool {
+               return a.fitness > b.fitness;
+           });
+           my_object.getPopulation()->exponentialRankSelector(
+                      my_object.getPopulation()->expFactor);
 
+    
+    SECTION("Probability Array is built such that the sum of all probabilites is 1 "){
+        
+               for (int i = 0; i < my_object.getPopulation()->population.size(); i++) {
+                   sum += my_object.getPopulation()->probabilityArray[i];
+               }
+
+               REQUIRE(sum == 1); // in between step
+        
+    }
+    
+    
+    
+    SECTION(" If c is set to zero only the best phenotype will be given a selection probability of 1") {
+        bool homogenous= true;
+        
         my_object.dictionary(); // assign fitness scores according to target
-        // sort according to fintess
-        std::sort(my_object.getPopulation()->population.begin(),
-                  my_object.getPopulation()->population.end(),
-                  [](const DNA &a, const DNA &b) -> bool {
-                      return a.fitness > b.fitness;
-                  });
+        
+        //first check that we have a non-homegenous population
+        for(auto dna: my_object.getPopulation()->population){
+            for(auto g: dna.genes ){
+                if(g != 1.0){
+                    homogenous= false;
+                }
+            }
+        }
+        
+        REQUIRE(homogenous == false);
+           
+     
         // create probabiltiy array
         my_object.getPopulation()->expFactor =
             0.0; // expected only the best phenotype should be selected
@@ -283,39 +314,15 @@ TEST_CASE("exponentialSelector") {
         my_object.getPopulation()->exponentialRankSelector(
             my_object.getPopulation()->expFactor);
 
-        for (int i = 0; i < my_object.getPopulation()->population.size(); i++) {
-            sum += my_object.getPopulation()->probabilityArray[i];
-        }
+     
+        REQUIRE(my_object.getPopulation()->probabilityArray[0] == 1);
+        
 
-        REQUIRE(sum == 1); // in between step
-        DNA partnerA = my_object.getPopulation()->rSelect();
-        REQUIRE(partnerA.genes.size() == 3);
-        REQUIRE(partnerA.genes == my_object.getPopulation()->getBest(index));
     }
-}
 
-TEST_CASE("exponentialSelector 2") {
 
-    ext_main(nullptr);
-    test_wrapper<genetic> an_instance;
-    genetic &my_object = an_instance;
-    const atoms &args = {3};
+    SECTION(" If c is set to almost one all the phenotypes will have an equal likelihood of being selected") {
 
-    my_object.buildPopulation(args);
-    my_object.getPopulation()->setMaxPopulation(20);
-    my_object.getPopulation()->targetParams = {1.0, 2.0, 3.0};
-
-    double sum = 0.;
-    int index = 0;
-    SECTION(" If c is set to almost one all the phenotypes will be selected") {
-
-        my_object.dictionary(); // assign fitness scores according to target
-        // sort according to fintess
-        std::sort(my_object.getPopulation()->population.begin(),
-                  my_object.getPopulation()->population.end(),
-                  [](const DNA &a, const DNA &b) -> bool {
-                      return a.fitness > b.fitness;
-                  });
         // create probabiltiy array
         my_object.getPopulation()->expFactor =
             0.999; // expect all members to have roughly the same probability of
@@ -327,20 +334,15 @@ TEST_CASE("exponentialSelector 2") {
         my_object.getPopulation()->exponentialRankSelector(
             my_object.getPopulation()->expFactor);
 
+        bool probabilitiesAreSame= true;
         // here we can test the values in probabilityArray
-
-        for (int i = 0; i < my_object.getPopulation()->population.size(); i++) {
-            sum += my_object.getPopulation()->probabilityArray[i];
+        for(int i = 0; i< my_object.getPopulation()->probabilityArray.size(); i++){
+            
+            if( my_object.getPopulation()->probabilityArray[i] != APPROX(0.05).margin(.02)){
+                probabilitiesAreSame= false;
+            }
         }
-
-        REQUIRE(sum == Approx(1.));
-
-        for (int i = 0; i < 200; i++) {
-            my_object.getPopulation()->rSelect();
-        }
-        vector<int> ans = my_object.getPopulation()->getSelectionCount();
-
-        // std::cout << ans<<endl;
+        REQUIRE(probabilitiesAreSame==true);
     }
 }
 
