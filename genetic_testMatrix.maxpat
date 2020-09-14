@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 1,
-			"revision" : 5,
+			"revision" : 6,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -39,6 +39,18 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-32",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 581.0, 635.0, 150.0, 33.0 ],
+					"text" : "generations: 9, 18,     for 99 percent accuracy"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-29",
 					"maxclass" : "number",
@@ -283,8 +295,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 342.5, 670.0, 82.0, 76.0 ],
-					"text" : "242 111 149 30 49 1 184 1 116 106 1 221 28 44 102 248 245"
+					"patching_rect" : [ 342.5, 670.0, 89.0, 76.0 ],
+					"text" : "101 211 155 68 171 125 132 10 57 102 157 190 124 14 181 240"
 				}
 
 			}
@@ -414,7 +426,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 73.0, 557.0, 107.0, 22.0 ],
-					"text" : "buildPopulation 17"
+					"text" : "buildPopulation 16"
 				}
 
 			}
@@ -424,7 +436,7 @@
 					"maxclass" : "dict.view",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ -1.0, 718.0, 190.0, 160.0 ]
+					"patching_rect" : [ 5.0, 735.0, 190.0, 160.0 ]
 				}
 
 			}
@@ -564,7 +576,7 @@
 		"lines" : [ 			{
 				"patchline" : 				{
 					"destination" : [ "obj-16", 1 ],
-					"midpoints" : [ 226.5, 643.0, 415.0, 643.0 ],
+					"midpoints" : [ 226.5, 643.0, 422.0, 643.0 ],
 					"source" : [ "obj-1", 2 ]
 				}
 
@@ -580,7 +592,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-43", 0 ],
-					"midpoints" : [ 175.5, 656.5, 8.5, 656.5 ],
+					"midpoints" : [ 175.5, 656.5, 14.5, 656.5 ],
 					"order" : 1,
 					"source" : [ "obj-1", 0 ]
 				}
@@ -883,20 +895,6 @@
 				"bootpath" : "~/Documents/Max 8/Packages/dada/media",
 				"patcherrelativepath" : "../../../../dada/media",
 				"type" : "WAVE",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "dynamicUnpack.js",
-				"bootpath" : "~/Documents/Max 8/Packages/min-devkit/source/projects/min.genetic",
-				"patcherrelativepath" : ".",
-				"type" : "TEXT",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "scaler.js",
-				"bootpath" : "~/Documents/Max 8/Packages/min-devkit/source/projects/min.genetic",
-				"patcherrelativepath" : ".",
-				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
