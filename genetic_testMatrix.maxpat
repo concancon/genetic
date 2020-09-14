@@ -4,7 +4,7 @@
 		"appversion" : 		{
 			"major" : 8,
 			"minor" : 1,
-			"revision" : 5,
+			"revision" : 6,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
@@ -278,13 +278,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-16",
-					"linecount" : 5,
+					"linecount" : 6,
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 342.5, 670.0, 82.0, 76.0 ],
-					"text" : "242 111 149 30 49 1 184 1 116 106 1 221 28 44 102 248 245"
+					"patching_rect" : [ 342.5, 670.0, 85.0, 89.0 ],
+					"text" : "69 167 61 165 247 204 247 44 251 121 225 207 244 206 244 82 105"
 				}
 
 			}
@@ -414,7 +414,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 73.0, 557.0, 107.0, 22.0 ],
-					"text" : "buildPopulation 17"
+					"text" : "buildPopulation 16"
 				}
 
 			}
@@ -564,7 +564,7 @@
 		"lines" : [ 			{
 				"patchline" : 				{
 					"destination" : [ "obj-16", 1 ],
-					"midpoints" : [ 226.5, 643.0, 415.0, 643.0 ],
+					"midpoints" : [ 226.5, 643.0, 418.0, 643.0 ],
 					"source" : [ "obj-1", 2 ]
 				}
 
@@ -894,6 +894,13 @@
 			}
 , 			{
 				"name" : "scaler.js",
+				"bootpath" : "~/Documents/Max 8/Packages/min-devkit/source/projects/min.genetic",
+				"patcherrelativepath" : ".",
+				"type" : "TEXT",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "a.txt",
 				"bootpath" : "~/Documents/Max 8/Packages/min-devkit/source/projects/min.genetic",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",

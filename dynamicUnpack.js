@@ -32,7 +32,7 @@ function list(myList){
 
 	 }
 
-  	for(var i = 0; i < args.length-1; i++)
+  	for(var i = 0; i < args.length; i++)
 		{
 		outlet(i, args[i]);
      	}
