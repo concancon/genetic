@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 56.0, 748.0, 810.0 ],
+		"rect" : [ 89.0, 56.0, 748.0, 810.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -283,8 +283,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 342.5, 670.0, 81.5, 76.0 ],
-					"text" : "123 91 129 14 108 60 110 11 234 4 5 66 82 10 215 231"
+					"patching_rect" : [ 342.5, 670.0, 82.0, 76.0 ],
+					"text" : "242 111 149 30 49 1 184 1 116 106 1 221 28 44 102 248 245"
 				}
 
 			}
@@ -414,7 +414,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 73.0, 557.0, 107.0, 22.0 ],
-					"text" : "buildPopulation 16"
+					"text" : "buildPopulation 17"
 				}
 
 			}
@@ -564,7 +564,7 @@
 		"lines" : [ 			{
 				"patchline" : 				{
 					"destination" : [ "obj-16", 1 ],
-					"midpoints" : [ 226.5, 643.0, 414.5, 643.0 ],
+					"midpoints" : [ 226.5, 643.0, 415.0, 643.0 ],
 					"source" : [ "obj-1", 2 ]
 				}
 
@@ -818,12 +818,8 @@
  ],
 		"parameters" : 		{
 			"obj-21::obj-16" : [ "live.gain~", "live.gain~", 0 ],
-			"obj-21::obj-97::obj-39" : [ "number[12]", "number[1]", 0 ],
-			"obj-21::obj-97::obj-41" : [ "number[11]", "number[2]", 0 ],
 			"obj-21::obj-97::obj-70" : [ "number[13]", "number[13]", 0 ],
 			"obj-21::obj-9::obj-26" : [ "number[7]", "number", 0 ],
-			"obj-21::obj-9::obj-39" : [ "number[6]", "number[1]", 0 ],
-			"obj-21::obj-9::obj-41" : [ "number[5]", "number[2]", 0 ],
 			"obj-27" : [ "number[4]", "number[4]", 0 ],
 			"obj-28" : [ "number[3]", "number[3]", 0 ],
 			"parameterbanks" : 			{
@@ -950,27 +946,13 @@
 			"snapshot" : 			{
 				"valuedictionary" : 				{
 					"parameter_values" : 					{
-						"CV1" : 0.0,
-						"CV2" : 100.0,
-						"CV3" : 0.0,
-						"Freq" : 6766.246564310111353,
-						"Offset" : 0.0,
-						"Res" : 0.0,
-						"ResCV" : 100.0,
 						"live.gain~" : -6.0,
-						"power" : 0.0,
-						"TimeMode" : 1.0,
 						"blob" : 						{
-							"number" : [ 97 ],
-							"number[11]" : [ 0.0 ],
-							"number[12]" : [ 0.0 ],
-							"number[13]" : [ 49.0 ],
-							"number[1]" : [ 10 ],
-							"number[2]" : [ 200.0 ],
-							"number[3]" : [ 168 ],
+							"number[11]" : [ 10.0 ],
+							"number[13]" : [ 16.0 ],
+							"number[3]" : [ 300 ],
 							"number[4]" : [ 200 ],
-							"number[5]" : [ 0.0 ],
-							"number[6]" : [ 0.0 ],
+							"number[5]" : [ 10.0 ],
 							"number[7]" : [ 49.0 ]
 						}
 
@@ -994,27 +976,13 @@
 						"snapshot" : 						{
 							"valuedictionary" : 							{
 								"parameter_values" : 								{
-									"CV1" : 0.0,
-									"CV2" : 100.0,
-									"CV3" : 0.0,
-									"Freq" : 6766.246564310111353,
-									"Offset" : 0.0,
-									"Res" : 0.0,
-									"ResCV" : 100.0,
 									"live.gain~" : -6.0,
-									"power" : 0.0,
-									"TimeMode" : 1.0,
 									"blob" : 									{
-										"number" : [ 97 ],
-										"number[11]" : [ 0.0 ],
-										"number[12]" : [ 0.0 ],
-										"number[13]" : [ 49.0 ],
-										"number[1]" : [ 10 ],
-										"number[2]" : [ 200.0 ],
-										"number[3]" : [ 168 ],
+										"number[11]" : [ 10.0 ],
+										"number[13]" : [ 16.0 ],
+										"number[3]" : [ 300 ],
 										"number[4]" : [ 200 ],
-										"number[5]" : [ 0.0 ],
-										"number[6]" : [ 0.0 ],
+										"number[5]" : [ 10.0 ],
 										"number[7]" : [ 49.0 ]
 									}
 

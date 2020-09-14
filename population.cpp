@@ -176,7 +176,7 @@ void Population::generate(double mutationIndex) {
         newPopulation.push_back(population[i]);
     }
 
-    exponentialRankSelector(expFactor);
+    exponentialRanker(expFactor);
     for (int i = 0; i < population.size(); i++) {
         sum += probabilityArray[i];
     }
@@ -205,7 +205,7 @@ void Population::generate(double mutationIndex) {
 // value near one equalizes the selection probabilities.
 
 //TOODO: RENAME TO exponentialRanker
-void Population::exponentialRankSelector(double c) {
+void Population::exponentialRanker(double c) {
 
     probabilityArray.clear();
     // first we need to sort the array in descending order

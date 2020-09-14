@@ -2,12 +2,15 @@ autowatch = 1;
 inlets = 1;
 
 
-var numScales= 0;
+var numScales= 20;
 var theScales = new Array(128);
 var theOutlets = new Array(128);
 var memory = 0;
 
-
+function loadbang(){
+	scales(numberOfSynthesisParameters);
+//this.box.compile();
+}
 function scales(val){
 	
 	
@@ -18,7 +21,8 @@ function scales(val){
 		if(a<0) a = 0; // too few scales, set to 0
 		if(a>128) a = 128; // too many scales, set to 128		
 		
-		if(memory){
+		if(memory!= 0){
+			post("memory" + memory + "\n");
 			for(var i =0; i<memory; i++){
 				this.patcher.remove(theScales[i]);
 				this.patcher.remove(theOutlets[i]);
@@ -38,7 +42,8 @@ function scales(val){
 				this.patcher.connect(ourself,k, theScales[k], 0);
 				this.patcher.connect(theScales[k], 0, theOutlets[k], 0);
 			}
-		}			
+		}	
+		post("a: " + a + "\n");		
 		memory=a;
 			
 		

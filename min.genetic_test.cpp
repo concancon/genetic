@@ -271,7 +271,7 @@ TEST_CASE("exponentialSelector") {
            [](const DNA &a, const DNA &b) -> bool {
                return a.fitness > b.fitness;
            });
-           my_object.getPopulation()->exponentialRankSelector(
+           my_object.getPopulation()->exponentialRanker(
                       my_object.getPopulation()->expFactor);
 
     
@@ -311,7 +311,7 @@ TEST_CASE("exponentialSelector") {
         // constituent steps. roughly speaking bang just calls generate getBest
         // and outputs the result generate
         // TODO: TEST THIS WITH ELITISM TOO!!!!!
-        my_object.getPopulation()->exponentialRankSelector(
+        my_object.getPopulation()->exponentialRanker(
             my_object.getPopulation()->expFactor);
 
      
@@ -331,7 +331,7 @@ TEST_CASE("exponentialSelector") {
         // constituent steps roughly speaking bang just calls generate getBest
         // and outputs the result generate
         // TODO: TEST THIS WITH ELITISM TOO!!!!!
-        my_object.getPopulation()->exponentialRankSelector(
+        my_object.getPopulation()->exponentialRanker(
             my_object.getPopulation()->expFactor);
 
         bool probabilitiesAreSame= true;

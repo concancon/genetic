@@ -1,12 +1,19 @@
 autowatch=  1;
 inlets = 1;
 
+numberOfSynthesisParameters= 20;
+
+function loadbang(){	
+
+ createOutlets(numberOfSynthesisParameters);
+
+}
 
 function createOutlets(n){
   
-  //post(n + "\n");
+  post(n + "\n");
   outlets = n;	
-
+  this.box.compile();		
 
 }
 
