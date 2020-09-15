@@ -62,53 +62,15 @@ public:
         
         
         int t = (int) args[0];
-        
-       
-        double oldMutationRate;
-        double oldMaxPopulation;
-        double oldExpFactor;
-        double oldmutationIndex;
-        double oldAccuracy;
-    
         if(population.get()){
-            //save mutation rate
-            oldMutationRate = population->mutationRate;
-            oldMaxPopulation = population->maxPopulation;
-            oldExpFactor = population->expFactor;
-            oldmutationIndex = population->mutationIndex;
-            oldAccuracy = population->accuracy;
-       
-        }
-        else{
-        
-            oldAccuracy = popDummy.accuracy;
-            oldMutationRate = popDummy.mutationRate;
-            oldMaxPopulation = popDummy.maxPopulation;
-            oldExpFactor = popDummy.expFactor;
-            oldmutationIndex = popDummy.mutationIndex;
-  
+         popDummy.adoptAttributes(*population);
+         }
+         
     
-        
-        }
         population = std::make_unique<Population>(t);
         doubleResult = new vector<double>; //TODO: free this or improve it
-		//notify max that these
-            
-            atoms a;
-            a.push_back(oldMaxPopulation);
-            maxPopulation.set(a);
-            a.clear();
-            a.push_back(oldMutationRate);
-            mutationRate.set(a);
-            a.clear();
-            a.push_back(oldmutationIndex);
-            mutationIndex.set(a);
-            a.clear();
-            a.push_back(oldExpFactor);
-            expFactor.set(a);
-            a.clear();
-            a.push_back(oldAccuracy);
-            accuracy.set(a);
+		population->adoptAttributes(popDummy);
+        
          
         
     }
@@ -184,7 +146,7 @@ public:
        };
                     
     message<> buildPopulation {this, "buildPopulation", "build an initial population", MIN_FUNCTION {
-            
+      
 	   if(population.get()){
 
 			//population->targetParams.clear();
@@ -209,19 +171,12 @@ public:
     }};
     
 
-    attribute<double> accuracy {this, "accuracy", 99.5,
+    attribute<double> accuracy {this, "accuracy", DEFAULT_ACCURACY,
           setter { MIN_FUNCTION {
-                  
-           if(population.get()){
-              population->setAccuracy(double(args[0]));
-
-            }
-           else
-            {
-              popDummy.setAccuracy(double(args[0])); //TODO: apply this to all attributes
-            }
-                  
-              return {args};
+                 
+           Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES
+           pop.setAccuracy(double(args[0]));
+           return {args};
                   
       }}};
                 
@@ -229,10 +184,10 @@ public:
                 
    attribute<int> maxPopulation {this, "maxPopulation", 10,
           setter { MIN_FUNCTION {
-                
-           if(population.get()){
-              population->setMaxPopulation(int(args[0]));
-            }
+         Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES
+        
+              pop.setMaxPopulation(int(args[0]));
+            
             return {args};
     }}};
            
@@ -240,9 +195,9 @@ public:
    attribute<double> mutationRate {this, "mutationRate", 0.214,
         setter { MIN_FUNCTION {
                 
-           if(population.get()){
-              population->setMutationRate(double(args[0]));
-           }
+           Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES
+          pop.setMutationRate(double(args[0]));
+           
                 
         return {args};
                 
@@ -250,10 +205,10 @@ public:
                     
    attribute<double> mutationIndex {this, "mutationIndex", 5.,
        setter { MIN_FUNCTION {
-                           
-          if(population.get()){
-           population->setMutationIndex(int(args[0]));
-           }
+          Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES
+          
+           pop.setMutationIndex(int(args[0]));
+           
   
         return {args};
     }}};
@@ -262,21 +217,15 @@ public:
    attribute<double>  expFactor {this, "expFactor", 0.123,
      setter { MIN_FUNCTION {
             
-     if(population.get()){
-        population->setExpFactor(double(args[0]));
-        }
+      Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES
+        pop.setExpFactor(double(args[0]));
+        
             
     return {args};
                  
     }}};
                     
-    //attribute to test polynomialMutate method
-   attribute<int> mutate{ this, "mutate", 200 , setter{ MIN_FUNCTION {
-                
-     //atom value= (atom)DNA::polynomialMutate(args[0], args[1]);
-     //output2.send(value);
-     return {args};
-    }}};
+ 
                 
   
     message<> getMaxFitness {this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {

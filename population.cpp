@@ -58,7 +58,7 @@ Population::Population(int numberOfParams)
     mutationRate = 0.214;
     mutationIndex = 5.;
     maxPopulation = 10;
-    accuracy = 99.5;
+    accuracy = DEFAULT_ACCURACY; //TOODO: implement macros for all these values
     numParams = numberOfParams;
 
     for (int i = 0; i < maxPopulation; i++) {
@@ -66,6 +66,21 @@ Population::Population(int numberOfParams)
         population.push_back(std::move(dna));
     }
 }
+
+
+void Population::adoptAttributes(const Population &pop){
+
+    
+     mutationRate = pop.mutationRate;
+     mutationIndex= pop.mutationIndex;
+     expFactor = pop.expFactor;
+     maxPopulation= pop.maxPopulation;
+     accuracy= pop.accuracy;
+     
+
+}
+
+
 
 // converts a population to an atomarray
 const c74::min::dict &Population::toDict() {

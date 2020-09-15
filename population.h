@@ -7,6 +7,10 @@
 #include <random>
 #include <thread>
 #define USE_THREADS 0
+#define DEFAULT_ACCURACY 98
+
+
+
 
 class Population {
   public:
@@ -43,6 +47,8 @@ class Population {
     std::vector<int> lastBest;
     Population(const std::vector<double> &tp);
     Population(int numberOfParams);
+
+    void adoptAttributes(const Population &pop); //could be a copy constructor instead
 
     const c74::min::dict &toDict(); // TODO: MAKE PRIVATE
 
