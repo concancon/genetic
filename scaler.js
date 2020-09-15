@@ -3,30 +3,13 @@ inlets = 1;
 
 
 var numScales= 20;
-var theScales = new Array();
-var theOutlets = new Array();
-g = new Global("memory");
+var theScales = new Array(128);
+var theOutlets = new Array(128);
+var memory = 0;
 
-function save(){
-	
- embedmessage("setMemory",16);
-}
-
-function setMemory(x){
-	
-		g.memory= x;
-}
 function loadbang(){
-	
-	post("number of synth params" + numberOfSynthesisParameters + "\n");
-	post("memory" + g.memory + "\n");
-	if(g.memory == 0){
-	
-	 scales(numberOfSynthesisParameters);
-	}
-	
-	
-	
+	scales(numberOfSynthesisParameters);
+//this.box.compile();
 }
 function scales(val){
 	
@@ -38,26 +21,30 @@ function scales(val){
 		if(a<0) a = 0; // too few scales, set to 0
 		if(a>128) a = 128; // too many scales, set to 128		
 		
-	
+		if(memory!= 0){
+			post("memory" + memory + "\n");
+			for(var i =0; i<memory; i++){
+				this.patcher.remove(theScales[i]);
+				this.patcher.remove(theOutlets[i]);
+			}
+		}
 			
 		// ...in with the new
 		numScales = a;
 		///if(numScales) ////
-		
+		ourself = this.patcher.getnamed("tester");
 		for(var k= 0; k < a; k++)
 		{
-			//this.patcher.newdefault(120, 90, "scale 0 10. 0 20.");
-			theScales[k] = this.patcher.newdefault(300+(k*100), 50, "scale 0. 255. 0. 5000.");		
+			theScales[k] = this.patcher.newdefault(300+(k*100), 50, "scale", 0.0, 255.0, 0.0, 5000.0);		
 			theOutlets[k] = this.patcher.newdefault(300+(k*100), 100,  "outlet");
 			if(numScales)
 			{
-				this.patcher.connect(this.patcher.getnamed("dynamicUnpack"),k, theScales[k], 0);
+				this.patcher.connect(ourself,k, theScales[k], 0);
 				this.patcher.connect(theScales[k], 0, theOutlets[k], 0);
-				this.patcher.connect(this.patcher.getnamed("myCycle"), k, theScales[k], 4);
 			}
 		}	
 		post("a: " + a + "\n");		
-		g.memory=a;
+		memory=a;
 			
 		
 		
