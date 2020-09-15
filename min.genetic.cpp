@@ -20,6 +20,7 @@ private:
     // prior to the constructor being called.
     //not necessaray
     std::unique_ptr<Population> population { nullptr };
+    Population popDummy{0};
     
     //Population population;
     atoms result;
@@ -68,7 +69,7 @@ public:
         double oldExpFactor;
         double oldmutationIndex;
         double oldAccuracy;
-        bool reInit= false;
+    
         if(population.get()){
             //save mutation rate
             oldMutationRate = population->mutationRate;
@@ -76,12 +77,22 @@ public:
             oldExpFactor = population->expFactor;
             oldmutationIndex = population->mutationIndex;
             oldAccuracy = population->accuracy;
-            reInit= true;
+       
+        }
+        else{
+        
+            oldAccuracy = popDummy.accuracy;
+            oldMutationRate = popDummy.mutationRate;
+            oldMaxPopulation = popDummy.maxPopulation;
+            oldExpFactor = popDummy.expFactor;
+            oldmutationIndex = popDummy.mutationIndex;
+  
+    
+        
         }
         population = std::make_unique<Population>(t);
         doubleResult = new vector<double>; //TODO: free this or improve it
 		//notify max that these
-        if(reInit){
             
             atoms a;
             a.push_back(oldMaxPopulation);
@@ -99,8 +110,7 @@ public:
             a.push_back(oldAccuracy);
             accuracy.set(a);
          
-            
-        }
+        
     }
  
    //message to assign a fitness value to each member of a population
@@ -204,6 +214,11 @@ public:
                   
            if(population.get()){
               population->setAccuracy(double(args[0]));
+
+            }
+           else
+            {
+              popDummy.setAccuracy(double(args[0])); //TODO: apply this to all attributes
             }
                   
               return {args};
@@ -288,7 +303,7 @@ public:
                 population->generate(population->mutationIndex);
 
 				int index;
-                std::vector<int>& currentBest = population->getBest(index);
+                std::vector<int>& currentBest = population->getBest(index); 
                 //we know that rate of improvement will have been calculated by now
                 
                 if(population->getGenerations() % 20 == 0){

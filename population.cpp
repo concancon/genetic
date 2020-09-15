@@ -115,6 +115,7 @@ double Population::getAverageFitness() {
 // get the fittest member in the population.
 // we use this to output the best member to Max
 vector<int> &Population::getBest(int &index) {
+    
 
     static vector<int> defaultGenes = {-1};
     vector<int> diff;
@@ -129,6 +130,7 @@ vector<int> &Population::getBest(int &index) {
     }
 
     if (maxFitness >= accuracy) {
+        
         finished = true;
     }
     if (index >= 0) {
