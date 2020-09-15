@@ -73,10 +73,11 @@ function scales(val){
 		post("a: " + a + "\n");		
 		g.numberOfParams=a;
 	}	
-	else // complain about arguments
-	{
-		post("scales message needs arguments");
-		post();
-	}
- }	
+	
+ }
+ else // complain about arguments
+ {
+   post("scales message needs arguments");
+   post();
+ }
 }
