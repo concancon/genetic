@@ -1,51 +1,27 @@
 autowatch=  1;
 inlets = 1;
-outlets = 16;
-numberOfSynthesisParameters= 16;
+outlets = 64;
 
-function loadbang(){	
 
- post("memory in dynamic" + g.memory + "\n");
- 
- 	    createOutlets(numberOfSynthesisParameters);
-		
-}
+var g = new Global("memory");
+g.numberOfParams= 16;
 
-function createOutlets(n){
-  
-  post(n + "\n");
-  outlets = n;	
-  this.box.compile();		
-
-}
 
 function list(myList){
 	
   
    var args = arrayfromargs(arguments); 
 
-	if(args!= numberOfSynthesisParameters){ //only update on change
-   
-   	 numberOfSynthesisParameters= args;
-     if(args.length != g.memory){
-	 createOutlets(args.length);
 
-	 }
-
+   	 if(args.length)g.numberOfParams= args.length;
+    
   	for(var i = 0; i < args.length; i++)
 		{
 		outlet(i, args[i]);
      	}
-    }
+    
   
 		
 }
 
 
-function msg_int(val){
-	
-   
-   //createOutlets(val);
-
-		
-}
