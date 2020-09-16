@@ -15,11 +15,9 @@ void DNA::setFitness(double f) { fitness = f; }
 // constructor for DNA class
 DNA::DNA(int paramSize, bool randomize)
     : genes(paramSize, 0), numberOfGenes(paramSize) {
-    int randomGene = 0;
     if (randomize) {
         for (int i = 0; i < numberOfGenes; i++) {
-            randomGene = randomInt(engine);
-            genes[i] = randomGene;
+            genes[i]=  randomInt(engine);
         }
     }
 }
@@ -33,6 +31,7 @@ DNA::DNA(const vector<double> &tp): numberOfGenes(tp.size()){
     
 }
 
+//converts a dna's genes to an atom array
 c74::max::t_atomarray *DNA::toAtomArray() {
 
     long ac = numberOfGenes;
@@ -48,6 +47,7 @@ c74::max::t_atomarray *DNA::toAtomArray() {
     return aa;
 }
 
+//measures the fitness of an individual according to a target
 void DNA::fitnessFunction(const vector<double> &target) {
 
     double score = 0.;
