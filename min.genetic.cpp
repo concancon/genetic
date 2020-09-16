@@ -13,24 +13,18 @@ using namespace c74::max;
 class genetic : public object<genetic> {
     
 private:
-    
-    // As is common practice, we provide private memebers at the
-    // end of the class definition.
-    // Initializing values here still serves a purpose because this will occur
-    // prior to the constructor being called.
-    //not necessaray
+    //population object to represent a collection of dna's, their fitness values and the genetic operators
     std::unique_ptr<Population> population { nullptr };
+    //Dummy object used for caching values
     Population popDummy{0};
-    
-    //Population population;
+    //used to represent genes as an atom type. Max needs this.
     atoms result;
-    vector<double> sVec;
+    //flag to determine whether or not we have already printed the final result of our algorithm
     bool alreadyPrinted {false};
     
     
 public:
     
-    vector<double>* doubleResult;
     MIN_DESCRIPTION {"apply genetic algorithm to n params"};
     MIN_TAGS {"time"};
     MIN_AUTHOR {"Cycling 74"};
@@ -45,17 +39,7 @@ public:
         return population;
     }
     
-    vector<double>& getResultAsVector(){
-        
-        if(result.size()){
-            for(auto r: result){
-                doubleResult->push_back((double) r );
-            }
-        }
-        return *doubleResult;
-    }
     void initializeObject(const atoms& args= {}){
-        
         
         int t = (int) args[0];
         if(population.get()){
@@ -63,8 +47,7 @@ public:
          }
          
         population = std::make_unique<Population>(t);
-        doubleResult = new vector<double>; //TODO: free this or improve it
-		population->adoptAttributes(popDummy);
+        population->adoptAttributes(popDummy);
   
     }
  
@@ -74,7 +57,6 @@ public:
            MIN_FUNCTION {
               
             if(population.get()){
-                //look at population->population[i-n]
                 result.clear();
                 
                 if(args.size() == 0){
@@ -91,13 +73,13 @@ public:
                                double val;
                                snprintf(keyname, 256, "pop_%ld", i);
                                if (dictionary_getfloat(popd, gensym(keyname), &val) == MAX_ERR_NONE) {
-                                   population->population[i].fitness = val;
+                                   population->population[i].fitness = val; // HERE WE ASSIGN THE RECEIVED FITNESS VALUES TO THE POPULATION :)
                                }
                                else {
                                    cout << "missing key " << keyname << endl;
                                }
                             }
-                           vector<double> occurences= population->displayPopulation();
+                           
                            int index;
                            std::vector<int>& currentBest = population->getBest(index);
                            if(std::find(currentBest.begin(), currentBest.end(), -1) == currentBest.end())
@@ -132,7 +114,7 @@ public:
            }
        };
                     
-    message<> buildPopulation {this, "buildPopulation", "build an initial population", MIN_FUNCTION {
+    message<> buildPopulation {this, "buildPopulation", "build an initial population of n params", MIN_FUNCTION {
       
 	   if(population.get()){
             population->population.clear();
@@ -230,7 +212,6 @@ public:
                     for (auto it : currentBest) {
                         result.push_back(it);
                     }
-                    vector<double> occurences= population->displayPopulation();
                     output.send(result);
                 }
                 else if (!alreadyPrinted){

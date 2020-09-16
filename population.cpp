@@ -21,7 +21,7 @@ struct LightIterator : public std::vector<DNA>::iterator {
 // size. calculate the value of the perfect PARAMS: target params: input from
 // max. For example a set of pixels
 Population::Population(const vector<double> &tp)
-    : popDict(c74::min::symbol(true)), counter(256) {
+    : popDict(c74::min::symbol(true)) {
 
     maxDict = (t_object *)popDict; // produces a memory leak //TODO: CREATE
                                    // DESTRUCTOR TO RELEASE THIS
@@ -48,7 +48,7 @@ Population::Population(const vector<double> &tp)
 }
 
 Population::Population(int numberOfParams)
-    : popDict(c74::min::symbol(true)), counter(256) {
+    : popDict(c74::min::symbol(true)){
 
     maxDict = (t_object *)popDict; // produces a memory leak //TODO: CREATE
                                    // DESTRUCTOR TO RELEASE THIS
@@ -259,15 +259,6 @@ DNA &Population::rSelect() {
     return population[pick];
 }
 
-vector<double> &Population::displayPopulation() {
-    for (int i = 0; i < population.size(); i++) {
-        for (int j = 0; j < population[i].genes.size(); j++) {
-            // count the occurence of each gene
-            counter[population[i].genes[j]]++;
-        }
-    }
-    return counter;
-}
 
 int Population::getNumberOfParams() { return numParams; }
 
