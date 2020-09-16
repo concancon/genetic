@@ -23,8 +23,10 @@ private:
     bool alreadyPrinted {false};
     
     
+    
 public:
     
+    vector<double>* doubleResult;
     MIN_DESCRIPTION {"apply genetic algorithm to n params"};
     MIN_TAGS {"time"};
     MIN_AUTHOR {"Cycling 74"};
@@ -34,6 +36,17 @@ public:
     outlet<> output {this, "(dict) the dictionary of random values to be evaluated", "dictionary"};
     outlet<> output2{this, "(list) best after accuracy thresh is passed"};
     outlet<> output3 {this, "(DNA) Current best, result"};
+    
+    
+    vector<double>& getResultAsVector(){
+          
+          if(result.size()){
+              for(auto r: result){
+                  doubleResult->push_back((double) r );
+              }
+          }
+          return *doubleResult;
+      }
     
     std::unique_ptr<Population>& getPopulation(){
         return population;
