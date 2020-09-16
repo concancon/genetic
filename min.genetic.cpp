@@ -75,7 +75,7 @@ public:
         
     }
  
-   //message to assign a fitness value to each member of a population
+    //message to assign a fitness value to each member of a population
     message<> dictionary { this, "dictionary",
            "Dictionary containing the generation and fitness values for a population",
            MIN_FUNCTION {
@@ -85,10 +85,8 @@ public:
                 result.clear();
                 
                 if(args.size() == 0){
-                    
-                    
-                    population->calcFitness();
-                    
+                   population->calcFitness();
+
                 }
                 else{
                     try {
@@ -256,7 +254,7 @@ public:
                 
                 if(population->getGenerations() % 20 == 0){
                 
-                cout << "prog: " << population->getRateOfImprovement()<< c74::min::endl;
+               //cout << "prog: " << population->getRateOfImprovement()<< c74::min::endl;
                 
                 }
                 

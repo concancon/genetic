@@ -151,14 +151,6 @@ vector<int> &Population::getBest(int &index) {
     if (index >= 0) {
     
         lastBest = population[index].genes;
-        cout << "winning genes:  " <<endl;
-        for(auto g:  population[index].genes){
-            cout << g << " ";
-        
-        }
-        cout << endl;
-        cout << "with a fitness of :" << population[index].fitness << std::endl;
-        
         return population[index].genes;
     }
     return defaultGenes;
