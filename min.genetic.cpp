@@ -53,7 +53,7 @@ public:
  
     //message to assign a fitness value to each member of a population
     message<> dictionary { this, "dictionary",
-           "Dictionary containing the generation and fitness values for a population",
+           "Dictionary message assigns the incoming fitness values to the population inside this object",
            MIN_FUNCTION {
               
             if(population.get()){

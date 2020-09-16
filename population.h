@@ -2,32 +2,22 @@
 
 #include "c74_min_api.h"
 #include "dna.h"
-#include "workerthread.h"
 #include <iostream>
 #include <random>
 #include <thread>
-#define USE_THREADS 0
 #define DEFAULT_ACCURACY    (98.)
 #define DEFAULT_MUTRATE     (0.214)
 #define DEFAULT_MUTIDX      (5)
 #define DEFAULT_MAXPOP      (10)
 #define DEFAULT_EXPFACT     (0.123)
 
-
-
-
 class Population {
   public:
-#if USE_THREADS
-    const int numThreads = 4;
-    std::unique_ptr<WorkerThread> workers[4];
-#endif
 
     c74::min::dict popDict;
     c74::max::t_object *maxDict; // we need a t_object to write to dictionary
     std::vector<DNA> population;
     std::vector<double> targetParams;
-    std::vector<double> counter;
     std::vector<double> probabilityArray;
     double accuracy;
     double expFactor;

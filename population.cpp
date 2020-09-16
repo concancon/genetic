@@ -39,11 +39,6 @@ Population::Population(const vector<double> &tp)
         population.push_back(std::move(dna));
     }
 
-#if USE_THREADS
-    for (int i = 0; i < numThreads; i++) {
-        workers[i] = std::make_unique<WorkerThread>();
-    }
-#endif
     cout << "our old constructor has been called" << endl;
 }
 
@@ -116,8 +111,6 @@ void Population::setMaxPopulation(int mp) {
 void Population::setExpFactor(double ef) { expFactor = ef; }
 
 void Population::setAccuracy(double a) { accuracy = a; }
-// uncomment to time the function, it's definitely faster
-// #define BENCHMARK
 
 // Compute average fitness for the population
 double Population::getAverageFitness() {
@@ -131,11 +124,8 @@ double Population::getAverageFitness() {
 // we use this to output the best member to Max
 vector<int> &Population::getBest(int &index) {
     
-
     static vector<int> defaultGenes = {-1};
     vector<int> diff;
-
-    
     index = -1;
     for (int i = 0; i < population.size(); i++) {
         if (population[i].fitness > maxFitness) {
@@ -178,7 +168,7 @@ void Population::generate(double mutationIndex) {
               [](const DNA &a, const DNA &b) -> bool {
                   return a.fitness > b.fitness;
               });
-    int elitelen = population.size() * 0.1;
+    int elitelen = population.size() * 0.1; //this takes care of preserving the best 10 percent of our old population. Its a sort of selection in itself.
     for (int i = 0; i < elitelen; i++) {
         newPopulation.push_back(population[i]);
     }
@@ -239,7 +229,7 @@ DNA &Population::select(double sum) {
     }
     index--;
 
-    population[index].count++;
+   
     return population[index];
 }
 
@@ -262,11 +252,4 @@ DNA &Population::rSelect() {
 
 int Population::getNumberOfParams() { return numParams; }
 
-vector<int> Population::getSelectionCount() {
-    vector<int> numberOfTimesSelected;
-    for (int i = 0; i < population.size(); i++) {
-        numberOfTimesSelected.push_back(population[i].count);
-    }
 
-    return numberOfTimesSelected;
-}

@@ -16,25 +16,26 @@ class DNA {
 
   public:
     DNA(int paramSize, bool randomize);
+
     DNA(const std::vector<double> &tp);
+
     double fitness;
+
     std::vector<int> genes;
+
     int numberOfGenes;
-    int count = 0;
+
     void setFitness(double f);
 
     void fitnessFunction(const std::vector<double> &target);
 
-    // exponential fitting of score to fitness function to accentuate difference
-    // between a slightly better
-    // result and its inferior
     DNA &crossover(const DNA &partner);
    
     c74::max::t_atomarray *toAtomArray();
+
     void mutate(double mutationRate, double eta);
 
     void polynomialMutationImpl(const std::pair<double, double> &bounds,
                                 const double p_m, const double eta_m);
 
-    const void displayGenes();
 };

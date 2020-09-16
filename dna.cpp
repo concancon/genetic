@@ -166,9 +166,4 @@ void DNA::polynomialMutationImpl(const std::pair<double, double> &bounds,
     }
 }
 
-const void DNA::displayGenes() {
-    for (auto it : genes) {
-        std::cout << it << " ";
-    }
-    cout << endl;
-}
+
