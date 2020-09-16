@@ -13,15 +13,17 @@ using namespace c74::max;
 class genetic : public object<genetic> {
     
 private:
+    
     //population object to represent a collection of dna's, their fitness values and the genetic operators
     std::unique_ptr<Population> population { nullptr };
     //Dummy object used for caching values
     Population popDummy{0};
+    
     //used to represent genes as an atom type. Max needs this.
     atoms result;
+    vector<double> sVec;
     //flag to determine whether or not we have already printed the final result of our algorithm
     bool alreadyPrinted {false};
-    
     
     
 public:
@@ -37,22 +39,21 @@ public:
     outlet<> output2{this, "(list) best after accuracy thresh is passed"};
     outlet<> output3 {this, "(DNA) Current best, result"};
     
-    
-    vector<double>& getResultAsVector(){
-          
-          if(result.size()){
-              for(auto r: result){
-                  doubleResult->push_back((double) r );
-              }
-          }
-          return *doubleResult;
-      }
-    
     std::unique_ptr<Population>& getPopulation(){
         return population;
     }
-    
+    //needed for testing purposes
+    vector<double>& getResultAsVector(){
+        
+        if(result.size()){
+            for(auto r: result){
+                doubleResult->push_back((double) r );
+            }
+        }
+        return *doubleResult;
+    }
     void initializeObject(const atoms& args= {}){
+        
         
         int t = (int) args[0];
         if(population.get()){
@@ -60,16 +61,18 @@ public:
          }
          
         population = std::make_unique<Population>(t);
+        doubleResult = new vector<double>; //TODO: free this or improve it
         population->adoptAttributes(popDummy);
   
     }
  
     //message to assign a fitness value to each member of a population
     message<> dictionary { this, "dictionary",
-           "Dictionary message assigns the incoming fitness values to the population inside this object",
+           "Dictionary containing the generation and fitness values for a population",
            MIN_FUNCTION {
               
             if(population.get()){
+                //look at population->population[i-n]
                 result.clear();
                 
                 if(args.size() == 0){
@@ -86,13 +89,13 @@ public:
                                double val;
                                snprintf(keyname, 256, "pop_%ld", i);
                                if (dictionary_getfloat(popd, gensym(keyname), &val) == MAX_ERR_NONE) {
-                                   population->population[i].fitness = val; // HERE WE ASSIGN THE RECEIVED FITNESS VALUES TO THE POPULATION :)
+                                   population->population[i].fitness = val;
                                }
                                else {
                                    cout << "missing key " << keyname << endl;
                                }
                             }
-                           
+                          
                            int index;
                            std::vector<int>& currentBest = population->getBest(index);
                            if(std::find(currentBest.begin(), currentBest.end(), -1) == currentBest.end())
@@ -127,21 +130,21 @@ public:
            }
        };
                     
-    message<> buildPopulation {this, "buildPopulation", "build an initial population of n params", MIN_FUNCTION {
+    message<> buildPopulation {this, "buildPopulation", "build an initial population", MIN_FUNCTION {
       
-	   if(population.get()){
+       if(population.get()){
             population->population.clear();
-			initializeObject(args);
-			alreadyPrinted= false;
-		}
-		else if(args.size()>0){
-			initializeObject(args);
-	
-		}
-		else {
-			cout << "Missing arguments (number of parameters)" <<c74::min::endl;
-			return args;
-		}
+            initializeObject(args);
+            alreadyPrinted= false;
+        }
+        else if(args.size()>0){
+            initializeObject(args);
+    
+        }
+        else {
+            cout << "Missing arguments (number of parameters)" <<c74::min::endl;
+            return args;
+        }
         output.send("dictionary", population->toDict().name());
         return args;
     }};
@@ -225,6 +228,7 @@ public:
                     for (auto it : currentBest) {
                         result.push_back(it);
                     }
+                
                     output.send(result);
                 }
                 else if (!alreadyPrinted){
@@ -242,5 +246,4 @@ public:
                 
                 
         MIN_EXTERNAL(genetic);
-                
                 

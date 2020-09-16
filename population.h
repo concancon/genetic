@@ -86,5 +86,5 @@ class Population {
 
     int getGenerations() { return generations; }
 
-    std::vector<double> &displayPopulation();
+
 };
