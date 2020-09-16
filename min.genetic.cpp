@@ -181,7 +181,7 @@ public:
                 
 
                 
-   attribute<int> maxPopulation {this, "maxPopulation", 10,
+   attribute<int> maxPopulation {this, "maxPopulation", DEFAULT_MAXPOP,
           setter { MIN_FUNCTION {
          Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES
         
@@ -191,7 +191,7 @@ public:
     }}};
            
   
-   attribute<double> mutationRate {this, "mutationRate", 0.214,
+   attribute<double> mutationRate {this, "mutationRate", DEFAULT_MUTRATE,
         setter { MIN_FUNCTION {
                 
            Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES
@@ -202,7 +202,7 @@ public:
                 
     }}};
                     
-   attribute<double> mutationIndex {this, "mutationIndex", 5.,
+   attribute<double> mutationIndex {this, "mutationIndex", DEFAULT_MUTIDX,
        setter { MIN_FUNCTION {
           Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES
           
@@ -213,7 +213,7 @@ public:
     }}};
 
                     
-   attribute<double>  expFactor {this, "expFactor", 0.123,
+   attribute<double>  expFactor {this, "expFactor", DEFAULT_EXPFACT,
      setter { MIN_FUNCTION {
             
       Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES

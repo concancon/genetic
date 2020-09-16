@@ -7,7 +7,11 @@
 #include <random>
 #include <thread>
 #define USE_THREADS 0
-#define DEFAULT_ACCURACY 98
+#define DEFAULT_ACCURACY    (98.)
+#define DEFAULT_MUTRATE     (0.214)
+#define DEFAULT_MUTIDX      (5)
+#define DEFAULT_MAXPOP      (10)
+#define DEFAULT_EXPFACT     (0.123)
 
 
 

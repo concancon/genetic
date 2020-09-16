@@ -25,13 +25,13 @@ Population::Population(const vector<double> &tp)
 
     maxDict = (t_object *)popDict; // produces a memory leak //TODO: CREATE
                                    // DESTRUCTOR TO RELEASE THIS
-    expFactor = 0.204;
+    expFactor = DEFAULT_EXPFACT;
     targetParams = tp;
     finished = false;
     population.clear();
-    mutationRate = 0.001;
-    maxPopulation = 10;
-    mutationIndex = 10;
+    mutationRate = DEFAULT_MUTRATE;
+    maxPopulation = DEFAULT_MAXPOP;
+    mutationIndex = DEFAULT_MUTIDX;
     numParams = targetParams.size();
 
     for (int i = 0; i < maxPopulation; i++) {
@@ -52,12 +52,12 @@ Population::Population(int numberOfParams)
 
     maxDict = (t_object *)popDict; // produces a memory leak //TODO: CREATE
                                    // DESTRUCTOR TO RELEASE THIS
-    expFactor = 0.123;
+    expFactor = DEFAULT_EXPFACT;
     finished = false;
     population.clear();
-    mutationRate = 0.214;
-    mutationIndex = 5.;
-    maxPopulation = 10;
+    mutationRate = DEFAULT_MUTRATE;
+    mutationIndex = DEFAULT_MUTIDX;
+    maxPopulation = DEFAULT_MAXPOP ;
     accuracy = DEFAULT_ACCURACY; //TOODO: implement macros for all these values
     numParams = numberOfParams;
 
