@@ -21,13 +21,14 @@ private:
     
     //used to represent genes as an atom type. Max needs this.
     atoms result;
+    
     vector<double> sVec;
     //flag to determine whether or not we have already printed the final result of our algorithm
     bool alreadyPrinted {false};
     
     
 public:
-    
+    //used for test purposes.
     vector<double>* doubleResult;
     MIN_DESCRIPTION {"apply genetic algorithm to n params"};
     MIN_TAGS {"time"};
