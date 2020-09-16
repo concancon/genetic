@@ -40,6 +40,19 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-73",
+					"linecount" : 10,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 365.0, 638.0, 50.0, 143.0 ],
+					"text" : "66 108 248 173 65 131 0 15 198 126 88 156 11 117 155 155"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"attr" : "orientation",
 					"bgcolor" : [ 0.0, 0.0, 0.0, 1.0 ],
 					"fontface" : 0,
@@ -135,7 +148,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 540.0, 656.0, 32.0, 22.0 ],
+					"patching_rect" : [ 287.0, 614.0, 32.0, 22.0 ],
 					"text" : "print"
 				}
 
@@ -374,19 +387,6 @@
 					"numoutlets" : 0,
 					"patching_rect" : [ 271.0, 785.0, 153.0, 60.0 ],
 					"text" : "what are adequate step sizes for measuring an average fitness of a sound with an envelope?"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-16",
-					"linecount" : 5,
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 342.5, 670.0, 89.0, 76.0 ],
-					"text" : "55 8 148 252 126 78 178 124 188 158 167 158 214 130 226 42"
 				}
 
 			}
@@ -665,14 +665,6 @@
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
-					"destination" : [ "obj-16", 1 ],
-					"midpoints" : [ 226.5, 643.0, 422.0, 643.0 ],
-					"source" : [ "obj-1", 2 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-41", 0 ],
 					"midpoints" : [ 201.0, 652.5, 260.0, 652.5 ],
 					"source" : [ "obj-1", 1 ]
@@ -693,6 +685,13 @@
 					"destination" : [ "obj-49", 0 ],
 					"order" : 0,
 					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-73", 1 ],
+					"source" : [ "obj-1", 2 ]
 				}
 
 			}
@@ -1155,8 +1154,8 @@
 		"styles" : [ 			{
 				"name" : "scope~001",
 				"default" : 				{
-					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ],
-					"accentcolor" : [ 0.439216, 0.447059, 0.47451, 1.0 ]
+					"accentcolor" : [ 0.439216, 0.447059, 0.47451, 1.0 ],
+					"color" : [ 0.960784, 0.827451, 0.156863, 1.0 ]
 				}
 ,
 				"parentstyle" : "",
