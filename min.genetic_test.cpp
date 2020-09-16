@@ -1,9 +1,9 @@
 ///// @file
 /////    @ingroup     minexamples
 /////    @copyright    Copyright 2018 The Min-DevKit Authors. All rights
-///reserved.
+/// reserved.
 /////    @license    Use of this source code is governed by the MIT License
-///found in the License.md file.
+/// found in the License.md file.
 //
 #include "c74_min_unittest.h" // required unit test header
 #include "dna.h"
@@ -250,7 +250,6 @@ TEST_CASE("Roulette Selection method works according to chromosome's fitness "
     }
 }
 
-
 TEST_CASE("exponentialSelector") {
 
     ext_main(nullptr);
@@ -264,46 +263,43 @@ TEST_CASE("exponentialSelector") {
 
     double sum = 0;
     int index = 0;
-    
+
     my_object.dictionary(); // assign fitness scores according to target
-           std::sort(my_object.getPopulation()->population.begin(),
-           my_object.getPopulation()->population.end(),
-           [](const DNA &a, const DNA &b) -> bool {
-               return a.fitness > b.fitness;
-           });
-           my_object.getPopulation()->exponentialRanker(
-                      my_object.getPopulation()->expFactor);
+    std::sort(my_object.getPopulation()->population.begin(),
+              my_object.getPopulation()->population.end(),
+              [](const DNA &a, const DNA &b) -> bool {
+                  return a.fitness > b.fitness;
+              });
+    my_object.getPopulation()->exponentialRanker(
+        my_object.getPopulation()->expFactor);
 
-    
-    SECTION("Probability Array is built such that the sum of all probabilites is 1 "){
-        
-               for (int i = 0; i < my_object.getPopulation()->population.size(); i++) {
-                   sum += my_object.getPopulation()->probabilityArray[i];
-               }
+    SECTION("Probability Array is built such that the sum of all probabilites "
+            "is 1 ") {
 
-               REQUIRE(sum == 1); // in between step
-        
+        for (int i = 0; i < my_object.getPopulation()->population.size(); i++) {
+            sum += my_object.getPopulation()->probabilityArray[i];
+        }
+
+        REQUIRE(sum == 1); // in between step
     }
-    
-    
-    
-    SECTION(" If c is set to zero only the best phenotype will be given a selection probability of 1") {
-        bool homogenous= true;
-        
+
+    SECTION(" If c is set to zero only the best phenotype will be given a "
+            "selection probability of 1") {
+        bool homogenous = true;
+
         my_object.dictionary(); // assign fitness scores according to target
-        
-        //first check that we have a non-homegenous population
-        for(auto dna: my_object.getPopulation()->population){
-            for(auto g: dna.genes ){
-                if(g != 1.0){
-                    homogenous= false;
+
+        // first check that we have a non-homegenous population
+        for (auto dna : my_object.getPopulation()->population) {
+            for (auto g : dna.genes) {
+                if (g != 1.0) {
+                    homogenous = false;
                 }
             }
         }
-        
+
         REQUIRE(homogenous == false);
-           
-     
+
         // create probabiltiy array
         my_object.getPopulation()->expFactor =
             0.0; // expected only the best phenotype should be selected
@@ -314,14 +310,11 @@ TEST_CASE("exponentialSelector") {
         my_object.getPopulation()->exponentialRanker(
             my_object.getPopulation()->expFactor);
 
-     
-        REQUIRE(my_object.getPopulation()->probabilityArray[0] == 1);
-        
-
+        REQUIRE(my_object.getPopulation()->probabilityArray[0] == 1); //the first element in our array, which is the fittest, gets assigned a probability of 100 percent for being chosen
     }
 
-
-    SECTION(" If c is set to almost one all the phenotypes will have an equal likelihood of being selected") {
+    SECTION(" If c is set to almost one all the phenotypes will have an equal "
+            "likelihood of being selected") {
 
         // create probabiltiy array
         my_object.getPopulation()->expFactor =
@@ -334,15 +327,17 @@ TEST_CASE("exponentialSelector") {
         my_object.getPopulation()->exponentialRanker(
             my_object.getPopulation()->expFactor);
 
-        bool probabilitiesAreSame= true;
+        bool probabilitiesAreSame = true;
         // here we can test the values in probabilityArray
-        for(int i = 0; i< my_object.getPopulation()->probabilityArray.size(); i++){
-            
-            if( my_object.getPopulation()->probabilityArray[i] != APPROX(0.05).margin(.02)){
-                probabilitiesAreSame= false;
+        for (int i = 0; i < my_object.getPopulation()->probabilityArray.size();
+             i++) {
+
+            if (my_object.getPopulation()->probabilityArray[i] !=
+                APPROX(1./my_object.getPopulation()->population.size()).margin(.02)) {    
+                probabilitiesAreSame = false;
             }
         }
-        REQUIRE(probabilitiesAreSame==true);
+        REQUIRE(probabilitiesAreSame == true);
     }
 }
 
@@ -395,5 +390,3 @@ TEST_CASE("object's average fitness improves with a higher mutation rate") {
         delete my_object.doubleResult;
     }
 }
-
-

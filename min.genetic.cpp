@@ -86,7 +86,6 @@ public:
                 
                 if(args.size() == 0){
                     
-                    //cout << "we are going to use a vector instead of a dict for testing purposes" <<endl;
                     
                     population->calcFitness();
                     
@@ -246,7 +245,7 @@ public:
             if(population.get()){
 
             if(!(population->finished)){
-                //cout <<c74::min::endl;
+               
                 result.clear();
                 //Create next generation
                 population->generate(population->mutationIndex);

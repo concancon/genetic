@@ -135,7 +135,7 @@ vector<int> &Population::getBest(int &index) {
     static vector<int> defaultGenes = {-1};
     vector<int> diff;
 
-    maxFitness = 0.;
+    
     index = -1;
     for (int i = 0; i < population.size(); i++) {
         if (population[i].fitness > maxFitness) {
@@ -149,18 +149,16 @@ vector<int> &Population::getBest(int &index) {
         finished = true;
     }
     if (index >= 0) {
-
-        diff.clear();
-
-        // calculate the amount of elements that have changed since last call
-        std::set_difference(population[index].genes.begin(),
-                            population[index].genes.end(), lastBest.begin(),
-                            lastBest.end(), std::inserter(diff, diff.begin()));
-
-        rateOfImprovement =
-            (double)diff.size() / (double)population[index].genes.size();
-
+    
         lastBest = population[index].genes;
+        cout << "winning genes:  " <<endl;
+        for(auto g:  population[index].genes){
+            cout << g << " ";
+        
+        }
+        cout << endl;
+        cout << "with a fitness of :" << population[index].fitness << std::endl;
+        
         return population[index].genes;
     }
     return defaultGenes;
@@ -198,7 +196,7 @@ void Population::generate(double mutationIndex) {
         sum += probabilityArray[i];
     }
 
-    for (int i = 0; i < population.size() - elitelen; i++) {
+    for (int i = 0; i < population.size() -elitelen ; i++) {
         DNA partnerA = rSelect();
         DNA partnerB = rSelect();
         DNA child = partnerA.crossover(
@@ -207,10 +205,8 @@ void Population::generate(double mutationIndex) {
         newPopulation.push_back(std::move(child));
     }
     population.swap(newPopulation);
-    // population= newPopulation;
     generations++;
 
-    // calcFitness();
 }
 
 // Creates probability array which maps raw fitness values to values which have
@@ -221,7 +217,6 @@ void Population::generate(double mutationIndex) {
 // is set to one. The selection probability of all other phenotypes is zero. A
 // value near one equalizes the selection probabilities.
 
-//TOODO: RENAME TO exponentialRanker
 void Population::exponentialRanker(double c) {
 
     probabilityArray.clear();
