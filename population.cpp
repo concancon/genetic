@@ -25,16 +25,12 @@ Population::Population(const vector<double> &tp)
 
     maxDict = (t_object *)popDict; // produces a memory leak //TODO: CREATE
                                    // DESTRUCTOR TO RELEASE THIS
-    expFactor = 0.204;
     targetParams = tp;
     finished = false;
     population.clear();
-    mutationRate = 0.001;
-    maxPopulation = 10;
-    mutationIndex = 10;
     numParams = targetParams.size();
 
-    for (int i = 0; i < maxPopulation; i++) {
+	for (int i = 0; i < getMaxPopulation(); i++) {
         DNA dna(numParams, true);
         population.push_back(std::move(dna));
     }
@@ -52,35 +48,15 @@ Population::Population(int numberOfParams)
 
     maxDict = (t_object *)popDict; // produces a memory leak //TODO: CREATE
                                    // DESTRUCTOR TO RELEASE THIS
-    expFactor = 0.123;
     finished = false;
     population.clear();
-    mutationRate = 0.214;
-    mutationIndex = 5.;
-    maxPopulation = 10;
-    accuracy = DEFAULT_ACCURACY; //TOODO: implement macros for all these values
     numParams = numberOfParams;
 
-    for (int i = 0; i < maxPopulation; i++) {
+	for (int i = 0; i < getMaxPopulation(); i++) {
         DNA dna(numberOfParams, true);
         population.push_back(std::move(dna));
     }
 }
-
-
-void Population::adoptAttributes(const Population &pop){
-
-    
-     mutationRate = pop.mutationRate;
-     mutationIndex= pop.mutationIndex;
-     expFactor = pop.expFactor;
-     maxPopulation= pop.maxPopulation;
-     accuracy= pop.accuracy;
-     
-
-}
-
-
 
 // converts a population to an atomarray
 const c74::min::dict &Population::toDict() {
@@ -103,19 +79,15 @@ const c74::min::dict &Population::toDict() {
 
 // setter for the population size
 void Population::setMaxPopulation(int mp) {
-    maxPopulation = mp;
+	Attributes::setMaxPopulation(mp); // call the base class implementation explicitly
     generations = 0;
     population.clear();
-    for (int i = 0; i < maxPopulation; i++) {
+	for (int i = 0; i < getMaxPopulation(); i++) {
         DNA dna(numParams, true);
         population.push_back(std::move(dna));
     }
-
 }
 
-void Population::setExpFactor(double ef) { expFactor = ef; }
-
-void Population::setAccuracy(double a) { accuracy = a; }
 // uncomment to time the function, it's definitely faster
 // #define BENCHMARK
 
@@ -144,7 +116,7 @@ vector<int> &Population::getBest(int &index) {
         }
     }
 
-    if (maxFitness >= accuracy) {
+    if (maxFitness >= getAccuracy()) {
         
         finished = true;
     }
@@ -193,7 +165,7 @@ void Population::generate(double mutationIndex) {
         newPopulation.push_back(population[i]);
     }
 
-    exponentialRanker(expFactor);
+    exponentialRanker(getExpFactor());
     for (int i = 0; i < population.size(); i++) {
         sum += probabilityArray[i];
     }
@@ -203,7 +175,7 @@ void Population::generate(double mutationIndex) {
         DNA partnerB = rSelect();
         DNA child = partnerA.crossover(
             partnerB); 
-        child.mutate(mutationRate, mutationIndex);
+        child.mutate(getMutationRate(), getMutationIndex());
         newPopulation.push_back(std::move(child));
     }
     population.swap(newPopulation);

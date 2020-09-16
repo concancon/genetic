@@ -7,29 +7,69 @@
 #include <random>
 #include <thread>
 #define USE_THREADS 0
-#define DEFAULT_ACCURACY 98
 
+#define DEFAULT_ACCURACY	(98.)
+#define DEFAULT_MUTRATE		(0.214)
+#define DEFAULT_MUTIDX		(5)
+#define DEFAULT_MAXPOP		(10)
+#define DEFAULT_EXPFACT		(0.123)
 
+class Attributes {
 
+public:
 
-class Population {
+	Attributes()
+	: accuracy {DEFAULT_ACCURACY}
+	, expFactor {DEFAULT_EXPFACT}
+	, mutationIndex {DEFAULT_MUTIDX}
+	, mutationRate {DEFAULT_MUTRATE}
+	, maxPopulation {DEFAULT_MAXPOP}
+	{}
+
+	virtual ~Attributes() = default;
+
+	Attributes(const Attributes& a) = default;
+	Attributes& operator=(const Attributes& a) = default;
+
+	virtual void setAccuracy(double a) { accuracy = a; }
+	virtual double getAccuracy() { return accuracy; }
+
+	virtual void setExpFactor(double ef) { expFactor = ef; }
+	virtual double getExpFactor() { return expFactor; }
+
+	virtual void setMutationIndex(double mi) { mutationIndex = mi; }
+	virtual double getMutationIndex() { return mutationIndex; }
+
+	virtual void setMutationRate(double mr) { mutationRate = mr; }
+	virtual double getMutationRate() { return mutationRate; }
+
+	virtual void setMaxPopulation(int mp) { maxPopulation = mp; };
+	virtual int getMaxPopulation() { return maxPopulation; }
+
+private:
+
+	double accuracy;
+	double expFactor;
+	double mutationIndex;
+	double mutationRate;
+	int maxPopulation;
+};
+
+class Population : public Attributes {
   public:
 #if USE_THREADS
     const int numThreads = 4;
     std::unique_ptr<WorkerThread> workers[4];
 #endif
 
-    c74::min::dict popDict;
+	~Population() override = default;
+
+	c74::min::dict popDict;
     c74::max::t_object *maxDict; // we need a t_object to write to dictionary
     std::vector<DNA> population;
     std::vector<double> targetParams;
     std::vector<double> counter;
     std::vector<double> probabilityArray;
-    double accuracy;
-    double expFactor;
-    double mutationIndex;
-    double mutationRate;
-    int maxPopulation;
     bool calledOnce = false;
     std::random_device
         rd; // Will be used to obtain a seed for the random number engine
@@ -48,19 +88,11 @@ class Population {
     Population(const std::vector<double> &tp);
     Population(int numberOfParams);
 
-    void adoptAttributes(const Population &pop); //could be a copy constructor instead
+	void setMaxPopulation(int mp) override; // note that this overrides the Attributes base class
 
-    const c74::min::dict &toDict(); // TODO: MAKE PRIVATE
+	const c74::min::dict &toDict(); // TODO: MAKE PRIVATE
 
     double getRateOfImprovement() { return rateOfImprovement; }
-    void setMutationRate(double mr) { mutationRate = mr; }
-
-    void setMutationIndex(double mi) { mutationIndex = mi; }
-    double getMutationRate() { return mutationRate; }
-    void setAccuracy(double a);
-    void setExpFactor(double ef);
-    void setMaxPopulation(int mp);
-    int getMaxPopulation() { return maxPopulation; }
 
     double getMaxFitness() { return maxFitness; }
     void calcFitness();

@@ -20,7 +20,7 @@ private:
     // prior to the constructor being called.
     //not necessaray
     std::unique_ptr<Population> population { nullptr };
-    Population popDummy{0};
+    Attributes attrs;
     
     //Population population;
     atoms result;
@@ -59,20 +59,14 @@ public:
         return *doubleResult;
     }
     void initializeObject(const atoms& args= {}){
-        
-        
         int t = (int) args[0];
-        if(population.get()){
-         popDummy.adoptAttributes(*population);
-         }
-         
-    
-        population = std::make_unique<Population>(t);
+        if (population.get()){
+          attrs = *population; // copy operator allows this since Population is an Attributes, too
+		}
+
+		population = std::make_unique<Population>(t);
         doubleResult = new vector<double>; //TODO: free this or improve it
-		population->adoptAttributes(popDummy);
-        
-         
-        
+		((Attributes&)*population) = attrs;
     }
  
    //message to assign a fitness value to each member of a population
@@ -120,7 +114,7 @@ public:
 
                           if(!(population->finished)){
                            
-                                population->generate(population->mutationIndex);
+                                population->generate(population->getMutationIndex());
                                 //create a dictionary once again with the new population
                                 output.send("dictionary", population->toDict().name());
                           
@@ -147,8 +141,7 @@ public:
                     
     message<> buildPopulation {this, "buildPopulation", "build an initial population", MIN_FUNCTION {
       
-	   if(population.get()){
-
+	   if (population.get()){
 			//population->targetParams.clear();
 			//population->generations= 0;
             population->population.clear();
@@ -171,63 +164,45 @@ public:
     }};
     
 
-    attribute<double> accuracy {this, "accuracy", DEFAULT_ACCURACY,
+	attribute<double> accuracy {this, "accuracy", DEFAULT_ACCURACY,
           setter { MIN_FUNCTION {
-                 
-           Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES
-           pop.setAccuracy(double(args[0]));
-           return {args};
-                  
-      }}};
+			Attributes &ats = population.get() ? *population : attrs;
+			ats.setAccuracy(double(args[0]));
+			return {args};
+	}}};
                 
 
                 
-   attribute<int> maxPopulation {this, "maxPopulation", 10,
+	attribute<int> maxPopulation {this, "maxPopulation", DEFAULT_MAXPOP,
           setter { MIN_FUNCTION {
-         Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES
-        
-              pop.setMaxPopulation(int(args[0]));
-            
+			Attributes &ats = population.get() ? *population : attrs;
+			ats.setMaxPopulation(int(args[0]));
             return {args};
-    }}};
+	}}};
            
   
-   attribute<double> mutationRate {this, "mutationRate", 0.214,
-        setter { MIN_FUNCTION {
-                
-           Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES
-          pop.setMutationRate(double(args[0]));
-           
-                
-        return {args};
-                
+	attribute<double> mutationRate {this, "mutationRate", DEFAULT_MUTRATE,
+          setter { MIN_FUNCTION {
+			Attributes &ats = population.get() ? *population : attrs;
+			ats.setMutationRate(int(args[0]));
+			return {args};
     }}};
                     
-   attribute<double> mutationIndex {this, "mutationIndex", 5.,
-       setter { MIN_FUNCTION {
-          Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES
-          
-           pop.setMutationIndex(int(args[0]));
-           
-  
-        return {args};
+	attribute<double> mutationIndex {this, "mutationIndex", DEFAULT_MUTIDX,
+          setter { MIN_FUNCTION {
+		   Attributes &ats = population.get() ? *population : attrs;
+		   ats.setMutationIndex(int(args[0]));
+		   return {args};
     }}};
 
                     
-   attribute<double>  expFactor {this, "expFactor", 0.123,
-     setter { MIN_FUNCTION {
-            
-      Population &pop = population.get() ? *population : popDummy ; //TODO: IMPLEMENT THIS FOR ALL ATTRIBUTES
-        pop.setExpFactor(double(args[0]));
-        
-            
-    return {args};
-                 
+	attribute<double>  expFactor {this, "expFactor", DEFAULT_EXPFACT,
+          setter { MIN_FUNCTION {
+			Attributes &ats = population.get() ? *population : attrs;
+			ats.setExpFactor(int(args[0]));
+			return {args};
     }}};
-                    
- 
-                
-  
+
     message<> getMaxFitness {this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {
        
       if(population.get()){
@@ -249,7 +224,7 @@ public:
                 //cout <<c74::min::endl;
                 result.clear();
                 //Create next generation
-                population->generate(population->mutationIndex);
+                population->generate(population->getMutationIndex());
 
 				int index;
                 std::vector<int>& currentBest = population->getBest(index); 
