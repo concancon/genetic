@@ -64,6 +64,7 @@ public:
           attrs = *population; // copy operator allows this since Population is an Attributes, too
 		}
 
+        //See if population already exists when this method is called, if so then store its values into attrs variable and use this to create a new population object.
 		population = std::make_unique<Population>(t);
         doubleResult = new vector<double>; //TODO: free this or improve it
 		((Attributes&)*population) = attrs;
