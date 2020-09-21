@@ -262,7 +262,7 @@ TEST_CASE("exponentialSelector") {
     my_object.getPopulation()->setMaxPopulation(20);
     my_object.getPopulation()->targetParams = {1.0, 1.0, 1.0};
 
-    double sum = 0;
+    double sum = 0.;
     int index = 0;
     
     my_object.dictionary(); // assign fitness scores according to target
@@ -272,7 +272,7 @@ TEST_CASE("exponentialSelector") {
                return a.fitness > b.fitness;
            });
            my_object.getPopulation()->exponentialRanker(
-                      my_object.getPopulation()->expFactor);
+                      my_object.getPopulation()->getExpFactor());
 
     
     SECTION("Probability Array is built such that the sum of all probabilites is 1 "){
@@ -281,7 +281,7 @@ TEST_CASE("exponentialSelector") {
                    sum += my_object.getPopulation()->probabilityArray[i];
                }
 
-               REQUIRE(sum == 1); // in between step
+               REQUIRE(sum == APPROX(1.0)); // in between step
         
     }
     
@@ -305,14 +305,13 @@ TEST_CASE("exponentialSelector") {
            
      
         // create probabiltiy array
-        my_object.getPopulation()->expFactor =
-            0.0; // expected only the best phenotype should be selected
+        my_object.getPopulation()->setExpFactor(0.0);// expected only the best phenotype should be selected
         // my_object.bang(); instead of calling bang lets test all of its
         // constituent steps. roughly speaking bang just calls generate getBest
         // and outputs the result generate
         // TODO: TEST THIS WITH ELITISM TOO!!!!!
         my_object.getPopulation()->exponentialRanker(
-            my_object.getPopulation()->expFactor);
+            my_object.getPopulation()->getExpFactor());
 
      
         REQUIRE(my_object.getPopulation()->probabilityArray[0] == 1);
@@ -324,15 +323,15 @@ TEST_CASE("exponentialSelector") {
     SECTION(" If c is set to almost one all the phenotypes will have an equal likelihood of being selected") {
 
         // create probabiltiy array
-        my_object.getPopulation()->expFactor =
-            0.999; // expect all members to have roughly the same probability of
+        my_object.getPopulation()->setExpFactor(0.999);
+                    // expect all members to have roughly the same probability of
                    // being chosen
         // my_object.bang(); instead of calling bang lets test all of its
         // constituent steps roughly speaking bang just calls generate getBest
         // and outputs the result generate
         // TODO: TEST THIS WITH ELITISM TOO!!!!!
         my_object.getPopulation()->exponentialRanker(
-            my_object.getPopulation()->expFactor);
+            my_object.getPopulation()->getExpFactor());
 
         bool probabilitiesAreSame= true;
         // here we can test the values in probabilityArray
