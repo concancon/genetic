@@ -3,7 +3,7 @@ inlets = 1;
 outlets = 64;
 
 
-g = new Global("memory");
+var g = new Global("memory");
 
 g.numberOfParams= 16;
 
@@ -24,5 +24,4 @@ function list(myList){
   
 		
 }
-
 

@@ -6,7 +6,7 @@ var numScales= 20;
 var theScales = new Array(128);
 var theOutlets = new Array(128);
 var myCycle;
-//g= new Global("memory");
+var g= new Global("memory");
 function loadbang(){
 	post("NUMBER OF PARAMS" + g.numberOfParams + "\n");
 	scales(g.numberOfParams);
