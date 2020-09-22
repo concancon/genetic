@@ -185,14 +185,14 @@ public:
 	attribute<double> mutationRate {this, "mutationRate", DEFAULT_MUTRATE,
           setter { MIN_FUNCTION {
 			Attributes &ats = population.get() ? *population : attrs;
-			ats.setMutationRate(int(args[0]));
+			ats.setMutationRate(double(args[0]));
 			return {args};
     }}};
                     
 	attribute<double> mutationIndex {this, "mutationIndex", DEFAULT_MUTIDX,
           setter { MIN_FUNCTION {
 		   Attributes &ats = population.get() ? *population : attrs;
-		   ats.setMutationIndex(int(args[0]));
+		   ats.setMutationIndex(double(args[0]));
 		   return {args};
     }}};
 
@@ -200,7 +200,7 @@ public:
 	attribute<double>  expFactor {this, "expFactor", DEFAULT_EXPFACT,
           setter { MIN_FUNCTION {
 			Attributes &ats = population.get() ? *population : attrs;
-			ats.setExpFactor(int(args[0]));
+			ats.setExpFactor(double(args[0]));
 			return {args};
     }}};
 
