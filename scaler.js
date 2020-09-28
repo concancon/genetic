@@ -20,20 +20,17 @@ function list(val){
 	
 }
 	
-
-
-function scales(val){
-	
-	
-	if(arguments.length){
-		
-		var a = arguments[0];
-	if(val!= g.numberOfParams){
-			// safety check for number of sliders
-		if(a<0) a = 0; // too few scales, set to 0
-		if(a>128) a = 128; // too many scales, set to 128		
+function regen(val){
+	removeScales();
+	g.numberOfParams = 0;
+	scales(val);
 	
 		
+				
+}	
+
+function removeScales(){
+	
 		if(g.numberOfParams != 0){
 			post("number of params" + g.numberOfParams + "\n");
 			for(var i =0; i< g.numberOfParams; i++){
@@ -42,15 +39,28 @@ function scales(val){
 				
 			}
 			this.patcher.remove(this.patcher.getnamed("myCycle"));
-	
 		}
+}
+
+function scales(val){
+	
+	
+
+		
+     	if(val!= g.numberOfParams){
+			// safety check for number of sliders
+		if(val<0) val = 0; // too few scales, set to 0
+		if(val>128) val = 128; // too many scales, set to 128		
+	
+		
+		removeScales();
 		// ...in with the new
-		numScales = a;
+		numScales = val;
 		///if(numScales) ////
 		ourself = this.patcher.getnamed("dynamicUnpack");	
-		myCycle = this.patcher.newdefault(930, -330, "cycle", a);
+		myCycle = this.patcher.newdefault(930, -330, "cycle", val);
 		myCycle.varname= "myCycle"; 
-		for(var k= 0; k < a; k++)
+		for(var k= 0; k < val; k++)
 		{
 			theScales[k] = this.patcher.newdefault(300+(k*100), 50, "scale 0. 255. 0.5000.");		
 		    theScales[k].varname= "scale" + k;				   
@@ -70,14 +80,8 @@ function scales(val){
 			}
 		}	
 
-		post("a: " + a + "\n");		
-		g.numberOfParams=a;
+		post("a: " + val + "\n");		
+		g.numberOfParams=val;
 	}	
 	
- }
- else // complain about arguments
- {
-   post("scales message needs arguments");
-   post();
- }
 }

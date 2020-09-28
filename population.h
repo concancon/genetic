@@ -96,7 +96,7 @@ class Population : public Attributes {
     double getAverageFitness();
 
     // Compute the current "most fit" member of the population
-    std::vector<int> &getBest(int &index);
+    std::vector<int> &getBest(int *index);
 
     // Create a new generation
     void generate(double eta);

@@ -152,7 +152,7 @@ TEST_CASE("Polynomial mutation introduces perturbations in genes vector") {
         for (int i = 0; i < 100; i++) {
             dna.mutate(0.999, 25);
             for (auto g : dna.genes) {
-                if (!(g >= 0) && (g < 255))
+                if (!(g >= 0) && (g < 256))
                     geneInRange = false;
             }
         }

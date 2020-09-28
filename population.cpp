@@ -96,15 +96,15 @@ double Population::getAverageFitness() {
 }
 // get the fittest member in the population.
 // we use this to output the best member to Max
-vector<int> &Population::getBest(int &index) {
+vector<int> &Population::getBest(int *index) {
     
     static vector<int> defaultGenes = {-1};
     vector<int> diff;
-    index = -1;
+    int idx = -1;
     for (int i = 0; i < population.size(); i++) {
         if (population[i].fitness > maxFitness) {
             maxFitness = population[i].fitness;
-            index = i;
+            idx = i;
         }
     }
 
@@ -112,10 +112,11 @@ vector<int> &Population::getBest(int &index) {
         
         finished = true;
     }
-    if (index >= 0) {
+    *index = idx;
+    if (idx >= 0) {
     
-        lastBest = population[index].genes;
-        return population[index].genes;
+        lastBest = population[idx].genes;
+        return population[idx].genes;
     }
     return defaultGenes;
 }

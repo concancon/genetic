@@ -95,7 +95,7 @@ public:
                             }
                           
                            int index;
-                           std::vector<int>& currentBest = population->getBest(index);
+                           std::vector<int>& currentBest = population->getBest(&index);
                            if(std::find(currentBest.begin(), currentBest.end(), -1) == currentBest.end())
                             {
                                for (auto it : currentBest) {
@@ -209,7 +209,7 @@ public:
                     population->generate(population->getMutationIndex());
 
                     int index;
-                    std::vector<int>& currentBest = population->getBest(index);
+                    std::vector<int>& currentBest = population->getBest(&index);
                     //we know that rate of improvement will have been calculated by now
                     for (auto it : currentBest) {
                         result.push_back(it);
