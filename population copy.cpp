@@ -27,12 +27,12 @@ Population::Population(const vector<double> &tp)
                                    // DESTRUCTOR TO RELEASE THIS
     targetParams = tp;
     finished = false;
-    population.clear();
+    populationMembers.clear();
     numParams = targetParams.size();
 
 	for (int i = 0; i < getMaxPopulation(); i++) {
         DNA dna(numParams, true);
-        population.push_back(std::move(dna));
+        populationMembers.push_back(std::move(dna));
     }
 
     cout << "our old constructor has been called" << endl;
@@ -44,12 +44,12 @@ Population::Population(int numberOfParams)
     maxDict = (t_object *)popDict; // produces a memory leak //TODO: CREATE
                                    // DESTRUCTOR TO RELEASE THIS
     finished = false;
-    population.clear();
+    populationMembers.clear();
     numParams = numberOfParams;
 
 	for (int i = 0; i < getMaxPopulation(); i++) {
         DNA dna(numberOfParams, true);
-        population.push_back(std::move(dna));
+        populationMembers.push_back(std::move(dna));
     }
 }
 
@@ -60,7 +60,7 @@ const c74::min::dict &Population::toDict() {
     long idx = 0;
     string basename = "pop_";
 
-    for (auto pop : population) {
+    for (auto pop : populationMembers) {
         string keyname = basename + to_string(idx++);
         dictionary_appendatomarray(d, gensym(keyname.c_str()),
                                    (t_object *)pop.toAtomArray());
@@ -76,10 +76,10 @@ const c74::min::dict &Population::toDict() {
 void Population::setMaxPopulation(int mp) {
 	Attributes::setMaxPopulation(mp); // call the base class implementation explicitly
     generations = 0;
-    population.clear();
+    populationMembers.clear();
 	for (int i = 0; i < getMaxPopulation(); i++) {
         DNA dna(numParams, true);
-        population.push_back(std::move(dna));
+        populationMembers.push_back(std::move(dna));
     }
 }
 
@@ -89,11 +89,13 @@ void Population::setMaxPopulation(int mp) {
 // Compute average fitness for the population
 double Population::getAverageFitness() {
     double total = 0.0;
-    total = std::accumulate(LightIterator{population.begin()},
-                            LightIterator{population.end()}, (double)0.0);
+    total = std::accumulate(LightIterator{populationMembers.begin()},
+                            LightIterator{populationMembers.end()}, (double)0.0);
 
-    return (total / (double)population.size());
+    return (total / (double)populationMembers.size());
 }
+// get the fittest member in the population.
+// we use this to output the best member to Max
 // get the fittest member in the population.
 // we use this to output the best member to Max
 vector<int> &Population::getBest(int *index) {
@@ -101,9 +103,9 @@ vector<int> &Population::getBest(int *index) {
     static vector<int> defaultGenes = {-1};
     vector<int> diff;
     int idx = -1;
-    for (int i = 0; i < population.size(); i++) {
-        if (population[i].fitness > maxFitness) {
-            maxFitness = population[i].fitness;
+    for (int i = 0; i < populationMembers.size(); i++) {
+        if (populationMembers[i].fitness > maxFitness) {
+            maxFitness = populationMembers[i].fitness;
             idx = i;
         }
     }
@@ -115,15 +117,16 @@ vector<int> &Population::getBest(int *index) {
     *index = idx;
     if (idx >= 0) {
     
-        lastBest = population[idx].genes;
-        return population[idx].genes;
+        lastBest = populationMembers[idx].genes;
+        return populationMembers[idx].genes;
     }
     return defaultGenes;
 }
 
+
 void Population::calcFitness() {
     if (targetParams.size()) {
-        for (auto it = population.begin(); it < population.end(); it++) {
+        for (auto it = populationMembers.begin(); it < populationMembers.end(); it++) {
             it->fitnessFunction(targetParams);
         }
     }
@@ -139,21 +142,21 @@ void Population::generate(double mutationIndex) {
     // Refill the population with children from the mating pool
     newPopulation.clear();
 
-    std::sort(population.begin(), population.end(),
+    std::sort(populationMembers.begin(), populationMembers.end(),
               [](const DNA &a, const DNA &b) -> bool {
                   return a.fitness > b.fitness;
               });
-    int elitelen = population.size() * 0.1; //this takes care of preserving the best 10 percent of our old population. Its a sort of selection in itself.
+    int elitelen = populationMembers.size() * 0.1; //this takes care of preserving the best 10 percent of our old population. Its a sort of selection in itself.
     for (int i = 0; i < elitelen; i++) {
-        newPopulation.push_back(population[i]);
+        newPopulation.push_back(populationMembers[i]);
     }
 
     exponentialRanker(getExpFactor());
-    for (int i = 0; i < population.size(); i++) {
+    for (int i = 0; i < populationMembers.size(); i++) {
         sum += probabilityArray[i];
     }
 
-    for (int i = 0; i < population.size() -elitelen ; i++) {
+    for (int i = 0; i < populationMembers.size() -elitelen ; i++) {
         DNA partnerA = rSelect();
         DNA partnerB = rSelect();
         DNA child = partnerA.crossover(
@@ -161,7 +164,7 @@ void Population::generate(double mutationIndex) {
         child.mutate(getMutationRate(), getMutationIndex());
         newPopulation.push_back(std::move(child));
     }
-    population.swap(newPopulation);
+    populationMembers.swap(newPopulation);
     generations++;
 
 }
@@ -181,10 +184,10 @@ void Population::exponentialRanker(double c) {
     // std::sort(population.begin(), population.end(), [](const DNA& a, const
     // DNA& b) -> bool { return a.fitness > b.fitness; });
 
-    for (int i = 0; i < population.size(); i++) {
+    for (int i = 0; i < populationMembers.size(); i++) {
 
         double numerator = c - 1;
-        double denominator = pow(c, population.size()) - 1.;
+        double denominator = pow(c, populationMembers.size()) - 1.;
         double probability = pow(c, i) * (numerator / denominator);
         probabilityArray.push_back(probability);
     }
@@ -205,7 +208,7 @@ DNA &Population::select(double sum) {
     index--;
 
    
-    return population[index];
+    return populationMembers[index];
 }
 
 DNA &Population::rSelect() {
@@ -213,7 +216,7 @@ DNA &Population::rSelect() {
     double offset = 0.0;
     int pick = 0;
 
-    for (int i = 0; i < population.size(); i++) {
+    for (int i = 0; i < populationMembers.size(); i++) {
         offset += probabilityArray[i];
         if (rndNumber < offset) {
             pick = i;
@@ -221,7 +224,7 @@ DNA &Population::rSelect() {
         }
     }
     
-    return population[pick];
+    return populationMembers[pick];
 }
 
 
