@@ -87,7 +87,7 @@ public:
                                double val;
                                snprintf(keyname, 256, "pop_%ld", i);
                                if (dictionary_getfloat(popd, gensym(keyname), &val) == MAX_ERR_NONE) {
-                                   population->population[i].fitness = val;
+                                   population->populationMembers[i].fitness = val;
                                }
                                else {
                                    cout << "missing key " << keyname << endl;
@@ -133,7 +133,7 @@ public:
 	   if (population.get()){
 			//population->targetParams.clear();
 			//population->generations= 0;
-            population->population.clear();
+            population->populationMembers.clear();
             initializeObject(args);
             alreadyPrinted= false;
         }
@@ -199,35 +199,36 @@ public:
        return {};
     }};
    
-    message<> bang {
-        this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
-            if(population.get()){
-                if(!(population->finished)){
-                    //cout <<c74::min::endl;
-                    result.clear();
-                    //Create next generation
-                    population->generate(population->getMutationIndex());
+      message<> bang {
+            this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
+                if(population.get()){
+                    if(!(population->finished)){
+                        //cout <<c74::min::endl;
+                        result.clear();
+                        //Create next generation
+                        population->generate(population->getMutationIndex());
 
-                    int index;
-                    std::vector<int>& currentBest = population->getBest(&index);
-                    //we know that rate of improvement will have been calculated by now
-                    for (auto it : currentBest) {
-                        result.push_back(it);
+                        int index;
+                        std::vector<int>& currentBest = population->getBest(&index);
+                        //we know that rate of improvement will have been calculated by now
+                        for (auto it : currentBest) {
+                            result.push_back(it);
+                        }
+                        output.send(result);
                     }
-                    output.send(result);
-                }
-                else if (!alreadyPrinted){
+                    else if (!alreadyPrinted){
 
-                    cout << "as close as youre going to get! " <<c74::min::endl;
-                    cout << "generations: " << population->generations << c74::min::endl;
-                    alreadyPrinted = true;
+                        cout << "as close as youre going to get! " <<c74::min::endl;
+                        cout << "generations: " << population->generations << c74::min::endl;
+                        alreadyPrinted = true;
+                    }
                 }
-            }
-            return {};
-      }};
+                return {};
+          }};
+          
+    };
       
-};
-                
+         
                 
 MIN_EXTERNAL(genetic);
                 
