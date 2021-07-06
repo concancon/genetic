@@ -90,7 +90,7 @@ public:
                                    population->populationMembers[i].fitness = val;
                                }
                                else {
-                                   cout << "missing key " << keyname << endl;
+                                   cout << "missing key " << keyname << c74::min::endl;
                                }
                             }
                           
@@ -117,7 +117,7 @@ public:
                        }
                    }
                    catch (std::exception& e) {
-                       cerr << e.what() << endl;
+                       cerr << e.what() << c74::min::endl;
                             }
                     }
             }
