@@ -15,15 +15,23 @@ void DNA::setFitness(double f) { fitness = f; }
 // constructor for DNA class
 DNA::DNA(int paramSize, bool randomize)
     : genes(paramSize, 0), numberOfGenes(paramSize) {
-    int randomGene = 0;
     if (randomize) {
         for (int i = 0; i < numberOfGenes; i++) {
-            randomGene = randomInt(engine);
-            genes[i] = randomGene;
+            genes[i]=  randomInt(engine);
         }
     }
 }
+//overload constructor for testing
+DNA::DNA(const vector<double> &tp): numberOfGenes(tp.size()){
+        
+    if(genes.size())genes.clear();
+    for(auto it: tp){
+        genes.push_back(it);
+    }
+    
+}
 
+//converts a dna's genes to an atom array
 c74::max::t_atomarray *DNA::toAtomArray() {
 
     long ac = numberOfGenes;
@@ -39,6 +47,7 @@ c74::max::t_atomarray *DNA::toAtomArray() {
     return aa;
 }
 
+//measures the fitness of an individual according to a target
 void DNA::fitnessFunction(const vector<double> &target) {
 
     double score = 0.;
@@ -47,8 +56,8 @@ void DNA::fitnessFunction(const vector<double> &target) {
 
         int difference = abs(target[i] - genes[i]);
 
-        double distance = (double)(255.0 - difference) / 255.0;
-        score += distance;
+        score += (double)(255.0 - difference) / 255.0;
+       
     }
 
     fitness = (score / numberOfGenes) *
@@ -60,25 +69,38 @@ DNA &DNA::crossover(const DNA &partner) {
     // DNA child(numberOfGenes, false);
     if (numberOfGenes != 0) {
         int midpoint = (int)(drng(engine) * (double)numberOfGenes);
+        
         for (int i = 0; i < numberOfGenes; i++) {
-            if (i > midpoint) {
-                ;
-            } else {
+            if (i> midpoint) {
                 genes[i] = partner.genes[i];
+            }
+            else if(i< midpoint){
+                ; //leave as is
+                
+            }
+            else if(i == midpoint){
+                //this is happening a lot more often than expected
+                //so we assume that we are going to stay with genes as is
+                
+                if((rand() % 2) + 1 == 2)genes[i] = partner.genes[i];
+                
+                
+                
             }
         }
     }
     return *this;
 }
-
 // apply a random values to random genes that DONT match the target value
 void DNA::mutate(double mutationRate, double eta) {
 
-    polynomialMutationImpl({0., 255.}, mutationRate, eta);
+    polynomialMutationImpl({1., 255.}, mutationRate, eta);
 }
 
 // dont pass child as reference, just use the class we're in and mutate 'in
 // place' :)
+//induces an effect of a perturbation ofO((b−a)/ηm) in a variable, where a and b are lower and upper bounds of the variable. They also found that a value ηm ∈[20,100] is adequate in most problems that they tried.In this operator, a polynomial probability distribution is used to perturb a solution in a parent’s vicinity.The probability distribution in both left and right ofa variable value is adjusted so that no value outsidethe specified range [a, b] is created by the mutationoperato
+
 void DNA::polynomialMutationImpl(const std::pair<double, double> &bounds,
                                  const double p_m, const double eta_m) {
 
@@ -141,9 +163,4 @@ void DNA::polynomialMutationImpl(const std::pair<double, double> &bounds,
     }
 }
 
-const void DNA::displayGenes() {
-    for (auto it : genes) {
-        std::cout << it << " ";
-    }
-    cout << endl;
-}
+

@@ -21,49 +21,35 @@ struct LightIterator : public std::vector<DNA>::iterator {
 // size. calculate the value of the perfect PARAMS: target params: input from
 // max. For example a set of pixels
 Population::Population(const vector<double> &tp)
-    : popDict(c74::min::symbol(true)), counter(256) {
+    : popDict(c74::min::symbol(true)) {
 
     maxDict = (t_object *)popDict; // produces a memory leak //TODO: CREATE
                                    // DESTRUCTOR TO RELEASE THIS
-    expFactor = 0.204;
     targetParams = tp;
     finished = false;
-    population.clear();
-    mutationRate = 0.001;
-    maxPopulation = 10;
-    mutationIndex = 10;
+    populationMembers.clear();
     numParams = targetParams.size();
 
-    for (int i = 0; i < maxPopulation; i++) {
+	for (int i = 0; i < getMaxPopulation(); i++) {
         DNA dna(numParams, true);
-        population.push_back(std::move(dna));
+        populationMembers.push_back(std::move(dna));
     }
 
-#if USE_THREADS
-    for (int i = 0; i < numThreads; i++) {
-        workers[i] = std::make_unique<WorkerThread>();
-    }
-#endif
     cout << "our old constructor has been called" << endl;
 }
 
 Population::Population(int numberOfParams)
-    : popDict(c74::min::symbol(true)), counter(256) {
+    : popDict(c74::min::symbol(true)){
 
     maxDict = (t_object *)popDict; // produces a memory leak //TODO: CREATE
                                    // DESTRUCTOR TO RELEASE THIS
-    expFactor = 0.123;
     finished = false;
-    population.clear();
-    mutationRate = 0.214;
-    mutationIndex = 5.;
-    maxPopulation = 10;
-    accuracy = 99.5;
+    populationMembers.clear();
     numParams = numberOfParams;
 
-    for (int i = 0; i < maxPopulation; i++) {
+	for (int i = 0; i < getMaxPopulation(); i++) {
         DNA dna(numberOfParams, true);
-        population.push_back(std::move(dna));
+        populationMembers.push_back(std::move(dna));
     }
 }
 
@@ -74,7 +60,7 @@ const c74::min::dict &Population::toDict() {
     long idx = 0;
     string basename = "pop_";
 
-    for (auto pop : population) {
+    for (auto pop : populationMembers) {
         string keyname = basename + to_string(idx++);
         dictionary_appendatomarray(d, gensym(keyname.c_str()),
                                    (t_object *)pop.toAtomArray());
@@ -88,75 +74,59 @@ const c74::min::dict &Population::toDict() {
 
 // setter for the population size
 void Population::setMaxPopulation(int mp) {
-    maxPopulation = mp;
+	Attributes::setMaxPopulation(mp); // call the base class implementation explicitly
     generations = 0;
-    population.clear();
-    for (int i = 0; i < maxPopulation; i++) {
+    populationMembers.clear();
+	for (int i = 0; i < getMaxPopulation(); i++) {
         DNA dna(numParams, true);
-        population.push_back(std::move(dna));
+        populationMembers.push_back(std::move(dna));
     }
-    // calcFitness();
 }
 
-void Population::setExpFactor(double ef) { expFactor = ef; }
-
-void Population::setAccuracy(double a) { accuracy = a; }
 // uncomment to time the function, it's definitely faster
 // #define BENCHMARK
 
 // Compute average fitness for the population
 double Population::getAverageFitness() {
     double total = 0.0;
-    total = std::accumulate(LightIterator{population.begin()},
-                            LightIterator{population.end()}, (double)0.0);
+    total = std::accumulate(LightIterator{populationMembers.begin()},
+                            LightIterator{populationMembers.end()}, (double)0.0);
 
-    return (total / (double)population.size());
+    return (total / (double)populationMembers.size());
 }
 // get the fittest member in the population.
 // we use this to output the best member to Max
-vector<int> &Population::getBest(int &index) {
-
+// get the fittest member in the population.
+// we use this to output the best member to Max
+vector<int> &Population::getBest(int *index) {
+    
     static vector<int> defaultGenes = {-1};
     vector<int> diff;
-
-    maxFitness = 0.;
-    index = -1;
-    for (int i = 0; i < population.size(); i++) {
-        if (population[i].fitness > maxFitness) {
-            maxFitness = population[i].fitness;
-            index = i;
+    int idx = -1;
+    for (int i = 0; i < populationMembers.size(); i++) {
+        if (populationMembers[i].fitness > maxFitness) {
+            maxFitness = populationMembers[i].fitness;
+            idx = i;
         }
     }
 
-    if (maxFitness >= accuracy) {
+    if (maxFitness >= getAccuracy()) {
+        
         finished = true;
     }
-    if (index >= 0) {
-
-        diff.clear();
-
-        // calculate the amount of elements that have changed since last call
-        std::set_difference(population[index].genes.begin(),
-                            population[index].genes.end(), lastBest.begin(),
-                            lastBest.end(), std::inserter(diff, diff.begin()));
-
-        // if(lastBest.size()) lastBest.clear();
-        rateOfImprovement =
-            (double)diff.size() / (double)population[index].genes.size();
-        // cout << rateOfImprovement << " rate of improvement" << endl;
-        // for (auto i : diff) std::cout << i << ' ';
-        //     cout <<endl;
-        // lastBest.swap(population[index].genes);
-
-        lastBest = population[index].genes;
-        return population[index].genes;
+    *index = idx;
+    if (idx >= 0) {
+    
+        lastBest = populationMembers[idx].genes;
+        return populationMembers[idx].genes;
     }
     return defaultGenes;
 }
 
+
 void Population::calcFitness() {
     if (targetParams.size()) {
-        for (auto it = population.begin(); it < population.end(); it++) {
+        for (auto it = populationMembers.begin(); it < populationMembers.end(); it++) {
             it->fitnessFunction(targetParams);
         }
     }
@@ -172,33 +142,31 @@ void Population::generate(double mutationIndex) {
     // Refill the population with children from the mating pool
     newPopulation.clear();
 
-    std::sort(population.begin(), population.end(),
+    std::sort(populationMembers.begin(), populationMembers.end(),
               [](const DNA &a, const DNA &b) -> bool {
                   return a.fitness > b.fitness;
               });
-    int elitelen = population.size() * 0.1;
+    int elitelen = populationMembers.size() * 0.1; //this takes care of preserving the best 10 percent of our old population. Its a sort of selection in itself.
     for (int i = 0; i < elitelen; i++) {
-        newPopulation.push_back(population[i]);
+        newPopulation.push_back(populationMembers[i]);
     }
 
-    exponentialRankSelector(expFactor);
-    for (int i = 0; i < population.size(); i++) {
+    exponentialRanker(getExpFactor());
+    for (int i = 0; i < populationMembers.size(); i++) {
         sum += probabilityArray[i];
     }
 
-    for (int i = 0; i < population.size() - elitelen; i++) {
+    for (int i = 0; i < populationMembers.size() -elitelen ; i++) {
         DNA partnerA = rSelect();
         DNA partnerB = rSelect();
         DNA child = partnerA.crossover(
-            partnerB); // this should be moved or elided, thus ok
-        child.mutate(mutationRate, mutationIndex);
-        newPopulation.push_back(std::move(child)); // std::move(child));
+            partnerB); 
+        child.mutate(getMutationRate(), getMutationIndex());
+        newPopulation.push_back(std::move(child));
     }
-    population.swap(newPopulation);
-    // population= newPopulation;
+    populationMembers.swap(newPopulation);
     generations++;
 
-    // calcFitness();
 }
 
 // Creates probability array which maps raw fitness values to values which have
@@ -209,21 +177,21 @@ void Population::generate(double mutationIndex) {
 // is set to one. The selection probability of all other phenotypes is zero. A
 // value near one equalizes the selection probabilities.
 
-std::vector<double> &Population::exponentialRankSelector(double c) {
+void Population::exponentialRanker(double c) {
 
     probabilityArray.clear();
     // first we need to sort the array in descending order
     // std::sort(population.begin(), population.end(), [](const DNA& a, const
     // DNA& b) -> bool { return a.fitness > b.fitness; });
 
-    for (int i = 0; i < population.size(); i++) {
+    for (int i = 0; i < populationMembers.size(); i++) {
 
         double numerator = c - 1;
-        double denominator = pow(c, population.size()) - 1.;
+        double denominator = pow(c, populationMembers.size()) - 1.;
         double probability = pow(c, i) * (numerator / denominator);
         probabilityArray.push_back(probability);
     }
-    return probabilityArray;
+
 }
 // select based on exponentialSelector
 DNA &Population::select(double sum) {
@@ -239,8 +207,8 @@ DNA &Population::select(double sum) {
     }
     index--;
 
-    population[index].count++;
-    return population[index];
+   
+    return populationMembers[index];
 }
 
 DNA &Population::rSelect() {
@@ -248,7 +216,7 @@ DNA &Population::rSelect() {
     double offset = 0.0;
     int pick = 0;
 
-    for (int i = 0; i < population.size(); i++) {
+    for (int i = 0; i < populationMembers.size(); i++) {
         offset += probabilityArray[i];
         if (rndNumber < offset) {
             pick = i;
@@ -256,26 +224,10 @@ DNA &Population::rSelect() {
         }
     }
     
-    return population[pick];
+    return populationMembers[pick];
 }
 
-vector<double> &Population::displayPopulation() {
-    for (int i = 0; i < population.size(); i++) {
-        for (int j = 0; j < population[i].genes.size(); j++) {
-            // count the occurence of each gene
-            counter[population[i].genes[j]]++;
-        }
-    }
-    return counter;
-}
 
 int Population::getNumberOfParams() { return numParams; }
 
-vector<int> Population::getSelectionCount() {
-    vector<int> numberOfTimesSelected;
-    for (int i = 0; i < population.size(); i++) {
-        numberOfTimesSelected.push_back(population[i].count);
-    }
 
-    return numberOfTimesSelected;
-}

@@ -14,21 +14,20 @@ class genetic : public object<genetic> {
     
 private:
     
-    // As is common practice, we provide private memebers at the
-    // end of the class definition.
-    // Initializing values here still serves a purpose because this will occur
-    // prior to the constructor being called.
-    //not necessaray
+    //population object to represent a collection of dna's, their fitness values and the genetic operators
     std::unique_ptr<Population> population { nullptr };
+    Attributes attrs;
     
-    //Population population;
+    //used to represent genes as an atom type. Max needs this.
     atoms result;
+    
     vector<double> sVec;
+    //flag to determine whether or not we have already printed the final result of our algorithm
     bool alreadyPrinted {false};
     
     
 public:
-    
+    //used for test purposes.
     vector<double>* doubleResult;
     MIN_DESCRIPTION {"apply genetic algorithm to n params"};
     MIN_TAGS {"time"};
@@ -40,71 +39,32 @@ public:
     outlet<> output2{this, "(list) best after accuracy thresh is passed"};
     outlet<> output3 {this, "(DNA) Current best, result"};
     
-    
-    
     std::unique_ptr<Population>& getPopulation(){
         return population;
     }
-    
+    //needed for testing purposes
     vector<double>& getResultAsVector(){
         
         if(result.size()){
             for(auto r: result){
                 doubleResult->push_back((double) r );
-                
             }
-            
         }
         return *doubleResult;
     }
     void initializeObject(const atoms& args= {}){
-        
-        
         int t = (int) args[0];
-        
-       
-        double oldMutationRate;
-        double oldMaxPopulation;
-        double oldExpFactor;
-        double oldmutationIndex;
-        double oldAccuracy;
-        bool reInit= false;
-        if(population.get()){
-            //save mutation rate
-            oldMutationRate = population->mutationRate;
-            oldMaxPopulation = population->maxPopulation;
-            oldExpFactor = population->expFactor;
-            oldmutationIndex = population->mutationIndex;
-            oldAccuracy = population->accuracy;
-            reInit= true;
-        }
-        population = std::make_unique<Population>(t);
-        doubleResult = new vector<double>; //TODO: free this or improve it
-		//notify max that these
-        if(reInit){
-            
-            atoms a;
-            a.push_back(oldMaxPopulation);
-            maxPopulation.set(a);
-            a.clear();
-            a.push_back(oldMutationRate);
-            mutationRate.set(a);
-            a.clear();
-            a.push_back(oldmutationIndex);
-            mutationIndex.set(a);
-            a.clear();
-            a.push_back(oldExpFactor);
-            expFactor.set(a);
-            a.clear();
-            a.push_back(oldAccuracy);
-            accuracy.set(a);
-         
-            
-        }
-    }
-    
+        if (population.get()){
+          attrs = *population; // copy operator allows this since Population is an Attributes, too
+		}
 
-   //message to assign a fitness value to each member of a population
+        //See if population already exists when this method is called, if so then store its values into attrs variable and use this to create a new population object.
+		population = std::make_unique<Population>(t);
+        doubleResult = new vector<double>; //TODO: free this or improve it
+		((Attributes&)*population) = attrs;
+    }
+ 
+    //message to assign a fitness value to each member of a population
     message<> dictionary { this, "dictionary",
            "Dictionary containing the generation and fitness values for a population",
            MIN_FUNCTION {
@@ -114,56 +74,50 @@ public:
                 result.clear();
                 
                 if(args.size() == 0){
-                    
-                    cout << "we are going to use a vector instead of a dict for testing purposes" <<endl;
-                    
-                    population->calcFitness();
-                    
+                   population->calcFitness();
                 }
                 else{
                     try {
                        dict d = {args[0]};
-                      
                        t_dictionary *popd;
                         if (dictionary_getdictionary(d, gensym("population"), &popd) == MAX_ERR_NONE) {
                            long size = dictionary_getentrycount(popd);
-                           for (long i = 0; i < size; i++) {
+                            for (long i = 0; i < size; i++) {
                                char keyname[256];
                                double val;
                                snprintf(keyname, 256, "pop_%ld", i);
                                if (dictionary_getfloat(popd, gensym(keyname), &val) == MAX_ERR_NONE) {
-                                   population->population[i].fitness = val;
+                                   population->populationMembers[i].fitness = val;
                                }
                                else {
-                                   cout << "missing key " << keyname << endl;
+                                   cout << "missing key " << keyname << c74::min::endl;
                                }
                             }
-                           vector<double> occurences= population->displayPopulation();
+                          
                            int index;
-                           std::vector<int>& currentBest = population->getBest(index);
-                           for (auto it : currentBest) {
-                                   result.push_back(it);
-                               }
-                            //output current best
-                            output3.send(result);
-
-                          if(!(population->finished)){
+                           std::vector<int>& currentBest = population->getBest(&index);
+                           if(std::find(currentBest.begin(), currentBest.end(), -1) == currentBest.end())
+                            {
+                               for (auto it : currentBest) {
+                                       result.push_back(it);
+                                   }
+                               
+                            }
+                           output3.send(result);
+                           if(!(population->finished)){
                            
-                                population->generate(population->mutationIndex);
+                                population->generate(population->getMutationIndex());
                                 //create a dictionary once again with the new population
                                 output.send("dictionary", population->toDict().name());
-                          
-                                   
-                        }
-                        else{
+                            }
+                            else{
                                 cout << "we are finished!" << c74::min::endl;
                                 output2.send(result);
-                          }
-                                
+                            }
                        }
                    }
                    catch (std::exception& e) {
-                       cerr << e.what() << endl;
+                       cerr << e.what() << c74::min::endl;
                             }
                     }
             }
@@ -175,96 +129,66 @@ public:
        };
                     
     message<> buildPopulation {this, "buildPopulation", "build an initial population", MIN_FUNCTION {
-            
-	   if(population.get()){
-
+      
+	   if (population.get()){
 			//population->targetParams.clear();
 			//population->generations= 0;
-            population->population.clear();
-                               
-			initializeObject(args);
-			alreadyPrinted= false;
-		}
-		else if(args.size()>0){
-			initializeObject(args);
-			cout << "Object initialized" <<endl;
-		}
-		else {
-			cout << "Missing arguments (number of parameters)" <<c74::min::endl;
-			return args;
-		}
-
-	
+            population->populationMembers.clear();
+            initializeObject(args);
+            alreadyPrinted= false;
+        }
+        else if(args.size()>0){
+            initializeObject(args);
+    
+        }
+        else {
+            cout << "Missing arguments (number of parameters)" <<c74::min::endl;
+            return args;
+        }
         output.send("dictionary", population->toDict().name());
         return args;
     }};
     
 
-    attribute<double> accuracy {this, "accuracy", 99.5,
+	attribute<double> accuracy {this, "accuracy", DEFAULT_ACCURACY,
           setter { MIN_FUNCTION {
-                  
-           if(population.get()){
-              population->setAccuracy(double(args[0]));
-            }
-                  
-              return {args};
-                  
-      }}};
+			Attributes &ats = population.get() ? *population : attrs;
+			ats.setAccuracy(double(args[0]));
+			return {args};
+	}}};
                 
 
                 
-   attribute<int> maxPopulation {this, "maxPopulation", 10,
+	attribute<int> maxPopulation {this, "maxPopulation", DEFAULT_MAXPOP,
           setter { MIN_FUNCTION {
-                
-           if(population.get()){
-              population->setMaxPopulation(int(args[0]));
-            }
+			Attributes &ats = population.get() ? *population : attrs;
+			ats.setMaxPopulation(int(args[0]));
             return {args};
-    }}};
+	}}};
            
   
-   attribute<double> mutationRate {this, "mutationRate", 0.214,
-        setter { MIN_FUNCTION {
-                
-           if(population.get()){
-              population->setMutationRate(double(args[0]));
-           }
-                
-        return {args};
-                
+	attribute<double> mutationRate {this, "mutationRate", DEFAULT_MUTRATE,
+          setter { MIN_FUNCTION {
+			Attributes &ats = population.get() ? *population : attrs;
+			ats.setMutationRate(double(args[0]));
+			return {args};
     }}};
                     
-   attribute<double> mutationIndex {this, "mutationIndex", 5.,
-       setter { MIN_FUNCTION {
-                           
-          if(population.get()){
-           population->setMutationIndex(int(args[0]));
-           }
-  
-        return {args};
+	attribute<double> mutationIndex {this, "mutationIndex", DEFAULT_MUTIDX,
+          setter { MIN_FUNCTION {
+		   Attributes &ats = population.get() ? *population : attrs;
+		   ats.setMutationIndex(double(args[0]));
+		   return {args};
     }}};
 
                     
-   attribute<double>  expFactor {this, "expFactor", 0.123,
-     setter { MIN_FUNCTION {
-            
-     if(population.get()){
-        population->setExpFactor(double(args[0]));
-        }
-            
-    return {args};
-                 
+	attribute<double>  expFactor {this, "expFactor", DEFAULT_EXPFACT,
+          setter { MIN_FUNCTION {
+			Attributes &ats = population.get() ? *population : attrs;
+			ats.setExpFactor(double(args[0]));
+			return {args};
     }}};
-                    
-    //attribute to test polynomialMutate method
-   attribute<int> mutate{ this, "mutate", 200 , setter{ MIN_FUNCTION {
-                
-     //atom value= (atom)DNA::polynomialMutate(args[0], args[1]);
-     //output2.send(value);
-     return {args};
-    }}};
-                
-  
+
     message<> getMaxFitness {this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {
        
       if(population.get()){
@@ -272,55 +196,39 @@ public:
            cout<< currentMax << c74::min::endl;
        }
       
-      return {};
+       return {};
     }};
    
-                
-    message<> bang {
-        this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
+      message<> bang {
+            this, "bang", "test the functionality of DNA class.", MIN_FUNCTION {
+                if(population.get()){
+                    if(!(population->finished)){
+                        //cout <<c74::min::endl;
+                        result.clear();
+                        //Create next generation
+                        population->generate(population->getMutationIndex());
 
-                
-            if(population.get()){
-
-            if(!(population->finished)){
-                //cout <<c74::min::endl;
-                result.clear();
-                //Create next generation
-                population->generate(population->mutationIndex);
-
-				int index;
-                std::vector<int>& currentBest = population->getBest(index);
-                //we know that rate of improvement will have been calculated by now
-                
-                if(population->getGenerations() % 20 == 0){
-                
-                cout << "prog: " << population->getRateOfImprovement()<< c74::min::endl;
-                
-                }
-                
-                
-                for (auto it : currentBest) {
-					result.push_back(it);
-                }
-
-                vector<double> occurences= population->displayPopulation();
-
-
-                output.send(result);
-            }
-            else if (!alreadyPrinted){
-
-                cout << "as close as youre going to get! " <<c74::min::endl;
-                cout << "generations: " << population->generations << c74::min::endl;
-                alreadyPrinted = true;
+                        int index;
+                        std::vector<int>& currentBest = population->getBest(&index);
+                        //we know that rate of improvement will have been calculated by now
+                        for (auto it : currentBest) {
+                            result.push_back(it);
                         }
+                        output.send(result);
                     }
-                    
+                    else if (!alreadyPrinted){
+
+                        cout << "as close as youre going to get! " <<c74::min::endl;
+                        cout << "generations: " << population->generations << c74::min::endl;
+                        alreadyPrinted = true;
+                    }
+                }
                 return {};
-                }};
-        };
+          }};
+          
+    };
+      
+         
                 
-                
-        MIN_EXTERNAL(genetic);
-                
+MIN_EXTERNAL(genetic);
                 
