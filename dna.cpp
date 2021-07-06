@@ -91,9 +91,6 @@ DNA &DNA::crossover(const DNA &partner) {
     }
     return *this;
 }
-
-
-
 // apply a random values to random genes that DONT match the target value
 void DNA::mutate(double mutationRate, double eta) {
 
