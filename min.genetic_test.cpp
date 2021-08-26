@@ -7,8 +7,7 @@
 //
 #include "c74_min_unittest.h" // required unit test header
 #include "dna.h"
-#include "population.cpp" // need the source of our object so that we can access it
-#include "min.genetic.cpp"
+#include "min.genetic.h"
 //
 //// Unit tests are written using the Catch framework as described at
 //// https://github.com/philsquared/Catch/blob/master/docs/tutorial.md

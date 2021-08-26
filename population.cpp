@@ -65,9 +65,9 @@ const c74::min::dict &Population::toDict() {
         dictionary_appendatomarray(d, gensym(keyname.c_str()),
                                    (t_object *)pop.toAtomArray());
     }
-    dictionary_appendlong(maxDict, gensym("generation"), generations);
+    dictionary_appendlong((c74::max::t_dictionary *)maxDict, gensym("generation"), generations);
 
-    dictionary_appenddictionary(maxDict, gensym("population"), (t_object *)d);
+    dictionary_appenddictionary((c74::max::t_dictionary *)maxDict, gensym("population"), (t_object *)d);
 
     return popDict;
 }

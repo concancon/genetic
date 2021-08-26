@@ -4,13 +4,15 @@
 ///    @license    Use of this source code is governed by the MIT License found in the License.md file.
 // code based on Dan Schiffman's GA Tutorial from NOC: https://natureofcode.com/book/chapter-9-the-evolution-of-code/
 
+#pragma once
+
 #include "c74_min.h"
 #include "population.h"
 
 using namespace c74::min;
 using namespace c74::max;
 
-class genetic : public object<genetic> {
+class genetic : public c74::min::object<genetic> {
     
 private:
     
@@ -80,7 +82,8 @@ public:
                     try {
                        dict d = {args[0]};
                        t_dictionary *popd;
-                        if (dictionary_getdictionary(d, gensym("population"), &popd) == MAX_ERR_NONE) {
+                       t_dictionary *maxd = (t_dictionary *)(c74::max::t_object*)d;
+                        if (dictionary_getdictionary(maxd, gensym("population"), (c74::max::t_object**)&popd) == MAX_ERR_NONE) {
                            long size = dictionary_getentrycount(popd);
                             for (long i = 0; i < size; i++) {
                                char keyname[256];

@@ -25,15 +25,13 @@ file(GLOB GENETIC_SOURCE
 set( SOURCE_FILES
     ${GENETIC_SOURCE}
 )
-list(FILTER SOURCE_FILES EXCLUDE REGEX ".*_test.cpp$")
-
+list(FILTER SOURCE_FILES EXCLUDE REGEX ".*_test\\.cpp$")
 
 add_library(
     ${PROJECT_NAME}
     MODULE
     ${SOURCE_FILES}
 )
-
 
 include(${C74_MIN_API_DIR}/script/min-posttarget.cmake)
 
