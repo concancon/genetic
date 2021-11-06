@@ -4,8 +4,6 @@
 ///    @license    Use of this source code is governed by the MIT License found in the License.md file.
 // code based on Dan Schiffman's GA Tutorial from NOC: https://natureofcode.com/book/chapter-9-the-evolution-of-code/
 
-#pragma once
-
 #include "c74_min.h"
 #include "population.h"
 
@@ -58,12 +56,12 @@ public:
         int t = (int) args[0];
         if (population.get()){
           attrs = *population; // copy operator allows this since Population is an Attributes, too
-		}
+        }
 
         //See if population already exists when this method is called, if so then store its values into attrs variable and use this to create a new population object.
-		population = std::make_unique<Population>(t);
+        population = std::make_unique<Population>(t);
         doubleResult = new vector<double>; //TODO: free this or improve it
-		((Attributes&)*population) = attrs;
+        ((Attributes&)*population) = attrs;
     }
  
     //message to assign a fitness value to each member of a population
@@ -133,9 +131,9 @@ public:
                     
     message<> buildPopulation {this, "buildPopulation", "build an initial population", MIN_FUNCTION {
       
-	   if (population.get()){
-			//population->targetParams.clear();
-			//population->generations= 0;
+       if (population.get()){
+            //population->targetParams.clear();
+            //population->generations= 0;
             population->populationMembers.clear();
             initializeObject(args);
             alreadyPrinted= false;
@@ -153,43 +151,43 @@ public:
     }};
     
 
-	attribute<double> accuracy {this, "accuracy", DEFAULT_ACCURACY,
+    attribute<double> accuracy {this, "accuracy", DEFAULT_ACCURACY,
           setter { MIN_FUNCTION {
-			Attributes &ats = population.get() ? *population : attrs;
-			ats.setAccuracy(double(args[0]));
-			return {args};
-	}}};
+            Attributes &ats = population.get() ? *population : attrs;
+            ats.setAccuracy(double(args[0]));
+            return {args};
+    }}};
                 
 
                 
-	attribute<int> maxPopulation {this, "maxPopulation", DEFAULT_MAXPOP,
+    attribute<int> maxPopulation {this, "maxPopulation", DEFAULT_MAXPOP,
           setter { MIN_FUNCTION {
-			Attributes &ats = population.get() ? *population : attrs;
-			ats.setMaxPopulation(int(args[0]));
+            Attributes &ats = population.get() ? *population : attrs;
+            ats.setMaxPopulation(int(args[0]));
             return {args};
-	}}};
+    }}};
            
   
-	attribute<double> mutationRate {this, "mutationRate", DEFAULT_MUTRATE,
+    attribute<double> mutationRate {this, "mutationRate", DEFAULT_MUTRATE,
           setter { MIN_FUNCTION {
-			Attributes &ats = population.get() ? *population : attrs;
-			ats.setMutationRate(double(args[0]));
-			return {args};
+            Attributes &ats = population.get() ? *population : attrs;
+            ats.setMutationRate(double(args[0]));
+            return {args};
     }}};
                     
-	attribute<double> mutationIndex {this, "mutationIndex", DEFAULT_MUTIDX,
+    attribute<double> mutationIndex {this, "mutationIndex", DEFAULT_MUTIDX,
           setter { MIN_FUNCTION {
-		   Attributes &ats = population.get() ? *population : attrs;
-		   ats.setMutationIndex(double(args[0]));
-		   return {args};
+           Attributes &ats = population.get() ? *population : attrs;
+           ats.setMutationIndex(double(args[0]));
+           return {args};
     }}};
 
                     
-	attribute<double>  expFactor {this, "expFactor", DEFAULT_EXPFACT,
+    attribute<double>  expFactor {this, "expFactor", DEFAULT_EXPFACT,
           setter { MIN_FUNCTION {
-			Attributes &ats = population.get() ? *population : attrs;
-			ats.setExpFactor(double(args[0]));
-			return {args};
+            Attributes &ats = population.get() ? *population : attrs;
+            ats.setExpFactor(double(args[0]));
+            return {args};
     }}};
 
     message<> getMaxFitness {this, "getMaxFitness", "display the max fitness score.", MIN_FUNCTION {
@@ -235,3 +233,4 @@ public:
                 
 MIN_EXTERNAL(genetic);
                 
+
